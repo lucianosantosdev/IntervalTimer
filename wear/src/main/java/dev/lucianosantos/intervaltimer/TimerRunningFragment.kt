@@ -1,6 +1,7 @@
 package dev.lucianosantos.intervaltimer
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,8 @@ import dev.lucianosantos.intervaltimer.databinding.FragmentTimerRunningBinding
  * create an instance of this fragment.
  */
 class TimerRunningFragment : Fragment() {
+    private val TAG = javaClass.name
+
     private var _binding: FragmentTimerRunningBinding? = null
     private val binding get() = _binding!!
 
@@ -29,5 +32,15 @@ class TimerRunningFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentTimerRunningBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.uiState.observe(viewLifecycleOwner) {
+            Log.d(TAG, "uiState changed!")
+            binding.timerTextView.text = it.currentTime
+        }
+        viewModel.startTimer()
     }
 }
