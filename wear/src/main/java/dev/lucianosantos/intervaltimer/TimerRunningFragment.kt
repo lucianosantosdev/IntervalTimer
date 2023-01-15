@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import dev.lucianosantos.intervaltimer.core.data.TimerViewModel
 import dev.lucianosantos.intervaltimer.databinding.FragmentTimerRunningBinding
 
 /**
@@ -15,6 +17,10 @@ import dev.lucianosantos.intervaltimer.databinding.FragmentTimerRunningBinding
 class TimerRunningFragment : Fragment() {
     private var _binding: FragmentTimerRunningBinding? = null
     private val binding get() = _binding!!
+
+    private val viewModel: TimerViewModel by activityViewModels {
+        TimerViewModel.Factory()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
