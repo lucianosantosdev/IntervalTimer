@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/timerSettingsFragment">
+
+    <fragment
+        android:id="@+id/timerSettingsFragment"
+        android:name="dev.lucianosantos.intervaltimer.TimerSettingsFragment"
+        android:label="fragment_timer_settings"
+        tools:layout="@layout/fragment_timer_settings" >
+        <action
+            android:id="@+id/action_timerSettingsFragment_to_timerRunningFragment"
+            app:destination="@id/timerRunningFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/timerRunningFragment"
+        android:name="dev.lucianosantos.intervaltimer.TimerRunningFragment"
+        android:label="fragment_timer_running"
+        tools:layout="@layout/fragment_timer_running" />
+</navigation>

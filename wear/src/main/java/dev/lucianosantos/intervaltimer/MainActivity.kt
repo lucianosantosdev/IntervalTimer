@@ -2,9 +2,10 @@ package dev.lucianosantos.intervaltimer
 
 import android.app.Activity
 import android.os.Bundle
+import androidx.fragment.app.FragmentActivity
 import dev.lucianosantos.intervaltimer.databinding.ActivityMainBinding
 
-class MainActivity : Activity() {
+class MainActivity : FragmentActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -12,6 +13,7 @@ class MainActivity : Activity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
+
         setContentView(binding.root)
 
     }
