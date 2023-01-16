@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">IntervalTimer</string>
-    <string name="start">start</string>
+    <string name="start_button_text">start</string>
+    <string name="back_button_text">back</string>
     <string name="state_prepare_text">PREPARE</string>
     <string name="state_train_text">TRAIN</string>
     <string name="state_rest_text">REST</string>

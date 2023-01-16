@@ -1,4 +1,4 @@
-package dev.lucianosantos.intervaltimer.core.data
+package dev.lucianosantos.intervaltimer.core
 
 import android.media.AudioManager
 import android.media.ToneGenerator

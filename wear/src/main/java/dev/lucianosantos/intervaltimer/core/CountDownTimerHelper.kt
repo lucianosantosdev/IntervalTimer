@@ -1,4 +1,4 @@
-package dev.lucianosantos.intervaltimer.core.data
+package dev.lucianosantos.intervaltimer.core
 
 import android.os.CountDownTimer
 import kotlin.math.round
@@ -6,16 +6,17 @@ import kotlin.math.round
 class CountDownTimerHelper : ICountDownTimerHelper {
     override fun startCountDown(
         seconds: Long,
-        callback: ICountDownTimerHelper.CountDownTimerListener
+        onTickCallback: (secondsUntilFinished: Long) -> Unit,
+        onFinishCallback: () -> Unit
     ) {
         val timer = object: CountDownTimer(seconds * 1000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 val secondsUntilFinished = round(millisUntilFinished / 1000.0).toLong()
-                callback.onTick(secondsUntilFinished)
+                onTickCallback(secondsUntilFinished)
             }
 
             override fun onFinish() {
-                callback.onFinish()
+                onFinishCallback()
             }
         }
         timer.start()

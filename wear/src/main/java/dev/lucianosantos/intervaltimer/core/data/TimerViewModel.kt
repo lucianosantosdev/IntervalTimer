@@ -1,17 +1,17 @@
 package dev.lucianosantos.intervaltimer.core.data
 
-import android.media.AudioManager
-import android.media.ToneGenerator
 import android.text.format.DateUtils
+import android.util.Log
 import androidx.lifecycle.*
-import kotlinx.coroutines.delay
+import dev.lucianosantos.intervaltimer.core.IBeepHelper
+import dev.lucianosantos.intervaltimer.core.ICountDownTimerHelper
 import kotlinx.coroutines.launch
 
 class TimerViewModel(
     private val timerSettings: TimerSettings,
     private val countDownTimerHelper: ICountDownTimerHelper,
     private val beepHelper: IBeepHelper
-    ) : ViewModel() {
+) : ViewModel() {
 
     private val _uiState: MutableLiveData<UiState> by lazy {
         MutableLiveData<UiState>(UiState())
@@ -19,32 +19,65 @@ class TimerViewModel(
     val uiState get() : LiveData<UiState> = _uiState
 
     fun startTimer() {
-        startCountDownTimer(timerSettings.trainTimeSeconds)
+        setCurrentState(TimerState.PREPARE)
+        startCountDownTimer(5) {
+            trainAndRest(timerSettings.sets)
+        }
     }
 
-    private fun startCountDownTimer(seconds: Long) {
-        longBeep()
-        countDownTimerHelper.startCountDown(seconds, object: ICountDownTimerHelper.CountDownTimerListener {
-            override fun onTick(secondsUntilFinished: Long) {
-                _uiState.value?.let { currentUiState ->
-                    _uiState.value = currentUiState.copy(
-                        currentTime = DateUtils.formatElapsedTime(secondsUntilFinished)
-                    )
-                }
-                if (secondsUntilFinished <= 3) {
-                    shortBeep()
-                }
+    private fun trainAndRest(set: Int) {
+        setCurrentState(TimerState.TRAIN)
+
+        startCountDownTimer(timerSettings.trainTimeSeconds) {
+            Log.d("TIMER SET", "$set")
+            if ( set == 1 ) {
+                setCurrentState(TimerState.FINISHED)
+                return@startCountDownTimer
             }
-            override fun onFinish() {
-                _uiState.value?.let { currentUiState ->
-                    _uiState.value = currentUiState.copy(
-                        currentTime = DateUtils.formatElapsedTime(0),
-                        timerState = TimerState.FINISHED
-                    )
-                }
-                doubleBeep()
+            setCurrentState(TimerState.REST)
+            startCountDownTimer(timerSettings.restTimeSeconds) {
+                trainAndRest(set - 1)
             }
+        }
+    }
+
+    private fun startCountDownTimer(seconds: Long, onFinished: () -> Unit) {
+        countDownTimerHelper.startCountDown(seconds, { secondsUntilFinished ->
+            setCurrentTime(secondsUntilFinished)
+            if (secondsUntilFinished <= 3) {
+                shortBeep()
+            }
+        }, onFinish = {
+            setCurrentTime(0)
+            onFinished()
         })
+    }
+
+    private fun setCurrentTime(seconds: Long) {
+        _uiState.value?.let { currentUiState ->
+            _uiState.value = currentUiState.copy(
+                currentTime = DateUtils.formatElapsedTime(seconds)
+            )
+        }
+    }
+
+    private fun setCurrentState(timerState: TimerState) {
+        _uiState.value?.let { currentUiState ->
+            _uiState.value = currentUiState.copy(
+                timerState = timerState
+            )
+        }
+        notifyUserStateChanged()
+    }
+
+    private fun notifyUserStateChanged() {
+        when(_uiState.value?.timerState) {
+            TimerState.PREPARE -> longBeep()
+            TimerState.TRAIN -> longBeep()
+            TimerState.REST -> doubleBeep()
+            TimerState.FINISHED -> longBeep()
+            else -> {}
+        }
     }
 
     private fun shortBeep() {

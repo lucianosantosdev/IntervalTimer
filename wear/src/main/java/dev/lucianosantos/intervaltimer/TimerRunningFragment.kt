@@ -1,13 +1,15 @@
 package dev.lucianosantos.intervaltimer
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import dev.lucianosantos.intervaltimer.core.BeepHelper
+import dev.lucianosantos.intervaltimer.core.CountDownTimerHelper
 import dev.lucianosantos.intervaltimer.core.data.*
 import dev.lucianosantos.intervaltimer.databinding.FragmentTimerRunningBinding
 
@@ -17,8 +19,6 @@ import dev.lucianosantos.intervaltimer.databinding.FragmentTimerRunningBinding
  * create an instance of this fragment.
  */
 class TimerRunningFragment : Fragment() {
-    private val TAG = javaClass.name
-
     private var _binding: FragmentTimerRunningBinding? = null
     private val binding get() = _binding!!
 
@@ -27,7 +27,7 @@ class TimerRunningFragment : Fragment() {
             countDownTimerHelper = CountDownTimerHelper(),
             beepHelper = BeepHelper(),
             timerSettings = TimerSettings(
-                sets = 10,
+                sets = 2,
                 trainTimeSeconds = 10,
                 restTimeSeconds = 5
             )
@@ -46,10 +46,17 @@ class TimerRunningFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.uiState.observe(viewLifecycleOwner) {
-            Log.d(TAG, "uiState changed!")
             binding.timerTextView.text = it.currentTime
             setBackgroundColor(it.timerState)
             setTextView(it.timerState)
+
+            if (it.timerState == TimerState.FINISHED) {
+                binding.navBackButton.visibility = View.VISIBLE
+            }
+        }
+
+        binding.navBackButton.setOnClickListener {
+            findNavController().navigateUp()
         }
         viewModel.startTimer()
     }
