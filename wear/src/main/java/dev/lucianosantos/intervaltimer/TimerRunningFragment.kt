@@ -2,14 +2,13 @@ package dev.lucianosantos.intervaltimer
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.activityViewModels
-import dev.lucianosantos.intervaltimer.core.data.TimerState
-import dev.lucianosantos.intervaltimer.core.data.TimerViewModel
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import dev.lucianosantos.intervaltimer.core.data.*
 import dev.lucianosantos.intervaltimer.databinding.FragmentTimerRunningBinding
 
 /**
@@ -23,8 +22,16 @@ class TimerRunningFragment : Fragment() {
     private var _binding: FragmentTimerRunningBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: TimerViewModel by activityViewModels {
-        TimerViewModel.Factory()
+    private val viewModel: TimerViewModel by viewModels {
+        TimerViewModel.Factory(
+            countDownTimerHelper = CountDownTimerHelper(),
+            beepHelper = BeepHelper(),
+            timerSettings = TimerSettings(
+                sets = 10,
+                trainTimeSeconds = 10,
+                restTimeSeconds = 5
+            )
+        )
     }
 
     override fun onCreateView(

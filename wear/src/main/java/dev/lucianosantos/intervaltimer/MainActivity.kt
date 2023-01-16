@@ -1,6 +1,5 @@
 package dev.lucianosantos.intervaltimer
 
-import android.app.Activity
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import dev.lucianosantos.intervaltimer.databinding.ActivityMainBinding

@@ -2,22 +2,16 @@ package dev.lucianosantos.intervaltimer.core.data
 
 import android.media.AudioManager
 import android.media.ToneGenerator
-import android.os.CountDownTimer
-import android.os.Handler
-import android.os.Looper
 import android.text.format.DateUtils
-import android.util.Log
 import androidx.lifecycle.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.math.ceil
-import kotlin.math.round
-import kotlin.time.Duration.Companion.seconds
 
-
-class TimerViewModel : ViewModel() {
-
-    private val TAG: String = javaClass.name
+class TimerViewModel(
+    private val timerSettings: TimerSettings,
+    private val countDownTimerHelper: ICountDownTimerHelper,
+    private val beepHelper: IBeepHelper
+    ) : ViewModel() {
 
     private val _uiState: MutableLiveData<UiState> by lazy {
         MutableLiveData<UiState>(UiState())
@@ -25,20 +19,22 @@ class TimerViewModel : ViewModel() {
     val uiState get() : LiveData<UiState> = _uiState
 
     fun startTimer() {
-        Log.d(TAG, "Start timer")
-        val timer = object: CountDownTimer(5000, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                val seconds = round(millisUntilFinished / 1000.0).toLong()
+        startCountDownTimer(timerSettings.trainTimeSeconds)
+    }
 
+    private fun startCountDownTimer(seconds: Long) {
+        longBeep()
+        countDownTimerHelper.startCountDown(seconds, object: ICountDownTimerHelper.CountDownTimerListener {
+            override fun onTick(secondsUntilFinished: Long) {
                 _uiState.value?.let { currentUiState ->
                     _uiState.value = currentUiState.copy(
-                        currentTime = DateUtils.formatElapsedTime(seconds)
+                        currentTime = DateUtils.formatElapsedTime(secondsUntilFinished)
                     )
                 }
-
-                verifyAndBeep(seconds)
+                if (secondsUntilFinished <= 3) {
+                    shortBeep()
+                }
             }
-
             override fun onFinish() {
                 _uiState.value?.let { currentUiState ->
                     _uiState.value = currentUiState.copy(
@@ -46,37 +42,41 @@ class TimerViewModel : ViewModel() {
                         timerState = TimerState.FINISHED
                     )
                 }
-                beep()
-                beep(200)
+                doubleBeep()
             }
-        }
-        timer.start()
+        })
     }
 
-    private fun verifyAndBeep(seconds: Long) {
-        if (seconds > 3) {
-            return
-        }
-        beep()
-    }
-
-    private fun beep(delayMilliseconds : Long = 0) {
+    private fun shortBeep() {
         viewModelScope.launch {
-            delay(delayMilliseconds)
-            val toneGen1 = ToneGenerator(AudioManager.STREAM_MUSIC, 100)
-            toneGen1.startTone(ToneGenerator.TONE_CDMA_EMERGENCY_RINGBACK, 100)
+            beepHelper.shortBeep()
+        }
+    }
+
+    private fun longBeep() {
+        viewModelScope.launch {
+            beepHelper.longBeep()
+        }
+    }
+
+    private fun doubleBeep() {
+        viewModelScope.launch {
+            beepHelper.doubleBeep()
         }
     }
 
     data class UiState(
-        val timerSettings: TimerSettings = TimerSettings(1, 10.seconds, 10.seconds),
         val currentTime : String = "",
         val timerState : TimerState = TimerState.PREPARE,
     )
 
-    class Factory() : ViewModelProvider.Factory {
+    class Factory(
+        val timerSettings: TimerSettings,
+        val countDownTimerHelper: ICountDownTimerHelper,
+        val beepHelper: IBeepHelper
+    ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return TimerViewModel() as T
+            return TimerViewModel(timerSettings, countDownTimerHelper, beepHelper) as T
         }
     }
 }
