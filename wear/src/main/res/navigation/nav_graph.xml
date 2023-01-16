@@ -18,5 +18,15 @@
         android:id="@+id/timerRunningFragment"
         android:name="dev.lucianosantos.intervaltimer.TimerRunningFragment"
         android:label="fragment_timer_running"
-        tools:layout="@layout/fragment_timer_running" />
+        tools:layout="@layout/fragment_timer_running" >
+        <argument
+            android:name="sets"
+            app:argType="integer" />
+        <argument
+            android:name="trainTime"
+            app:argType="long" />
+        <argument
+            android:name="restTime"
+            app:argType="long" />
+    </fragment>
 </navigation>

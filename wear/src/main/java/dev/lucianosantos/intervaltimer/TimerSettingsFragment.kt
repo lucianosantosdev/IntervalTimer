@@ -18,13 +18,10 @@ class TimerSettingsFragment : Fragment() {
     private var _binding : FragmentTimerSettingsBinding? = null
     private val binding get() = _binding!!
 
-    private var beepTone = -1
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         _binding = FragmentTimerSettingsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -32,7 +29,13 @@ class TimerSettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.startButton.setOnClickListener {
-            findNavController().navigate(R.id.action_timerSettingsFragment_to_timerRunningFragment)
+            val sets = binding.setsNumberEditText.text.toString().toInt()
+            val trainTime = binding.trainTimeEditText.text.toString().toLong()
+            val restTime = binding.restTimeEditText.text.toString().toLong()
+            val action =
+                TimerSettingsFragmentDirections.
+                actionTimerSettingsFragmentToTimerRunningFragment(sets, trainTime, restTime)
+            findNavController().navigate(action)
         }
     }
 }

@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import dev.lucianosantos.intervaltimer.core.BeepHelper
 import dev.lucianosantos.intervaltimer.core.CountDownTimerHelper
 import dev.lucianosantos.intervaltimer.core.data.*
@@ -22,14 +23,16 @@ class TimerRunningFragment : Fragment() {
     private var _binding: FragmentTimerRunningBinding? = null
     private val binding get() = _binding!!
 
+    private val arguments by navArgs<TimerRunningFragmentArgs>()
+
     private val viewModel: TimerViewModel by viewModels {
         TimerViewModel.Factory(
             countDownTimerHelper = CountDownTimerHelper(),
             beepHelper = BeepHelper(),
             timerSettings = TimerSettings(
-                sets = 2,
-                trainTimeSeconds = 10,
-                restTimeSeconds = 5
+                sets = arguments.sets,
+                trainTimeSeconds = arguments.trainTime,
+                restTimeSeconds = arguments.restTime
             )
         )
     }
