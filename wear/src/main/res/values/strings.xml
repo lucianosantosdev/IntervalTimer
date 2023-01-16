@@ -1,11 +1,8 @@
 <resources>
     <string name="app_name">IntervalTimer</string>
-    <!--
-    This string is used for square devices and overridden by hello_world in
-    values-round/strings.xml for round devices.
-    -->
-    <string name="hello_world">Hello Square World!</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="start">start</string>
+    <string name="state_prepare_text">PREPARE</string>
+    <string name="state_train_text">TRAIN</string>
+    <string name="state_rest_text">REST</string>
+    <string name="state_finished_text">DONE!</string>
 </resources>

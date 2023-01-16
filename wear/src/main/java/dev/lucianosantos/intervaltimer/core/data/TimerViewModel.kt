@@ -44,13 +44,6 @@ class TimerViewModel : ViewModel() {
         val timerState : TimerState = TimerState.PREPARE,
     )
 
-    enum class TimerState {
-        PREPARE,
-        TRAIN,
-        REST,
-        FINISHED
-    }
-
     class Factory() : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return TimerViewModel() as T
