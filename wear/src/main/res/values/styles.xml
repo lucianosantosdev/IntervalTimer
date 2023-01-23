@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="NumberPickerTimerDividerStyle" parent="Theme.AppCompat.Light">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:text">:</item>
+    </style>
+
+    <style name="NumberPickerStyle" parent="Theme.AppCompat.Light">
+        <item name="np_dividerColor">@color/np_dividerColor</item>
+        <item name="np_textColor">@color/np_textColor</item>
+        <item name="np_selectedTextColor">@color/np_selectedTextColor</item>
+        <item name="np_formatter">%02d</item>
+        <item name="np_min">0</item>
+        <item name="np_max">59</item>
+        <item name="np_selectedTextAlign">selectedTextAlignCenter</item>
+        <item name="np_textAlign">textAlignCenter</item>
+        <item name="np_fadingEdgeEnabled">false</item>
+        <item name="np_itemSpacing">15dp</item>
+    </style>
+</resources>

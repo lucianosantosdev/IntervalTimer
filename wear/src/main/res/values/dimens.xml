@@ -12,4 +12,10 @@
     inner_frame_layout_padding (below variable) on round screens.
     -->
     <dimen name="inner_frame_layout_padding">5dp</dimen>
+
+    <!-- NumberPicker -->
+    <dimen name="np_textSize">10sp</dimen>
+    <dimen name="np_selectedTextSize">20sp</dimen>
+    <dimen name="np_itemSpacing">100dp</dimen>
+
 </resources>

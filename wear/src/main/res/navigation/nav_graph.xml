@@ -3,17 +3,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/timerSettingsFragment">
+    app:startDestination="@id/setupSectionsFragment">
 
     <fragment
-        android:id="@+id/timerSettingsFragment"
-        android:name="dev.lucianosantos.intervaltimer.TimerSettingsFragment"
-        android:label="fragment_timer_settings"
-        tools:layout="@layout/fragment_timer_settings" >
+        android:id="@+id/setupSectionsFragment"
+        android:name="dev.lucianosantos.intervaltimer.SetupSectionsFragment"
+        android:label="SetupSectionsFragment" >
         <action
-            android:id="@+id/action_timerSettingsFragment_to_timerRunningFragment"
+            android:id="@+id/action_setupSectionsFragment_to_setupTimeTrainFragment"
+            app:destination="@id/setupTrainTimeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/setupTrainTimeFragment"
+        android:name="dev.lucianosantos.intervaltimer.SetupTimeTrainFragment"
+        android:label="SetupTrainTimeFragment" >
+        <action
+            android:id="@+id/action_setupTimeTrainFragment_to_setupTimeRestFragment"
+            app:destination="@id/setupRestTimeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/setupRestTimeFragment"
+        android:name="dev.lucianosantos.intervaltimer.SetupTimeRestFragment"
+        android:label="SetupRestTimeFragment" >
+        <action
+            android:id="@+id/action_setupTimeRestFragment_to_timerRunningFragment"
             app:destination="@id/timerRunningFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/timerRunningFragment"
         android:name="dev.lucianosantos.intervaltimer.TimerRunningFragment"

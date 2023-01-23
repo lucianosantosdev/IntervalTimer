@@ -6,4 +6,13 @@
     <string name="state_train_text">TRAIN</string>
     <string name="state_rest_text">REST</string>
     <string name="state_finished_text">DONE!</string>
+    <string name="label_sets_number_picker">Sets:</string>
+    <string name="label_train_number_picker">Train time</string>
+    <string name="label_rest_number_picker">Rest time:</string>
+    <string name="np_formatter">%02d</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="next_button_text">Next</string>
+    <string name="label_sections">Sections:</string>
+
 </resources>

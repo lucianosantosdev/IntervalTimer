@@ -47,7 +47,7 @@ class TimerViewModel(
             if (secondsUntilFinished <= 3) {
                 shortBeep()
             }
-        }, onFinish = {
+        }, onFinishCallback = {
             setCurrentTime(0)
             onFinished()
         })
@@ -103,6 +103,7 @@ class TimerViewModel(
         val timerState : TimerState = TimerState.PREPARE,
     )
 
+    @Suppress("UNCHECKED_CAST")
     class Factory(
         val timerSettings: TimerSettings,
         val countDownTimerHelper: ICountDownTimerHelper,

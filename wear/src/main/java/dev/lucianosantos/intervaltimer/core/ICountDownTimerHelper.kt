@@ -1,5 +1,5 @@
 package dev.lucianosantos.intervaltimer.core
 
 interface ICountDownTimerHelper {
-    fun startCountDown(seconds: Long, onTick: (secondsUntilFinished: Long) -> Unit, onFinish: () -> Unit)
+    fun startCountDown(seconds: Long, onTickCallback: (secondsUntilFinished: Long) -> Unit, onFinishCallback: () -> Unit)
 }
