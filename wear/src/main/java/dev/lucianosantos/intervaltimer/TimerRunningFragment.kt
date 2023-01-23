@@ -54,12 +54,20 @@ class TimerRunningFragment : Fragment() {
             setTextView(it.timerState)
 
             if (it.timerState == TimerState.FINISHED) {
-                binding.navBackButton.visibility = View.VISIBLE
+                binding.backButton.visibility = View.VISIBLE
+                binding.restartButton.visibility = View.VISIBLE
+            } else if (it.timerState == TimerState.PREPARE) {
+                binding.backButton.visibility = View.INVISIBLE
+                binding.restartButton.visibility = View.INVISIBLE
             }
         }
 
-        binding.navBackButton.setOnClickListener {
+        binding.backButton.setOnClickListener {
             findNavController().navigateUp()
+        }
+
+        binding.restartButton.setOnClickListener {
+            viewModel.startTimer()
         }
         viewModel.startTimer()
     }

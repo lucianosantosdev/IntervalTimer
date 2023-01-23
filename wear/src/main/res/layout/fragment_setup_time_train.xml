@@ -54,24 +54,23 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         >
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/backButton"
-            style="Material3"
+            style="@style/ButtonStyle"
             android:text="@string/back_button_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/nextButton"
-            style="Material3"
+            style="@style/ButtonStyle"
             android:text="@string/next_button_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TimerSettingsFragment">
+    tools:context=".SetupSectionsFragment">
 
     <TextView
         android:id="@+id/sectionsLabelTextView"
@@ -12,10 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
         android:text="@string/label_sections"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.525"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -29,13 +27,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
         <Button
             android:id="@+id/sectionMinusButton"
             android:layout_width="48dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-
             android:text="-"/>
 
 
@@ -56,8 +52,9 @@
             android:text="+"/>
     </LinearLayout>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/nextButton"
+        style="@style/ButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"

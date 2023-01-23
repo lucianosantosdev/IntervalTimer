@@ -11,5 +11,6 @@
     <string name="label_train_number_picker">Train time</string>
     <string name="label_rest_number_picker">Rest time</string>
     <string name="np_formatter">%02d</string>
+    <string name="restart_button_text">Restart</string>
 
 </resources>

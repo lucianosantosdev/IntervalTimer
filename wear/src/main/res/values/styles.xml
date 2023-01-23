@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="Theme.App" parent="Theme.Material3.Dark">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primary_500</item>
+        <item name="colorPrimaryVariant">@color/primary_700</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/secondary_800</item>
+        <item name="colorSecondaryVariant">@color/secondary_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Customize your theme here. -->
+        <item name="colorSurface">@color/white</item>
+        <item name="colorOnSurfaceVariant">@color/primary_800</item>
+        <item name="colorOutline">@color/primary_400</item>
+    </style>
+
     <style name="NumberPickerTimerDividerStyle" parent="Theme.AppCompat.Light">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">20sp</item>
@@ -16,5 +31,13 @@
         <item name="np_selectedTextAlign">selectedTextAlignCenter</item>
         <item name="np_textAlign">textAlignCenter</item>
         <item name="np_fadingEdgeEnabled">true</item>
+    </style>
+
+    <style name="ButtonStyle" parent="Theme.AppCompat.Light">
+        <item name="android:width">10dp</item>
+    </style>
+
+    <style name="TimerTextAppearance" parent="TextAppearance.Material3.TitleLarge" >
+        <item name="android:textSize">40sp</item>
     </style>
 </resources>
