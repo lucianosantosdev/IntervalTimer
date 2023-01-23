@@ -1,14 +1,13 @@
 package dev.lucianosantos.intervaltimer
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import dev.lucianosantos.intervaltimer.core.data.SettingsViewModel
-import dev.lucianosantos.intervaltimer.databinding.FragmentSetupSectionsBinding
 import dev.lucianosantos.intervaltimer.databinding.FragmentSetupTimeTrainBinding
 
 /**
@@ -29,6 +28,10 @@ class SetupTimeTrainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentSetupTimeTrainBinding.inflate(layoutInflater, container, false)
+        NumberPickerHelper().setupNumberPickersFocus(listOf(
+            binding.trainTimeMinutesNumberPicker,
+            binding.trainTimeSecondsNumberPicker,
+        ))
         return binding.root
     }
 

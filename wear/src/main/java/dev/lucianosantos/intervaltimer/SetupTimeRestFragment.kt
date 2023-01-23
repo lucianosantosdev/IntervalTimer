@@ -1,10 +1,10 @@
 package dev.lucianosantos.intervaltimer
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import dev.lucianosantos.intervaltimer.core.data.SettingsViewModel
@@ -29,6 +29,10 @@ class SetupTimeRestFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentSetupTimeRestBinding.inflate(layoutInflater, container, false)
+        NumberPickerHelper().setupNumberPickersFocus(listOf(
+            binding.restTimeMinutesNumberPicker,
+            binding.restTimeSecondsNumberPicker,
+        ))
         return binding.root
     }
 

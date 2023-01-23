@@ -15,7 +15,6 @@
         <item name="np_max">59</item>
         <item name="np_selectedTextAlign">selectedTextAlignCenter</item>
         <item name="np_textAlign">textAlignCenter</item>
-        <item name="np_fadingEdgeEnabled">false</item>
-        <item name="np_itemSpacing">15dp</item>
+        <item name="np_fadingEdgeEnabled">true</item>
     </style>
 </resources>
