@@ -41,10 +41,11 @@ class TimerViewModelTest {
 
         // Act
         val viewModel = TimerViewModel(timerSettings, mockCountDownTimerHelper, mockBeepHelper)
+        val uiState = viewModel.uiState.getOrAwaitValue()
 
         // Assert
-        assert(viewModel.uiState.value?.remainingSections == 10)
-        assert(viewModel.uiState.value?.timerState == TimerState.PREPARE)
-        assert(viewModel.uiState.value?.currentTime == "")
+        assert(uiState.remainingSections == 10)
+        assert(uiState.timerState == TimerState.PREPARE)
+        assert(uiState.currentTime == "")
     }
 }
