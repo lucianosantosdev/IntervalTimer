@@ -1,12 +1,13 @@
 package dev.lucianosantos.intervaltimer.core.viewmodels
 
 import androidx.lifecycle.*
+import dev.lucianosantos.intervaltimer.core.data.DefaultTimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerSettings
 
 class SettingsViewModel() : ViewModel() {
 
     private val _uiState: MutableLiveData<UiState> by lazy {
-        MutableLiveData<UiState>(UiState(TimerSettings(1,1,1)))
+        MutableLiveData<UiState>(UiState(DefaultTimerSettings.settings))
     }
     val uiState get() : LiveData<UiState> = _uiState
 
