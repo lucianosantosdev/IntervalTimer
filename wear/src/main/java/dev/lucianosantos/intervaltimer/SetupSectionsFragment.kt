@@ -39,7 +39,7 @@ class SetupSectionsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.uiState.observe(viewLifecycleOwner) {
-            binding.editTextNumber.setText(it.timerSettings.sets.toString())
+            binding.editTextNumber.setText(it.timerSettings.sections.toString())
         }
 
         binding.sectionMinusButton.setOnClickListener {

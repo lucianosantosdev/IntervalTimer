@@ -13,7 +13,7 @@ class SettingsViewModel() : ViewModel() {
         _uiState.value?.let { currentUiState ->
             _uiState.value = currentUiState.copy(
                 timerSettings = currentUiState.timerSettings.copy(
-                    sets = currentUiState.timerSettings.sets + 1
+                    sections = currentUiState.timerSettings.sections + 1
                 )
             )
         }
@@ -21,12 +21,12 @@ class SettingsViewModel() : ViewModel() {
 
     fun decrementSections() {
         _uiState.value?.let { currentUiState ->
-            if(currentUiState.timerSettings.sets == 1) {
+            if(currentUiState.timerSettings.sections == 1) {
                 return
             }
             _uiState.value = currentUiState.copy(
                 timerSettings = currentUiState.timerSettings.copy(
-                    sets = currentUiState.timerSettings.sets - 1
+                    sections = currentUiState.timerSettings.sections - 1
                 )
             )
         }
@@ -36,7 +36,7 @@ class SettingsViewModel() : ViewModel() {
         _uiState.value?.let { currentUiState ->
             _uiState.value = currentUiState.copy(
                 timerSettings = currentUiState.timerSettings.copy(
-                    sets = sections
+                    sections = sections
                 )
             )
         }

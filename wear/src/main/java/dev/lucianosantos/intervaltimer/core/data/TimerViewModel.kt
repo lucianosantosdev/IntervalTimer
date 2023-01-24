@@ -14,29 +14,31 @@ class TimerViewModel(
 ) : ViewModel() {
 
     private val _uiState: MutableLiveData<UiState> by lazy {
-        MutableLiveData<UiState>(UiState())
+        MutableLiveData<UiState>(UiState(remainingSections = timerSettings.sections))
     }
     val uiState get() : LiveData<UiState> = _uiState
 
     fun startTimer() {
         setCurrentState(TimerState.PREPARE)
         startCountDownTimer(5) {
-            trainAndRest(timerSettings.sets)
+            trainAndRest(timerSettings.sections)
         }
     }
 
-    private fun trainAndRest(set: Int) {
+    private fun trainAndRest(section: Int) {
+        setRemainingSections(section)
         setCurrentState(TimerState.TRAIN)
 
         startCountDownTimer(timerSettings.trainTimeSeconds) {
-            Log.d("TIMER SET", "$set")
-            if ( set == 1 ) {
+            Log.d("TIMER SET", "$section")
+            if ( section == 1 ) {
+                setRemainingSections(0)
                 setCurrentState(TimerState.FINISHED)
                 return@startCountDownTimer
             }
             setCurrentState(TimerState.REST)
             startCountDownTimer(timerSettings.restTimeSeconds) {
-                trainAndRest(set - 1)
+                trainAndRest(section - 1)
             }
         }
     }
@@ -51,6 +53,14 @@ class TimerViewModel(
             setCurrentTime(0)
             onFinished()
         })
+    }
+
+    private fun setRemainingSections(sections: Int) {
+        _uiState.value?.let { currentUiState ->
+            _uiState.value = currentUiState.copy(
+                remainingSections = sections
+            )
+        }
     }
 
     private fun setCurrentTime(seconds: Long) {
@@ -99,6 +109,7 @@ class TimerViewModel(
     }
 
     data class UiState(
+        val remainingSections : Int,
         val currentTime : String = "",
         val timerState : TimerState = TimerState.PREPARE,
     )

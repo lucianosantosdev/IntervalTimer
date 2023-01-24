@@ -7,6 +7,15 @@
     tools:context=".TimerRunningFragment">
 
     <TextView
+        android:id="@+id/remainingSectionsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintBottom_toTopOf="@+id/timerTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
         android:id="@+id/timerTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

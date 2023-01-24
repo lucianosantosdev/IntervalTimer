@@ -42,7 +42,7 @@ class SetupTimeRestFragment : Fragment() {
         binding.startButton.setOnClickListener {
             setupRestTime()
 
-            val sets = viewModel.uiState.value?.timerSettings?.sets ?: 1
+            val sets = viewModel.uiState.value?.timerSettings?.sections ?: 1
             val trainTime = viewModel.uiState.value?.timerSettings?.trainTimeSeconds ?: 60
             val restTime = viewModel.uiState.value?.timerSettings?.restTimeSeconds ?: 60
             val action = SetupTimeRestFragmentDirections.actionSetupTimeRestFragmentToTimerRunningFragment(sets, trainTime, restTime)

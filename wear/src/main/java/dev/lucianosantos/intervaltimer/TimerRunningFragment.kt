@@ -30,7 +30,7 @@ class TimerRunningFragment : Fragment() {
             countDownTimerHelper = CountDownTimerHelper(),
             beepHelper = BeepHelper(),
             timerSettings = TimerSettings(
-                sets = arguments.sets,
+                sections = arguments.sets,
                 trainTimeSeconds = arguments.trainTime,
                 restTimeSeconds = arguments.restTime
             )
@@ -51,7 +51,8 @@ class TimerRunningFragment : Fragment() {
         viewModel.uiState.observe(viewLifecycleOwner) {
             binding.timerTextView.text = it.currentTime
             setBackgroundColor(it.timerState)
-            setTextView(it.timerState)
+            setStateTextView(it.timerState)
+            binding.remainingSectionsTextView.text = it.remainingSections.toString()
 
             if (it.timerState == TimerState.FINISHED) {
                 binding.backToBeginButton.visibility = View.VISIBLE
@@ -82,7 +83,7 @@ class TimerRunningFragment : Fragment() {
         binding.root.setBackgroundColor(ContextCompat.getColor(requireContext(), color))
     }
 
-    private fun setTextView(state: TimerState) {
+    private fun setStateTextView(state: TimerState) {
         val stringId = when(state) {
             TimerState.PREPARE -> R.string.state_prepare_text
             TimerState.TRAIN -> R.string.state_train_text
