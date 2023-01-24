@@ -44,5 +44,10 @@
         <argument
             android:name="restTime"
             app:argType="long" />
+        <action
+            android:id="@+id/action_timerRunningFragment_to_setupSectionsFragment"
+            app:destination="@id/setupSectionsFragment"
+            app:popUpTo="@id/setupSectionsFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

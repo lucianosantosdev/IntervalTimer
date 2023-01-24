@@ -38,9 +38,6 @@ class SetupTimeTrainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.backButton.setOnClickListener {
-            findNavController().navigateUp()
-        }
         binding.nextButton.setOnClickListener {
             setupTrainTime()
             findNavController().navigate(R.id.action_setupTimeTrainFragment_to_setupTimeRestFragment)

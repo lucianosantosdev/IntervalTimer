@@ -26,27 +26,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timerTextView" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/backToBeginButton"
+        style="@style/FAB"
+        android:layout_marginStart="32dp"
+        app:icon="@drawable/ic_baseline_stop_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/restartButton"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/restartButton"
+        style="@style/FAB"
+        android:layout_marginEnd="32dp"
+        app:icon="@drawable/ic_baseline_refresh_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        >
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/backButton"
-            style="@style/ButtonStyle"
-            android:text="@string/back_button_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"/>
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/restartButton"
-            style="@style/ButtonStyle"
-            android:text="@string/restart_button_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"/>
-    </LinearLayout>
+        android:visibility="invisible"
+        app:layout_constraintStart_toEndOf="@+id/backToBeginButton" />
 </androidx.constraintlayout.widget.ConstraintLayout>

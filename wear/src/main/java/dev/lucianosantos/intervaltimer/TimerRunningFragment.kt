@@ -54,16 +54,16 @@ class TimerRunningFragment : Fragment() {
             setTextView(it.timerState)
 
             if (it.timerState == TimerState.FINISHED) {
-                binding.backButton.visibility = View.VISIBLE
+                binding.backToBeginButton.visibility = View.VISIBLE
                 binding.restartButton.visibility = View.VISIBLE
             } else if (it.timerState == TimerState.PREPARE) {
-                binding.backButton.visibility = View.INVISIBLE
+                binding.backToBeginButton.visibility = View.INVISIBLE
                 binding.restartButton.visibility = View.INVISIBLE
             }
         }
 
-        binding.backButton.setOnClickListener {
-            findNavController().navigateUp()
+        binding.backToBeginButton.setOnClickListener {
+            findNavController().navigate(R.id.action_timerRunningFragment_to_setupSectionsFragment)
         }
 
         binding.restartButton.setOnClickListener {
@@ -74,9 +74,9 @@ class TimerRunningFragment : Fragment() {
 
     private fun setBackgroundColor(state: TimerState) {
         val color = when(state) {
-            TimerState.PREPARE -> R.color.yellow
+            TimerState.PREPARE -> R.color.orange
             TimerState.TRAIN -> R.color.green
-            TimerState.REST -> R.color.red
+            TimerState.REST -> R.color.blue
             TimerState.FINISHED -> R.color.blue
         }
         binding.root.setBackgroundColor(ContextCompat.getColor(requireContext(), color))

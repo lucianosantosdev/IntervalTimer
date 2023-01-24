@@ -10,7 +10,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="primaryColor">#EB5353</color>
+    <color name="orange">#F9AA33</color>
     <color name="red">#EB5353</color>
     <color name="yellow">#F9D923</color>
     <color name="green">#36AE7C</color>
@@ -20,5 +20,5 @@
     <color name="np_textColor">@android:color/transparent</color>
     <color name="np_textColorOnFocus">@android:color/white</color>
     <color name="np_selectedTextColor">@android:color/white</color>
-    <color name="np_selectedTextColorOnFocus">@color/primaryColor</color>
+    <color name="np_selectedTextColorOnFocus">@color/secondary_800</color>
 </resources>
