@@ -1,6 +1,7 @@
-package dev.lucianosantos.intervaltimer.core.data
+package dev.lucianosantos.intervaltimer.core.viewmodels
 
 import androidx.lifecycle.*
+import dev.lucianosantos.intervaltimer.core.data.TimerSettings
 
 class SettingsViewModel() : ViewModel() {
 
