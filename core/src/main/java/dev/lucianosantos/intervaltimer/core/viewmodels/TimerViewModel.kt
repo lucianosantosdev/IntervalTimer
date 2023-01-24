@@ -1,10 +1,12 @@
-package dev.lucianosantos.intervaltimer.core.data
+package dev.lucianosantos.intervaltimer.core.viewmodels
 
 import android.text.format.DateUtils
 import android.util.Log
 import androidx.lifecycle.*
 import dev.lucianosantos.intervaltimer.core.IBeepHelper
 import dev.lucianosantos.intervaltimer.core.ICountDownTimerHelper
+import dev.lucianosantos.intervaltimer.core.data.TimerSettings
+import dev.lucianosantos.intervaltimer.core.data.TimerState
 import kotlinx.coroutines.launch
 
 class TimerViewModel(

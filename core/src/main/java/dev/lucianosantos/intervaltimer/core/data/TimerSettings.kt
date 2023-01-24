@@ -5,3 +5,11 @@ data class TimerSettings(
     val trainTimeSeconds: Long,
     val restTimeSeconds: Long
 )
+
+object DefaultTimerSettings {
+    val settings = TimerSettings(
+        sections = 1,
+        trainTimeSeconds = 60,
+        restTimeSeconds = 60
+    )
+}
