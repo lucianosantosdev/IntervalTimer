@@ -8,6 +8,7 @@ import dev.lucianosantos.intervaltimer.core.ICountDownTimerHelper
 import dev.lucianosantos.intervaltimer.core.data.TimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerState
 import kotlinx.coroutines.launch
+import java.sql.Time
 
 class TimerViewModel(
     private val timerSettings: TimerSettings,
@@ -16,7 +17,11 @@ class TimerViewModel(
 ) : ViewModel() {
 
     private val _uiState: MutableLiveData<UiState> by lazy {
-        MutableLiveData<UiState>(UiState(remainingSections = timerSettings.sections))
+        MutableLiveData<UiState>(UiState(
+            remainingSections = timerSettings.sections,
+            currentTime = "",
+            timerState = TimerState.PREPARE
+        ))
     }
     val uiState get() : LiveData<UiState> = _uiState
 
@@ -49,7 +54,7 @@ class TimerViewModel(
         countDownTimerHelper.startCountDown(seconds, { secondsUntilFinished ->
             setCurrentTime(secondsUntilFinished)
             if (secondsUntilFinished <= 3) {
-                shortBeep()
+                notifyUserWithBeep(null)
             }
         }, onFinishCallback = {
             setCurrentTime(0)
@@ -79,41 +84,25 @@ class TimerViewModel(
                 timerState = timerState
             )
         }
-        notifyUserStateChanged()
+        notifyUserWithBeep(_uiState.value?.timerState)
     }
 
-    private fun notifyUserStateChanged() {
-        when(_uiState.value?.timerState) {
-            TimerState.PREPARE -> longBeep()
-            TimerState.TRAIN -> longBeep()
-            TimerState.REST -> doubleBeep()
-            TimerState.FINISHED -> longBeep()
-            else -> {}
-        }
-    }
-
-    private fun shortBeep() {
+    private fun notifyUserWithBeep(state: TimerState?) {
         viewModelScope.launch {
-            beepHelper.shortBeep()
-        }
-    }
-
-    private fun longBeep() {
-        viewModelScope.launch {
-            beepHelper.longBeep()
-        }
-    }
-
-    private fun doubleBeep() {
-        viewModelScope.launch {
-            beepHelper.doubleBeep()
+            when (state) {
+                TimerState.PREPARE -> beepHelper.longBeep()
+                TimerState.TRAIN -> beepHelper.longBeep()
+                TimerState.REST -> beepHelper.doubleBeep()
+                TimerState.FINISHED -> beepHelper.longBeep()
+                else -> beepHelper.shortBeep()
+            }
         }
     }
 
     data class UiState(
         val remainingSections : Int,
-        val currentTime : String = "",
-        val timerState : TimerState = TimerState.PREPARE,
+        val currentTime : String,
+        val timerState : TimerState,
     )
 
     @Suppress("UNCHECKED_CAST")
