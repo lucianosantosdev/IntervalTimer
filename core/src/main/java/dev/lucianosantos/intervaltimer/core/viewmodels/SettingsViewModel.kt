@@ -4,10 +4,10 @@ import androidx.lifecycle.*
 import dev.lucianosantos.intervaltimer.core.data.DefaultTimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerSettings
 
-class SettingsViewModel() : ViewModel() {
+class SettingsViewModel(defaultTimerSettings: TimerSettings) : ViewModel() {
 
     private val _uiState: MutableLiveData<UiState> by lazy {
-        MutableLiveData<UiState>(UiState(DefaultTimerSettings.settings))
+        MutableLiveData<UiState>(UiState(defaultTimerSettings))
     }
     val uiState get() : LiveData<UiState> = _uiState
 
@@ -69,9 +69,9 @@ class SettingsViewModel() : ViewModel() {
     )
 
     @Suppress("UNCHECKED_CAST")
-    class Factory() : ViewModelProvider.Factory {
+    class Factory(private val defaultTimerSettings: TimerSettings) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return SettingsViewModel() as T
+            return SettingsViewModel(defaultTimerSettings) as T
         }
     }
 }
