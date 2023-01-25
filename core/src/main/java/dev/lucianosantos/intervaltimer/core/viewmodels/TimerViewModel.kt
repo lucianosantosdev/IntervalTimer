@@ -37,7 +37,6 @@ class TimerViewModel(
         setCurrentState(TimerState.TRAIN)
 
         startCountDownTimer(timerSettings.trainTimeSeconds) {
-            Log.d("TIMER SET", "$section")
             if ( section == 1 ) {
                 setRemainingSections(0)
                 setCurrentState(TimerState.FINISHED)
@@ -51,13 +50,14 @@ class TimerViewModel(
     }
 
     private fun startCountDownTimer(seconds: Long, onFinished: () -> Unit) {
+        setCurrentTime(seconds)
         countDownTimerHelper.startCountDown(seconds, { secondsUntilFinished ->
             setCurrentTime(secondsUntilFinished)
             if (secondsUntilFinished <= 3) {
                 notifyUserWithBeep(null)
             }
         }, onFinishCallback = {
-            setCurrentTime(0)
+            setCurrentTime(0L)
             onFinished()
         })
     }
@@ -73,9 +73,15 @@ class TimerViewModel(
     private fun setCurrentTime(seconds: Long) {
         _uiState.value?.let { currentUiState ->
             _uiState.value = currentUiState.copy(
-                currentTime = DateUtils.formatElapsedTime(seconds)
+                currentTime = formatTime(seconds)
             )
         }
+    }
+
+    private fun formatTime(seconds: Long) : String {
+        val minutes = String.format("%02d", seconds / 60)
+        val seconds = String.format("%02d", seconds % 60)
+        return  "$minutes:$seconds"
     }
 
     private fun setCurrentState(timerState: TimerState) {
