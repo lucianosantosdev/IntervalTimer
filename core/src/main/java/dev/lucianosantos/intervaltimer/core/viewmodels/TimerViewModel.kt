@@ -1,14 +1,12 @@
 package dev.lucianosantos.intervaltimer.core.viewmodels
 
-import android.text.format.DateUtils
-import android.util.Log
 import androidx.lifecycle.*
-import dev.lucianosantos.intervaltimer.core.IBeepHelper
-import dev.lucianosantos.intervaltimer.core.ICountDownTimerHelper
+import dev.lucianosantos.intervaltimer.core.utils.IBeepHelper
+import dev.lucianosantos.intervaltimer.core.utils.ICountDownTimerHelper
 import dev.lucianosantos.intervaltimer.core.data.TimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerState
+import dev.lucianosantos.intervaltimer.core.utils.formatMinutesAndSeconds
 import kotlinx.coroutines.launch
-import java.sql.Time
 
 class TimerViewModel(
     private val timerSettings: TimerSettings,
@@ -73,15 +71,9 @@ class TimerViewModel(
     private fun setCurrentTime(seconds: Long) {
         _uiState.value?.let { currentUiState ->
             _uiState.value = currentUiState.copy(
-                currentTime = formatTime(seconds)
+                currentTime = formatMinutesAndSeconds(seconds)
             )
         }
-    }
-
-    private fun formatTime(seconds: Long) : String {
-        val minutes = String.format("%02d", seconds / 60)
-        val seconds = String.format("%02d", seconds % 60)
-        return  "$minutes:$seconds"
     }
 
     private fun setCurrentState(timerState: TimerState) {

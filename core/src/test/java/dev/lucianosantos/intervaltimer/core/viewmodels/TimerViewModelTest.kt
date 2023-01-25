@@ -1,24 +1,18 @@
 package dev.lucianosantos.intervaltimer.core.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import dev.lucianosantos.intervaltimer.core.BeepHelper
-import dev.lucianosantos.intervaltimer.core.CountDownTimerHelper
-import dev.lucianosantos.intervaltimer.core.IBeepHelper
-import dev.lucianosantos.intervaltimer.core.ICountDownTimerHelper
+import dev.lucianosantos.intervaltimer.core.utils.IBeepHelper
+import dev.lucianosantos.intervaltimer.core.utils.ICountDownTimerHelper
 import dev.lucianosantos.intervaltimer.core.data.DefaultTimerSettings
-import dev.lucianosantos.intervaltimer.core.data.TimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerState
 import dev.lucianosantos.intervaltimer.core.utils.MainDispatcherRule
 import dev.lucianosantos.intervaltimer.core.utils.getOrAwaitValue
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito
 import org.mockito.kotlin.*
-import java.util.Timer
 
 class TimerViewModelTest {
     @get:Rule

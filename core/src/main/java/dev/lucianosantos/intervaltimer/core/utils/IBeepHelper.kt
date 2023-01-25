@@ -1,4 +1,4 @@
-package dev.lucianosantos.intervaltimer.core
+package dev.lucianosantos.intervaltimer.core.utils
 
 interface IBeepHelper {
     suspend fun shortBeep()
