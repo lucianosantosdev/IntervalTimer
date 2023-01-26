@@ -36,22 +36,30 @@
         app:layout_constraintTop_toBottomOf="@+id/timerTextView" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/backToBeginButton"
+        android:id="@+id/pauseButton"
+        style="@style/FAB"
+        app:icon="@drawable/ic_baseline_pause_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/stopButton"
         style="@style/FAB"
         android:layout_marginStart="32dp"
         app:icon="@drawable/ic_baseline_stop_24"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/restartButton"
+        app:layout_constraintEnd_toStartOf="@+id/resumeButton"
         android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/restartButton"
+        android:id="@+id/resumeButton"
         style="@style/FAB"
         android:layout_marginEnd="32dp"
-        app:icon="@drawable/ic_baseline_refresh_24"
+        app:icon="@drawable/ic_baseline_play_arrow_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:visibility="invisible"
-        app:layout_constraintStart_toEndOf="@+id/backToBeginButton" />
+        app:layout_constraintStart_toEndOf="@+id/stopButton" />
 </androidx.constraintlayout.widget.ConstraintLayout>

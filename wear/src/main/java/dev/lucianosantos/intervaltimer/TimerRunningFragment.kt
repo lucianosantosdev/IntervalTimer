@@ -58,20 +58,39 @@ class TimerRunningFragment : Fragment() {
 
             if (it.timerState == TimerState.FINISHED) {
                 findNavController().navigate(R.id.action_timerRunningFragment_to_timerFinishedFragment)
-            } else if (it.timerState == TimerState.PREPARE) {
-                binding.backToBeginButton.visibility = View.INVISIBLE
-                binding.restartButton.visibility = View.INVISIBLE
             }
         }
-
-        binding.backToBeginButton.setOnClickListener {
-            findNavController().navigate(R.id.action_timerRunningFragment_to_setupSectionsFragment)
-        }
-
-        binding.restartButton.setOnClickListener {
-            viewModel.startTimer()
-        }
         viewModel.startTimer()
+
+        binding.pauseButton.setOnClickListener {
+            pause()
+        }
+
+        binding.stopButton.setOnClickListener {
+            stop()
+        }
+
+        binding.resumeButton.setOnClickListener {
+            resume()
+        }
+    }
+
+    private fun pause() {
+        binding.pauseButton.visibility = View.INVISIBLE
+        binding.stopButton.visibility = View.VISIBLE
+        binding.resumeButton.visibility = View.VISIBLE
+        viewModel.pauseTimer()
+    }
+
+    private fun resume() {
+        binding.stopButton.visibility = View.INVISIBLE
+        binding.resumeButton.visibility = View.INVISIBLE
+        binding.pauseButton.visibility = View.VISIBLE
+        viewModel.resumeTimer()
+    }
+
+    private fun stop() {
+        findNavController().navigate(R.id.action_timerRunningFragment_to_setupSectionsFragment)
     }
 
     private fun setBackgroundColor(state: TimerState) {

@@ -30,6 +30,14 @@ class TimerViewModel(
         }
     }
 
+    fun pauseTimer() {
+        countDownTimerHelper.pause()
+    }
+
+    fun resumeTimer() {
+        countDownTimerHelper.resume()
+    }
+
     private fun trainAndRest(section: Int) {
         setRemainingSections(section)
         setCurrentState(TimerState.TRAIN)
