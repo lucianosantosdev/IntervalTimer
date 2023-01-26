@@ -8,10 +8,7 @@
 
     <TextView
         android:id="@+id/sectionsLabelTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="24dp"
+        style="@style/setupTextViewTitle"
         android:text="@string/label_sections"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,13 +31,12 @@
             android:layout_gravity="center"
             android:text="-"/>
 
-
         <TextView
             android:id="@+id/editTextNumber"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:ems="3"
+            android:textSize="30sp"
+            android:ems="2"
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
