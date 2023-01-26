@@ -49,5 +49,17 @@
             app:destination="@id/setupSectionsFragment"
             app:popUpTo="@id/setupSectionsFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_timerRunningFragment_to_timerFinishedFragment"
+            app:destination="@id/timerFinishedFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/timerFinishedFragment"
+        android:name="dev.lucianosantos.intervaltimer.TimerFinishedFragment"
+        android:label="fragment_timer_finished"
+        tools:layout="@layout/fragment_timer_finished" >
+        <action
+            android:id="@+id/action_timerFinishedFragment_to_setupSectionsFragment"
+            app:destination="@id/setupSectionsFragment" />
     </fragment>
 </navigation>

@@ -57,8 +57,7 @@ class TimerRunningFragment : Fragment() {
             binding.remainingSectionsTextView.text = it.remainingSections.toString()
 
             if (it.timerState == TimerState.FINISHED) {
-                binding.backToBeginButton.visibility = View.VISIBLE
-                binding.restartButton.visibility = View.VISIBLE
+                findNavController().navigate(R.id.action_timerRunningFragment_to_timerFinishedFragment)
             } else if (it.timerState == TimerState.PREPARE) {
                 binding.backToBeginButton.visibility = View.INVISIBLE
                 binding.restartButton.visibility = View.INVISIBLE
