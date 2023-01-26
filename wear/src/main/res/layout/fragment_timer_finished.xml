@@ -30,7 +30,7 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/backToBeginButton"
         style="@style/FAB"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="38dp"
         app:icon="@drawable/ic_baseline_stop_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/restartButton"
@@ -39,7 +39,7 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/restartButton"
         style="@style/FAB"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="38dp"
         app:icon="@drawable/ic_baseline_refresh_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

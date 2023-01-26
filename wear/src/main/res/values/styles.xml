@@ -48,6 +48,11 @@
         <item name="cornerRadius">24dp</item>
         <item name="android:layout_width">48dp</item>
         <item name="android:layout_height">48dp</item>
-        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:layout_marginBottom">12dp</item>
+    </style>
+
+    <style name="FABOnRunning" parent="@style/FAB">
+        <item name="android:backgroundTint">@color/primary_700</item>
+        <item name="iconTint">@android:color/white</item>
     </style>
 </resources>

@@ -51,13 +51,13 @@ class TimerRunningFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.uiState.observe(viewLifecycleOwner) {
-            binding.timerTextView.text = it.currentTime
-            setBackgroundColor(it.timerState)
-            setStateTextView(it.timerState)
-            binding.remainingSectionsTextView.text = it.remainingSections.toString()
-
             if (it.timerState == TimerState.FINISHED) {
                 findNavController().navigate(R.id.action_timerRunningFragment_to_timerFinishedFragment)
+            } else {
+                binding.timerTextView.text = it.currentTime
+                setBackgroundColor(it.timerState)
+                setStateTextView(it.timerState)
+                binding.remainingSectionsTextView.text = it.remainingSections.toString()
             }
         }
         viewModel.startTimer()

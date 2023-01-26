@@ -10,6 +10,8 @@
         android:id="@+id/remainingSectionsTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textStyle="bold"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintBottom_toTopOf="@+id/timerTextView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,22 +33,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
+        android:textStyle="bold"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timerTextView" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/pauseButton"
-        style="@style/FAB"
+        style="@style/FABOnRunning"
         app:icon="@drawable/ic_baseline_pause_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/stopButton"
-        style="@style/FAB"
-        android:layout_marginStart="32dp"
+        style="@style/FABOnRunning"
+        android:layout_marginStart="38dp"
         app:icon="@drawable/ic_baseline_stop_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/resumeButton"
@@ -55,8 +60,8 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/resumeButton"
-        style="@style/FAB"
-        android:layout_marginEnd="32dp"
+        style="@style/FABOnRunning"
+        android:layout_marginEnd="38dp"
         app:icon="@drawable/ic_baseline_play_arrow_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
