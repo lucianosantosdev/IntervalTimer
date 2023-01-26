@@ -1,9 +1,13 @@
 package dev.lucianosantos.intervaltimer.core.utils
 
 interface IBeepHelper {
-    suspend fun shortBeep()
+    suspend fun startPrepareBeep()
 
-    suspend fun longBeep()
+    suspend fun startTrainBeep()
 
-    suspend fun doubleBeep()
+    suspend fun startRestBeep()
+
+    suspend fun finishedBeep()
+
+    suspend fun timerAlmostFinishingBeep()
 }

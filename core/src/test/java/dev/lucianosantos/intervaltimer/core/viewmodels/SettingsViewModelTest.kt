@@ -14,7 +14,7 @@ class SettingsViewModelTest {
     @Test
     fun `Verify uiState is initialized with settings provided in constructor`() {
         // Arrange
-        val settings = TimerSettings(1,2,3)
+        val settings = TimerSettings(1,2,3, 4)
 
         // Act
         val viewModel = SettingsViewModel(settings)
@@ -26,7 +26,9 @@ class SettingsViewModelTest {
     @Test
     fun `Verify uiState is updated when 'sections' is incremented`() {
         // Arrange
-        val viewModel = SettingsViewModel(TimerSettings(sections = 1, 1, 1))
+        val viewModel = SettingsViewModel(DefaultTimerSettings.settings.copy(
+            sections = 1
+        ))
 
         // Act
         viewModel.incrementSections()
@@ -39,7 +41,9 @@ class SettingsViewModelTest {
     @Test
     fun `Verify uiState is not updated when 'sections' is decremented when equals to '1'`() {
         // Arrange
-        val viewModel = SettingsViewModel(TimerSettings(sections = 1, 1, 1))
+        val viewModel = SettingsViewModel(DefaultTimerSettings.settings.copy(
+            sections = 1
+        ))
 
         // Act
         viewModel.decrementSections()
@@ -52,7 +56,9 @@ class SettingsViewModelTest {
     @Test
     fun `Verify uiState is updated when 'sections' is decremented`() {
         // Arrange
-        val viewModel = SettingsViewModel(TimerSettings(sections = 2, 1, 1))
+        val viewModel = SettingsViewModel(DefaultTimerSettings.settings.copy(
+            sections = 2
+        ))
 
         // Act
         viewModel.decrementSections()

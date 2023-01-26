@@ -1,10 +1,10 @@
 package dev.lucianosantos.intervaltimer.core.viewmodels
 
 import androidx.lifecycle.*
-import dev.lucianosantos.intervaltimer.core.utils.IBeepHelper
-import dev.lucianosantos.intervaltimer.core.utils.ICountDownTimerHelper
 import dev.lucianosantos.intervaltimer.core.data.TimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerState
+import dev.lucianosantos.intervaltimer.core.utils.IBeepHelper
+import dev.lucianosantos.intervaltimer.core.utils.ICountDownTimerHelper
 import dev.lucianosantos.intervaltimer.core.utils.formatMinutesAndSeconds
 import kotlinx.coroutines.launch
 
@@ -25,7 +25,7 @@ class TimerViewModel(
 
     fun startTimer() {
         setCurrentState(TimerState.PREPARE)
-        startCountDownTimer(5) {
+        startCountDownTimer(timerSettings.prepareTimeSeconds) {
             trainAndRest(timerSettings.sections)
         }
     }
@@ -88,11 +88,11 @@ class TimerViewModel(
     private fun notifyUserWithBeep(state: TimerState?) {
         viewModelScope.launch {
             when (state) {
-                TimerState.PREPARE -> beepHelper.longBeep()
-                TimerState.TRAIN -> beepHelper.longBeep()
-                TimerState.REST -> beepHelper.doubleBeep()
-                TimerState.FINISHED -> beepHelper.longBeep()
-                else -> beepHelper.shortBeep()
+                TimerState.PREPARE -> beepHelper.startPrepareBeep()
+                TimerState.TRAIN -> beepHelper.startTrainBeep()
+                TimerState.REST -> beepHelper.startRestBeep()
+                TimerState.FINISHED -> beepHelper.finishedBeep()
+                else -> beepHelper.timerAlmostFinishingBeep()
             }
         }
     }
