@@ -5,16 +5,9 @@
     <string name="state_train_text">TRAIN</string>
     <string name="state_rest_text">REST</string>
     <string name="state_finished_text">DONE!</string>
+    <string name="label_sections">SECTIONS</string>
+    <string name="label_train_number_picker">TRAIN</string>
+    <string name="label_rest_number_picker">REST</string>
 
-    <string name="label_sections">Sections</string>
-    <string name="label_train_number_picker">Train time</string>
-    <string name="label_rest_number_picker">Rest time</string>
-
-    <string name="np_formatter">%02d</string>
-
-    <string name="next_button_text">Next</string>
-    <string name="start_button_text">Start</string>
-    <string name="back_button_text">Back</string>
-    <string name="restart_button_text">Restart</string>
-    <string name="begin_button_text">Begin</string>
+    <string name="np_formatter" translatable="false">%02d</string>
 </resources>

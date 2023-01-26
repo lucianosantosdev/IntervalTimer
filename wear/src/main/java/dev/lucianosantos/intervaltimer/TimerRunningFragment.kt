@@ -30,7 +30,7 @@ class TimerRunningFragment : Fragment() {
     private val viewModel: TimerViewModel by viewModels {
         TimerViewModel.Factory(
             countDownTimerHelper = CountDownTimerHelper(),
-            beepHelper = BeepHelper(),
+            beepHelper = BeepHelper(requireContext()),
             timerSettings = TimerSettings(
                 sections = arguments.sets,
                 trainTimeSeconds = arguments.trainTime,
@@ -51,28 +51,46 @@ class TimerRunningFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.uiState.observe(viewLifecycleOwner) {
-            binding.timerTextView.text = it.currentTime
-            setBackgroundColor(it.timerState)
-            setStateTextView(it.timerState)
-            binding.remainingSectionsTextView.text = it.remainingSections.toString()
-
             if (it.timerState == TimerState.FINISHED) {
-                binding.backToBeginButton.visibility = View.VISIBLE
-                binding.restartButton.visibility = View.VISIBLE
-            } else if (it.timerState == TimerState.PREPARE) {
-                binding.backToBeginButton.visibility = View.INVISIBLE
-                binding.restartButton.visibility = View.INVISIBLE
+                findNavController().navigate(R.id.action_timerRunningFragment_to_timerFinishedFragment)
+            } else {
+                binding.timerTextView.text = it.currentTime
+                setBackgroundColor(it.timerState)
+                setStateTextView(it.timerState)
+                binding.remainingSectionsTextView.text = it.remainingSections.toString()
             }
         }
-
-        binding.backToBeginButton.setOnClickListener {
-            findNavController().navigate(R.id.action_timerRunningFragment_to_setupSectionsFragment)
-        }
-
-        binding.restartButton.setOnClickListener {
-            viewModel.startTimer()
-        }
         viewModel.startTimer()
+
+        binding.pauseButton.setOnClickListener {
+            pause()
+        }
+
+        binding.stopButton.setOnClickListener {
+            stop()
+        }
+
+        binding.resumeButton.setOnClickListener {
+            resume()
+        }
+    }
+
+    private fun pause() {
+        binding.pauseButton.visibility = View.INVISIBLE
+        binding.stopButton.visibility = View.VISIBLE
+        binding.resumeButton.visibility = View.VISIBLE
+        viewModel.pauseTimer()
+    }
+
+    private fun resume() {
+        binding.stopButton.visibility = View.INVISIBLE
+        binding.resumeButton.visibility = View.INVISIBLE
+        binding.pauseButton.visibility = View.VISIBLE
+        viewModel.resumeTimer()
+    }
+
+    private fun stop() {
+        findNavController().navigate(R.id.action_timerRunningFragment_to_setupSectionsFragment)
     }
 
     private fun setBackgroundColor(state: TimerState) {
