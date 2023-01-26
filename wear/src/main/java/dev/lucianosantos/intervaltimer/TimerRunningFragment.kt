@@ -30,7 +30,7 @@ class TimerRunningFragment : Fragment() {
     private val viewModel: TimerViewModel by viewModels {
         TimerViewModel.Factory(
             countDownTimerHelper = CountDownTimerHelper(),
-            beepHelper = BeepHelper(),
+            beepHelper = BeepHelper(requireContext()),
             timerSettings = TimerSettings(
                 sections = arguments.sets,
                 trainTimeSeconds = arguments.trainTime,

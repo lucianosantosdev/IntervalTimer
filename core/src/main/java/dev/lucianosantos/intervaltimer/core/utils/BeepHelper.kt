@@ -1,10 +1,14 @@
 package dev.lucianosantos.intervaltimer.core.utils
 
+import android.content.Context
 import android.media.AudioManager
 import android.media.ToneGenerator
+import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
 import kotlinx.coroutines.delay
 
-class BeepHelper : IBeepHelper {
+class BeepHelper(val context: Context) : IBeepHelper {
     private val toneGenerator = ToneGenerator(AudioManager.STREAM_ALARM, ToneGenerator.MAX_VOLUME)
 
     private fun shortBeep() {
@@ -13,6 +17,15 @@ class BeepHelper : IBeepHelper {
 
     private fun longBeep() {
         toneGenerator.startTone(ToneGenerator.TONE_CDMA_ABBR_ALERT, 400)
+    }
+
+    private fun vibratePhone() {
+        val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        if (Build.VERSION.SDK_INT >= 26) {
+            vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE))
+        } else {
+            vibrator.vibrate(200)
+        }
     }
 
     override suspend fun startPrepareBeep() {
@@ -30,14 +43,11 @@ class BeepHelper : IBeepHelper {
     }
 
     override suspend fun finishedBeep() {
-        shortBeep()
-        delay(300)
-        shortBeep()
-        delay(300)
-        shortBeep()
-        delay(300)
-        longBeep()
-        delay(400)
+        for (i in 1..3) {
+            shortBeep()
+            vibratePhone()
+            delay(300)
+        }
         longBeep()
     }
 
