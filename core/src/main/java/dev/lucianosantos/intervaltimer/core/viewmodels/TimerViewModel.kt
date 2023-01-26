@@ -1,12 +1,11 @@
 package dev.lucianosantos.intervaltimer.core.viewmodels
 
-import android.text.format.DateUtils
-import android.util.Log
 import androidx.lifecycle.*
-import dev.lucianosantos.intervaltimer.core.IBeepHelper
-import dev.lucianosantos.intervaltimer.core.ICountDownTimerHelper
 import dev.lucianosantos.intervaltimer.core.data.TimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerState
+import dev.lucianosantos.intervaltimer.core.utils.IBeepHelper
+import dev.lucianosantos.intervaltimer.core.utils.ICountDownTimerHelper
+import dev.lucianosantos.intervaltimer.core.utils.formatMinutesAndSeconds
 import kotlinx.coroutines.launch
 
 class TimerViewModel(
@@ -16,13 +15,17 @@ class TimerViewModel(
 ) : ViewModel() {
 
     private val _uiState: MutableLiveData<UiState> by lazy {
-        MutableLiveData<UiState>(UiState(remainingSections = timerSettings.sections))
+        MutableLiveData<UiState>(UiState(
+            remainingSections = timerSettings.sections,
+            currentTime = "",
+            timerState = TimerState.PREPARE
+        ))
     }
     val uiState get() : LiveData<UiState> = _uiState
 
     fun startTimer() {
         setCurrentState(TimerState.PREPARE)
-        startCountDownTimer(5) {
+        startCountDownTimer(timerSettings.prepareTimeSeconds) {
             trainAndRest(timerSettings.sections)
         }
     }
@@ -32,7 +35,6 @@ class TimerViewModel(
         setCurrentState(TimerState.TRAIN)
 
         startCountDownTimer(timerSettings.trainTimeSeconds) {
-            Log.d("TIMER SET", "$section")
             if ( section == 1 ) {
                 setRemainingSections(0)
                 setCurrentState(TimerState.FINISHED)
@@ -46,13 +48,14 @@ class TimerViewModel(
     }
 
     private fun startCountDownTimer(seconds: Long, onFinished: () -> Unit) {
+        setCurrentTime(seconds)
         countDownTimerHelper.startCountDown(seconds, { secondsUntilFinished ->
             setCurrentTime(secondsUntilFinished)
             if (secondsUntilFinished <= 3) {
-                shortBeep()
+                notifyUserWithBeep(null)
             }
         }, onFinishCallback = {
-            setCurrentTime(0)
+            setCurrentTime(0L)
             onFinished()
         })
     }
@@ -68,7 +71,7 @@ class TimerViewModel(
     private fun setCurrentTime(seconds: Long) {
         _uiState.value?.let { currentUiState ->
             _uiState.value = currentUiState.copy(
-                currentTime = DateUtils.formatElapsedTime(seconds)
+                currentTime = formatMinutesAndSeconds(seconds)
             )
         }
     }
@@ -79,41 +82,25 @@ class TimerViewModel(
                 timerState = timerState
             )
         }
-        notifyUserStateChanged()
+        notifyUserWithBeep(_uiState.value?.timerState)
     }
 
-    private fun notifyUserStateChanged() {
-        when(_uiState.value?.timerState) {
-            TimerState.PREPARE -> longBeep()
-            TimerState.TRAIN -> longBeep()
-            TimerState.REST -> doubleBeep()
-            TimerState.FINISHED -> longBeep()
-            else -> {}
-        }
-    }
-
-    private fun shortBeep() {
+    private fun notifyUserWithBeep(state: TimerState?) {
         viewModelScope.launch {
-            beepHelper.shortBeep()
-        }
-    }
-
-    private fun longBeep() {
-        viewModelScope.launch {
-            beepHelper.longBeep()
-        }
-    }
-
-    private fun doubleBeep() {
-        viewModelScope.launch {
-            beepHelper.doubleBeep()
+            when (state) {
+                TimerState.PREPARE -> beepHelper.startPrepareBeep()
+                TimerState.TRAIN -> beepHelper.startTrainBeep()
+                TimerState.REST -> beepHelper.startRestBeep()
+                TimerState.FINISHED -> beepHelper.finishedBeep()
+                else -> beepHelper.timerAlmostFinishingBeep()
+            }
         }
     }
 
     data class UiState(
         val remainingSections : Int,
-        val currentTime : String = "",
-        val timerState : TimerState = TimerState.PREPARE,
+        val currentTime : String,
+        val timerState : TimerState,
     )
 
     @Suppress("UNCHECKED_CAST")

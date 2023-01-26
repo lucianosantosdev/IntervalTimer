@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import dev.lucianosantos.intervaltimer.core.data.DefaultTimerSettings
 import dev.lucianosantos.intervaltimer.core.viewmodels.SettingsViewModel
 import dev.lucianosantos.intervaltimer.databinding.FragmentSetupTimeTrainBinding
 
@@ -20,7 +21,7 @@ class SetupTimeTrainFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: SettingsViewModel by activityViewModels {
-        SettingsViewModel.Factory()
+        SettingsViewModel.Factory(DefaultTimerSettings.settings)
     }
 
     override fun onCreateView(

@@ -1,4 +1,4 @@
-package dev.lucianosantos.intervaltimer.core
+package dev.lucianosantos.intervaltimer.core.utils
 
 import android.os.CountDownTimer
 import kotlin.math.round
