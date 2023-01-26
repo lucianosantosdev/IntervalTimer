@@ -17,7 +17,7 @@
 
     <style name="NumberPickerTimerDividerStyle" parent="Theme.AppCompat.Light">
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">40sp</item>
+        <item name="android:textSize">30sp</item>
         <item name="android:text">:</item>
     </style>
 
@@ -31,8 +31,8 @@
         <item name="np_selectedTextAlign">selectedTextAlignCenter</item>
         <item name="np_textAlign">textAlignCenter</item>
         <item name="np_fadingEdgeEnabled">true</item>
-        <item name="np_textSize">40sp</item>
-        <item name="np_selectedTextSize">40sp</item>
+        <item name="np_textSize">30sp</item>
+        <item name="np_selectedTextSize">30sp</item>
     </style>
 
     <style name="ButtonStyle" parent="Theme.AppCompat.Light">

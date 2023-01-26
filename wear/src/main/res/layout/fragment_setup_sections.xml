@@ -35,14 +35,14 @@
             android:text="-"/>
 
 
-        <EditText
+        <TextView
             android:id="@+id/editTextNumber"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:ems="5"
-            android:inputType="number" />
+            android:ems="3"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
         <Button
             android:id="@+id/sectionPlusButton"
