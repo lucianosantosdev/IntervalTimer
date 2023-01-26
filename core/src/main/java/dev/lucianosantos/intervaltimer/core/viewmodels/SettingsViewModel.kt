@@ -43,7 +43,7 @@ class SettingsViewModel(defaultTimerSettings: TimerSettings) : ViewModel() {
         }
     }
 
-    fun setRestTime(restTimeSeconds: Long) {
+    fun setRestTime(restTimeSeconds: Int) {
         _uiState.value?.let { currentUiState ->
             _uiState.value = currentUiState.copy(
                 timerSettings = currentUiState.timerSettings.copy(
@@ -53,7 +53,7 @@ class SettingsViewModel(defaultTimerSettings: TimerSettings) : ViewModel() {
         }
     }
 
-    fun setTrainTime(trainTimeSeconds: Long) {
+    fun setTrainTime(trainTimeSeconds: Int) {
         _uiState.value?.let { currentUiState ->
             _uiState.value = currentUiState.copy(
                 timerSettings = currentUiState.timerSettings.copy(

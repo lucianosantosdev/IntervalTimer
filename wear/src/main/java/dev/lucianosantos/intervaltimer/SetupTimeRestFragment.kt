@@ -8,6 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import dev.lucianosantos.intervaltimer.core.data.DefaultTimerSettings
+import dev.lucianosantos.intervaltimer.core.utils.getMinutesFromSeconds
+import dev.lucianosantos.intervaltimer.core.utils.getSecondsFromMinutesAndSeconds
+import dev.lucianosantos.intervaltimer.core.utils.getSecondsFromSeconds
 import dev.lucianosantos.intervaltimer.core.viewmodels.SettingsViewModel
 import dev.lucianosantos.intervaltimer.databinding.FragmentSetupTimeRestBinding
 
@@ -40,6 +43,11 @@ class SetupTimeRestFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.uiState.observe(viewLifecycleOwner) {
+            binding.restTimeMinutesNumberPicker.value = getMinutesFromSeconds(it.timerSettings.restTimeSeconds)
+            binding.restTimeSecondsNumberPicker.value = getSecondsFromSeconds(it.timerSettings.restTimeSeconds)
+        }
+
         binding.startButton.setOnClickListener {
             setupRestTime()
 
@@ -53,7 +61,7 @@ class SetupTimeRestFragment : Fragment() {
     }
 
     private fun setupRestTime() {
-        val seconds = NumberPickerHelper().getTimeSeconds(binding.restTimeMinutesNumberPicker, binding.restTimeSecondsNumberPicker)
+            val seconds = getSecondsFromMinutesAndSeconds(binding.restTimeMinutesNumberPicker.value, binding.restTimeSecondsNumberPicker.value)
         viewModel.setRestTime(seconds)
     }
 }

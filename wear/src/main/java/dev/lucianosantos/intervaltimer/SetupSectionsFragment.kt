@@ -35,6 +35,8 @@ class SetupSectionsFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentSetupSectionsBinding.inflate(layoutInflater, container, false)
+
+
         return binding.root
     }
 
@@ -42,7 +44,7 @@ class SetupSectionsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.uiState.observe(viewLifecycleOwner) {
-            binding.editTextNumber.setText(it.timerSettings.sections.toString())
+            binding.editTextNumber.text = it.timerSettings.sections.toString()
         }
 
         binding.sectionMinusButton.setOnClickListener {

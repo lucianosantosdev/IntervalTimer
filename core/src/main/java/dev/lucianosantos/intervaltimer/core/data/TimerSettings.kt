@@ -2,9 +2,9 @@ package dev.lucianosantos.intervaltimer.core.data
 
 data class TimerSettings(
     val sections: Int,
-    val prepareTimeSeconds: Long = 5,
-    val trainTimeSeconds: Long,
-    val restTimeSeconds: Long
+    val prepareTimeSeconds: Int = 5,
+    val trainTimeSeconds: Int,
+    val restTimeSeconds: Int
 )
 
 object DefaultTimerSettings {

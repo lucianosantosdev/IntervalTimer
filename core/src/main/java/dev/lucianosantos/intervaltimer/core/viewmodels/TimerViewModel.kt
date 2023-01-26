@@ -55,15 +55,15 @@ class TimerViewModel(
         }
     }
 
-    private fun startCountDownTimer(seconds: Long, onFinished: () -> Unit) {
+    private fun startCountDownTimer(seconds: Int, onFinished: () -> Unit) {
         setCurrentTime(seconds)
         countDownTimerHelper.startCountDown(seconds, { secondsUntilFinished ->
-            setCurrentTime(secondsUntilFinished)
+            setCurrentTime(secondsUntilFinished.toInt())
             if (secondsUntilFinished <= 3) {
                 notifyUserWithBeep(null)
             }
         }, onFinishCallback = {
-            setCurrentTime(0L)
+            setCurrentTime(0)
             onFinished()
         })
     }
@@ -76,7 +76,7 @@ class TimerViewModel(
         }
     }
 
-    private fun setCurrentTime(seconds: Long) {
+    private fun setCurrentTime(seconds: Int) {
         _uiState.value?.let { currentUiState ->
             _uiState.value = currentUiState.copy(
                 currentTime = formatMinutesAndSeconds(seconds)

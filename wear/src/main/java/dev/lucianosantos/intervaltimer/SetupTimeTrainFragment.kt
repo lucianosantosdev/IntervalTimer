@@ -8,6 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import dev.lucianosantos.intervaltimer.core.data.DefaultTimerSettings
+import dev.lucianosantos.intervaltimer.core.utils.getMinutesFromSeconds
+import dev.lucianosantos.intervaltimer.core.utils.getSecondsFromMinutesAndSeconds
+import dev.lucianosantos.intervaltimer.core.utils.getSecondsFromSeconds
 import dev.lucianosantos.intervaltimer.core.viewmodels.SettingsViewModel
 import dev.lucianosantos.intervaltimer.databinding.FragmentSetupTimeTrainBinding
 
@@ -39,6 +42,11 @@ class SetupTimeTrainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.uiState.observe(viewLifecycleOwner) {
+            binding.trainTimeMinutesNumberPicker.value = getMinutesFromSeconds(it.timerSettings.trainTimeSeconds)
+            binding.trainTimeSecondsNumberPicker.value = getSecondsFromSeconds(it.timerSettings.trainTimeSeconds)
+        }
+
         binding.nextButton.setOnClickListener {
             setupTrainTime()
             findNavController().navigate(R.id.action_setupTimeTrainFragment_to_setupTimeRestFragment)
@@ -46,7 +54,7 @@ class SetupTimeTrainFragment : Fragment() {
     }
 
     private fun setupTrainTime() {
-        val seconds = NumberPickerHelper().getTimeSeconds(binding.trainTimeMinutesNumberPicker, binding.trainTimeSecondsNumberPicker)
+        val seconds = getSecondsFromMinutesAndSeconds(binding.trainTimeMinutesNumberPicker.value, binding.trainTimeSecondsNumberPicker.value)
         viewModel.setTrainTime(seconds)
     }
 }
