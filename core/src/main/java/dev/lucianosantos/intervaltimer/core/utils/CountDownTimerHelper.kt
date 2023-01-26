@@ -7,23 +7,23 @@ class CountDownTimerHelper : ICountDownTimerHelper {
 
     private var timer : CountDownTimer? = null
 
-    private var remainingSeconds : Long = 0
+    private var remainingSeconds : Int = 0
 
     private lateinit var _onTickCallback: (secondsUntilFinished: Long) -> Unit
 
     private lateinit var _onFinishCallback: () -> Unit
 
     override fun startCountDown(
-        seconds: Long,
+        seconds: Int,
         onTickCallback: (secondsUntilFinished: Long) -> Unit,
         onFinishCallback: () -> Unit
     ) {
         _onTickCallback = onTickCallback
         _onFinishCallback = onFinishCallback
-        timer = object: CountDownTimer(seconds * 1000, 1000) {
+        timer = object: CountDownTimer(seconds * 1000L, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 val secondsUntilFinished = round(millisUntilFinished / 1000.0).toLong()
-                remainingSeconds = secondsUntilFinished
+                remainingSeconds = secondsUntilFinished.toInt()
                 onTickCallback(secondsUntilFinished)
             }
 

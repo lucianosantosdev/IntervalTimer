@@ -35,8 +35,4 @@ class NumberPickerHelper() {
             }
         }
     }
-
-    fun getTimeSeconds(minutesNumberPicker: NumberPicker, secondsNumberPicker: NumberPicker) : Long {
-        return (minutesNumberPicker.value*60 + secondsNumberPicker.value).toLong()
-    }
 }

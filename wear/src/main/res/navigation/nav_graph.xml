@@ -40,10 +40,10 @@
             app:argType="integer" />
         <argument
             android:name="trainTime"
-            app:argType="long" />
+            app:argType="integer" />
         <argument
             android:name="restTime"
-            app:argType="long" />
+            app:argType="integer" />
         <action
             android:id="@+id/action_timerRunningFragment_to_setupSectionsFragment"
             app:destination="@id/setupSectionsFragment"
