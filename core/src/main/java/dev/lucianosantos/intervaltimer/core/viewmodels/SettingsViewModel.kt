@@ -1,10 +1,11 @@
 package dev.lucianosantos.intervaltimer.core.viewmodels
 
 import androidx.lifecycle.*
+import dev.lucianosantos.intervaltimer.core.data.ITimerSettingsRepository
 import dev.lucianosantos.intervaltimer.core.data.TimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerSettingsRepository
 
-class SettingsViewModel(private val timerSettingsRepository: TimerSettingsRepository) : ViewModel() {
+class SettingsViewModel(private val timerSettingsRepository: ITimerSettingsRepository) : ViewModel() {
 
     private val _uiState: MutableLiveData<UiState> by lazy {
         MutableLiveData<UiState>(UiState(timerSettingsRepository.loadSettings()))
@@ -80,7 +81,7 @@ class SettingsViewModel(private val timerSettingsRepository: TimerSettingsReposi
     )
 
     @Suppress("UNCHECKED_CAST")
-    class Factory(private val timerSettingsRepository: TimerSettingsRepository) : ViewModelProvider.Factory {
+    class Factory(private val timerSettingsRepository: ITimerSettingsRepository) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return SettingsViewModel(timerSettingsRepository) as T
         }
