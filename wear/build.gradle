@@ -42,5 +42,4 @@ dependencies {
     implementation 'io.github.ShawnLin013:number-picker:2.4.13'
 
     implementation project(":core")
-    wearApp project(":wear")
 }
