@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import dev.lucianosantos.intervaltimer.core.data.DefaultTimerSettings
+import dev.lucianosantos.intervaltimer.core.data.TimerSettingsRepository
 import dev.lucianosantos.intervaltimer.core.utils.getMinutesFromSeconds
 import dev.lucianosantos.intervaltimer.core.utils.getSecondsFromMinutesAndSeconds
 import dev.lucianosantos.intervaltimer.core.utils.getSecondsFromSeconds
@@ -24,7 +25,7 @@ class SetupTimeTrainFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: SettingsViewModel by activityViewModels {
-        SettingsViewModel.Factory(DefaultTimerSettings.settings)
+        SettingsViewModel.Factory(TimerSettingsRepository(requireContext()))
     }
 
     override fun onCreateView(

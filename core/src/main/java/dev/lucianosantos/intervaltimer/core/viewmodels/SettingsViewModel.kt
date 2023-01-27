@@ -2,11 +2,12 @@ package dev.lucianosantos.intervaltimer.core.viewmodels
 
 import androidx.lifecycle.*
 import dev.lucianosantos.intervaltimer.core.data.TimerSettings
+import dev.lucianosantos.intervaltimer.core.data.TimerSettingsRepository
 
-class SettingsViewModel(defaultTimerSettings: TimerSettings) : ViewModel() {
+class SettingsViewModel(private val timerSettingsRepository: TimerSettingsRepository) : ViewModel() {
 
     private val _uiState: MutableLiveData<UiState> by lazy {
-        MutableLiveData<UiState>(UiState(defaultTimerSettings))
+        MutableLiveData<UiState>(UiState(timerSettingsRepository.loadSettings()))
     }
     val uiState get() : LiveData<UiState> = _uiState
 
@@ -18,11 +19,12 @@ class SettingsViewModel(defaultTimerSettings: TimerSettings) : ViewModel() {
                 )
             )
         }
+        persistSettings()
     }
 
     fun decrementSections() {
         _uiState.value?.let { currentUiState ->
-            if(currentUiState.timerSettings.sections == 1) {
+            if (currentUiState.timerSettings.sections == 1) {
                 return
             }
             _uiState.value = currentUiState.copy(
@@ -31,6 +33,7 @@ class SettingsViewModel(defaultTimerSettings: TimerSettings) : ViewModel() {
                 )
             )
         }
+        persistSettings()
     }
 
     fun setSections(sections: Int) {
@@ -41,6 +44,7 @@ class SettingsViewModel(defaultTimerSettings: TimerSettings) : ViewModel() {
                 )
             )
         }
+        persistSettings()
     }
 
     fun setRestTime(restTimeSeconds: Int) {
@@ -51,6 +55,7 @@ class SettingsViewModel(defaultTimerSettings: TimerSettings) : ViewModel() {
                 )
             )
         }
+        persistSettings()
     }
 
     fun setTrainTime(trainTimeSeconds: Int) {
@@ -61,6 +66,13 @@ class SettingsViewModel(defaultTimerSettings: TimerSettings) : ViewModel() {
                 )
             )
         }
+        persistSettings()
+    }
+
+    fun persistSettings() {
+        _uiState.value?.let { currentUiState ->
+            timerSettingsRepository.saveSettings(currentUiState.timerSettings)
+        }
     }
 
     data class UiState(
@@ -68,9 +80,9 @@ class SettingsViewModel(defaultTimerSettings: TimerSettings) : ViewModel() {
     )
 
     @Suppress("UNCHECKED_CAST")
-    class Factory(private val defaultTimerSettings: TimerSettings) : ViewModelProvider.Factory {
+    class Factory(private val timerSettingsRepository: TimerSettingsRepository) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return SettingsViewModel(defaultTimerSettings) as T
+            return SettingsViewModel(timerSettingsRepository) as T
         }
     }
 }
