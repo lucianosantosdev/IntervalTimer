@@ -14,6 +14,10 @@
         <item name="colorOnSurfaceVariant">@color/primary_800</item>
         <item name="colorOutline">@color/primary_400</item>
     </style>
+    
+    <style name="Theme.Splash"  parent="Theme.Material3.Dark">
+        <item name="android:windowBackground">@drawable/splash_bg</item>
+    </style>
 
     <style name="NumberPickerTimerDividerStyle" parent="Theme.AppCompat.Light">
         <item name="android:textColor">@android:color/white</item>
