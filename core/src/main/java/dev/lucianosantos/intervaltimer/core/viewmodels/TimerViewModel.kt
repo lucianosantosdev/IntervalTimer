@@ -3,7 +3,7 @@ package dev.lucianosantos.intervaltimer.core.viewmodels
 import androidx.lifecycle.*
 import dev.lucianosantos.intervaltimer.core.data.TimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerState
-import dev.lucianosantos.intervaltimer.core.utils.IBeepHelper
+import dev.lucianosantos.intervaltimer.core.utils.IAlertUserHelper
 import dev.lucianosantos.intervaltimer.core.utils.ICountDownTimerHelper
 import dev.lucianosantos.intervaltimer.core.utils.formatMinutesAndSeconds
 import kotlinx.coroutines.launch
@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 class TimerViewModel(
     private val timerSettings: TimerSettings,
     private val countDownTimerHelper: ICountDownTimerHelper,
-    private val beepHelper: IBeepHelper
+    private val beepHelper: IAlertUserHelper
 ) : ViewModel() {
 
     private val _uiState: MutableLiveData<UiState> by lazy {
@@ -96,11 +96,11 @@ class TimerViewModel(
     private fun notifyUserWithBeep(state: TimerState?) {
         viewModelScope.launch {
             when (state) {
-                TimerState.PREPARE -> beepHelper.startPrepareBeep()
-                TimerState.TRAIN -> beepHelper.startTrainBeep()
-                TimerState.REST -> beepHelper.startRestBeep()
-                TimerState.FINISHED -> beepHelper.finishedBeep()
-                else -> beepHelper.timerAlmostFinishingBeep()
+                TimerState.PREPARE -> beepHelper.startPrepareAlert()
+                TimerState.TRAIN -> beepHelper.startTrainAlert()
+                TimerState.REST -> beepHelper.startRestAlert()
+                TimerState.FINISHED -> beepHelper.finishedAlert()
+                else -> beepHelper.timerAlmostFinishingAlert()
             }
         }
     }
@@ -115,7 +115,7 @@ class TimerViewModel(
     class Factory(
         val timerSettings: TimerSettings,
         val countDownTimerHelper: ICountDownTimerHelper,
-        val beepHelper: IBeepHelper
+        val beepHelper: IAlertUserHelper
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return TimerViewModel(timerSettings, countDownTimerHelper, beepHelper) as T

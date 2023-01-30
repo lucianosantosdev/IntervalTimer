@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import dev.lucianosantos.intervaltimer.core.data.TimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerState
-import dev.lucianosantos.intervaltimer.core.utils.BeepHelper
+import dev.lucianosantos.intervaltimer.core.utils.AlertUserHelper
 import dev.lucianosantos.intervaltimer.core.utils.CountDownTimerHelper
 import dev.lucianosantos.intervaltimer.core.viewmodels.TimerViewModel
 import dev.lucianosantos.intervaltimer.databinding.FragmentTimerRunningBinding
@@ -30,7 +30,7 @@ class TimerRunningFragment : Fragment() {
     private val viewModel: TimerViewModel by viewModels {
         TimerViewModel.Factory(
             countDownTimerHelper = CountDownTimerHelper(),
-            beepHelper = BeepHelper(requireContext()),
+            beepHelper = AlertUserHelper(requireContext()),
             timerSettings = TimerSettings(
                 sections = arguments.sets,
                 trainTimeSeconds = arguments.trainTime,
