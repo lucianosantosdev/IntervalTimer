@@ -11,6 +11,10 @@
         android:label="SetupSectionsFragment" >
         <action
             android:id="@+id/action_setupSectionsFragment_to_setupTimeTrainFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
             app:destination="@id/setupTrainTimeFragment" />
     </fragment>
     <fragment
@@ -19,6 +23,10 @@
         android:label="SetupTrainTimeFragment" >
         <action
             android:id="@+id/action_setupTimeTrainFragment_to_setupTimeRestFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
             app:destination="@id/setupRestTimeFragment" />
     </fragment>
     <fragment
@@ -27,6 +35,10 @@
         android:label="SetupRestTimeFragment" >
         <action
             android:id="@+id/action_setupTimeRestFragment_to_timerRunningFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"
             app:destination="@id/timerRunningFragment" />
     </fragment>
 
@@ -48,6 +60,10 @@
             android:id="@+id/action_timerRunningFragment_to_setupSectionsFragment"
             app:destination="@id/setupSectionsFragment"
             app:popUpTo="@id/setupSectionsFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_timerRunningFragment_to_timerFinishedFragment"
@@ -60,6 +76,10 @@
         tools:layout="@layout/fragment_timer_finished" >
         <action
             android:id="@+id/action_timerFinishedFragment_to_setupSectionsFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"
             app:destination="@id/setupSectionsFragment" />
     </fragment>
 </navigation>

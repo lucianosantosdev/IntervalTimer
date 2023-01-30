@@ -5,12 +5,10 @@ import dev.lucianosantos.intervaltimer.core.data.DefaultTimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerState
 import dev.lucianosantos.intervaltimer.core.utils.*
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.InOrder
 import org.mockito.Mockito
 import org.mockito.kotlin.*
 
@@ -25,14 +23,14 @@ class TimerViewModelTest {
 
     private lateinit var mockCountDownTimerHelper: ICountDownTimerHelper
 
-    private lateinit var mockBeepHelper: IBeepHelper
+    private lateinit var mockBeepHelper: IAlertUserHelper
 
     private lateinit var viewModel: TimerViewModel
 
     @Before
     fun init() {
         mockCountDownTimerHelper = Mockito.mock(ICountDownTimerHelper::class.java)
-        mockBeepHelper = Mockito.mock(IBeepHelper::class.java)
+        mockBeepHelper = Mockito.mock(IAlertUserHelper::class.java)
         viewModel = TimerViewModel(timerSettings, mockCountDownTimerHelper, mockBeepHelper)
     }
 
@@ -61,7 +59,7 @@ class TimerViewModelTest {
         // Assert
         val uiState = viewModel.uiState.getOrAwaitValue()
         verify(mockCountDownTimerHelper, times(1)).startCountDown(eq(timerSettings.prepareTimeSeconds), anyOrNull(), anyOrNull())
-        verify(mockBeepHelper, times(1)).startPrepareBeep()
+        verify(mockBeepHelper, times(1)).startPrepareAlert()
         assert(uiState.currentTime == "00:05")
         assert(uiState.timerState == TimerState.PREPARE)
     }
@@ -86,7 +84,7 @@ class TimerViewModelTest {
         viewModel.startTimer()
 
         // Assert
-        verify(mockBeepHelper, never()).timerAlmostFinishingBeep();
+        verify(mockBeepHelper, never()).timerAlmostFinishingAlert();
     }
 
     @Test
@@ -104,7 +102,7 @@ class TimerViewModelTest {
         viewModel.startTimer()
 
         // Assert
-        verify(mockBeepHelper, times(3)).timerAlmostFinishingBeep()
+        verify(mockBeepHelper, times(3)).timerAlmostFinishingAlert()
     }
 
     @Test
@@ -213,10 +211,10 @@ class TimerViewModelTest {
 
         // Assert
         val inOrder = inOrder(mockBeepHelper)
-        inOrder.verify(mockBeepHelper, times(1)).startPrepareBeep()
-        inOrder.verify(mockBeepHelper, times(1)).startTrainBeep()
-        inOrder.verify(mockBeepHelper, times(1)).startRestBeep()
-        inOrder.verify(mockBeepHelper, times(1)).startTrainBeep()
-        inOrder.verify(mockBeepHelper, times(1)).finishedBeep()
+        inOrder.verify(mockBeepHelper, times(1)).startPrepareAlert()
+        inOrder.verify(mockBeepHelper, times(1)).startTrainAlert()
+        inOrder.verify(mockBeepHelper, times(1)).startRestAlert()
+        inOrder.verify(mockBeepHelper, times(1)).startTrainAlert()
+        inOrder.verify(mockBeepHelper, times(1)).finishedAlert()
     }
 }

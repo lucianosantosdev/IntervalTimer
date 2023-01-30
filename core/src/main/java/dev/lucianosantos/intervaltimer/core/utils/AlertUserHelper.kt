@@ -8,50 +8,53 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import kotlinx.coroutines.delay
 
-class BeepHelper(val context: Context) : IBeepHelper {
+class AlertUserHelper(val context: Context) : IAlertUserHelper {
     private val toneGenerator = ToneGenerator(AudioManager.STREAM_ALARM, ToneGenerator.MAX_VOLUME)
+
+    private fun vibrate(duration: Long) {
+        val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        if (Build.VERSION.SDK_INT >= 26) {
+            vibrator.vibrate(VibrationEffect.createOneShot(duration, VibrationEffect.DEFAULT_AMPLITUDE))
+        } else {
+            vibrator.vibrate(duration)
+        }
+    }
 
     private fun shortBeep() {
         toneGenerator.startTone(ToneGenerator.TONE_CDMA_ABBR_ALERT, 100)
+        vibrate(100)
     }
 
     private fun longBeep() {
         toneGenerator.startTone(ToneGenerator.TONE_CDMA_ABBR_ALERT, 400)
+        vibrate(400)
     }
 
-    private fun vibratePhone() {
-        val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        if (Build.VERSION.SDK_INT >= 26) {
-            vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE))
-        } else {
-            vibrator.vibrate(200)
-        }
-    }
-
-    override suspend fun startPrepareBeep() {
+    override suspend fun startPrepareAlert() {
         longBeep()
     }
 
-    override suspend fun startTrainBeep() {
+    override suspend fun startTrainAlert() {
         longBeep()
     }
 
-    override suspend fun startRestBeep() {
+    override suspend fun startRestAlert() {
         shortBeep()
         delay(300)
         shortBeep()
     }
 
-    override suspend fun finishedBeep() {
-        for (i in 1..3) {
+    override suspend fun finishedAlert() {
+        for (i in 1..5) {
             shortBeep()
-            vibratePhone()
-            delay(300)
+            delay(100)
         }
+        longBeep()
+        delay(200)
         longBeep()
     }
 
-    override suspend fun timerAlmostFinishingBeep() {
+    override suspend fun timerAlmostFinishingAlert() {
         shortBeep()
     }
 }
