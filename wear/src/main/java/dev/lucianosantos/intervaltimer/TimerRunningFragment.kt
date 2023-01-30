@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import dev.lucianosantos.intervaltimer.core.data.DefaultTimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerState
 import dev.lucianosantos.intervaltimer.core.utils.AlertUserHelper
@@ -33,6 +34,7 @@ class TimerRunningFragment : Fragment() {
             beepHelper = AlertUserHelper(requireContext()),
             timerSettings = TimerSettings(
                 sections = arguments.sets,
+                prepareTimeSeconds = DefaultTimerSettings.settings.prepareTimeSeconds,
                 trainTimeSeconds = arguments.trainTime,
                 restTimeSeconds = arguments.restTime
             )

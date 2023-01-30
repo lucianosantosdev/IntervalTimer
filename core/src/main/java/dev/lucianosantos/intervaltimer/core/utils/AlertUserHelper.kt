@@ -45,12 +45,13 @@ class AlertUserHelper(val context: Context) : IAlertUserHelper {
     }
 
     override suspend fun finishedAlert() {
-        for (i in 1..3) {
+        for (i in 1..5) {
             shortBeep()
-            delay(300)
-            longBeep()
-            delay(800)
+            delay(100)
         }
+        longBeep()
+        delay(200)
+        longBeep()
     }
 
     override suspend fun timerAlmostFinishingAlert() {
