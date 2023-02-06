@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.App" parent="Theme.Material3.Dark">
+    <style name="Theme.App" parent="Theme.Material3.Dark.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primary_500</item>
         <item name="colorPrimaryVariant">@color/primary_700</item>
@@ -25,8 +25,21 @@
         <item name="android:text">:</item>
     </style>
 
+    <style name="RemainingSectionsTextAppearance" parent="TextAppearance.Material3.TitleLarge" >
+        <item name="android:textSize">48sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="TimerTextAppearance" parent="TextAppearance.Material3.TitleLarge" >
+        <item name="autoSizeTextType">uniform</item>
+        <item name="autoSizeMinTextSize">20sp</item>
+        <item name="autoSizeMaxTextSize">200sp</item>
+        <item name="autoSizeStepGranularity">2sp</item>
+    </style>
+
+    <style name="StateTextAppearance" parent="TextAppearance.Material3.TitleLarge" >
         <item name="android:textSize">60sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="FAB" parent="@style/Widget.MaterialComponents.ExtendedFloatingActionButton">
