@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Treino Intervalado</string>
+    <string name="state_prepare_text">PREPARAR</string>
+    <string name="state_train_text">TREINAR</string>
+    <string name="state_rest_text">DESCANSAR</string>
+    <string name="state_finished_text">FIM!</string>
+    <string name="label_sections">SÉRIES</string>
+    <string name="label_train_number_picker">TEMPO DE TREINO</string>
+    <string name="label_rest_number_picker">TEMPO DE DESCANÇO</string>
+</resources>
