@@ -5,7 +5,6 @@ import dev.lucianosantos.intervaltimer.core.data.DefaultTimerSettings
 import dev.lucianosantos.intervaltimer.core.data.ITimerSettingsRepository
 import dev.lucianosantos.intervaltimer.core.data.TimerSettings
 import dev.lucianosantos.intervaltimer.core.utils.getOrAwaitValue
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith

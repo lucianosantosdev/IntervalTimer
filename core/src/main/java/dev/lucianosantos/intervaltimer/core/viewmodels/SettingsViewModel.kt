@@ -3,7 +3,6 @@ package dev.lucianosantos.intervaltimer.core.viewmodels
 import androidx.lifecycle.*
 import dev.lucianosantos.intervaltimer.core.data.ITimerSettingsRepository
 import dev.lucianosantos.intervaltimer.core.data.TimerSettings
-import dev.lucianosantos.intervaltimer.core.data.TimerSettingsRepository
 
 class SettingsViewModel(private val timerSettingsRepository: ITimerSettingsRepository) : ViewModel() {
 

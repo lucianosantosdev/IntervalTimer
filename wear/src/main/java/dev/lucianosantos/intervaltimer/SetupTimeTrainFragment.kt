@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import dev.lucianosantos.intervaltimer.core.data.DefaultTimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerSettingsRepository
+import dev.lucianosantos.intervaltimer.core.ui.NumberPickerHelper
 import dev.lucianosantos.intervaltimer.core.utils.getMinutesFromSeconds
 import dev.lucianosantos.intervaltimer.core.utils.getSecondsFromMinutesAndSeconds
 import dev.lucianosantos.intervaltimer.core.utils.getSecondsFromSeconds

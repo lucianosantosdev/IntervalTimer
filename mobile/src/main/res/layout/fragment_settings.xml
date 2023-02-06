@@ -11,53 +11,164 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:layout_marginStart="@dimen/horizontal_margin"
+        android:layout_marginTop="@dimen/vertical_margin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent ">
 
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.FilledBox.Dense"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/sectionsLinearLayout"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            >
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                style="@style/LabelTextStyle"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:hint="@string/label_sections"
-                android:inputType="text"
-                android:lines="1"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:text="@string/label_sections" />
+
+            <Button
+                android:id="@+id/sectionMinusButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:text="-"/>
+
+            <TextView
+                android:id="@+id/editTextNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="30sp"
+                android:ems="2"
+                android:gravity="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+            <Button
+                android:id="@+id/sectionPlusButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:text="+"/>
+        </LinearLayout>
 
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.FilledBox.Dense"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/restLinearLayout"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            >
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="@string/label_train_number_picker"
-                android:inputType="text"
-                android:lines="1"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
+            android:orientation="horizontal">
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.FilledBox.Dense"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
+            <TextView
+                style="@style/LabelTextStyle"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:hint="@string/label_rest_number_picker"
-                android:inputType="text"
-                android:lines="1"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:text="@string/label_train_number_picker" />
+
+            <com.shawnlin.numberpicker.NumberPicker
+                android:id="@+id/trainTimeMinutesNumberPicker"
+                style="@style/NumberPickerStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_marginBottom="10dp"
+                android:theme="@style/NumberPickerTimerDividerStyle" />
+
+            <com.shawnlin.numberpicker.NumberPicker
+                android:id="@+id/trainTimeSecondsNumberPicker"
+                style="@style/NumberPickerStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/trainLinearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/LabelTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/label_rest_number_picker" />
+
+            <com.shawnlin.numberpicker.NumberPicker
+                android:id="@+id/restTimeMinutesNumberPicker"
+                style="@style/NumberPickerStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                tools:ignore="DuplicateIds" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_marginBottom="10dp"
+                android:theme="@style/NumberPickerTimerDividerStyle" />
+
+            <com.shawnlin.numberpicker.NumberPicker
+                android:id="@+id/restTimeSecondsNumberPicker"
+                style="@style/NumberPickerStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+        </LinearLayout>
+
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.FilledBox.Dense"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            >-->
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:hint="@string/label_sections"-->
+<!--                android:inputType="text"-->
+<!--                android:lines="1"-->
+<!--                />-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.FilledBox.Dense"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            >-->
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:hint="@string/label_train_number_picker"-->
+<!--                android:inputType="text"-->
+<!--                android:lines="1"-->
+<!--                />-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.FilledBox.Dense"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            >-->
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:hint="@string/label_rest_number_picker"-->
+<!--                android:inputType="text"-->
+<!--                android:lines="1"-->
+<!--                />-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
 
     </LinearLayout>
     <Button

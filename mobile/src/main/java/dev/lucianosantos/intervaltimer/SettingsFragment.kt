@@ -1,6 +1,5 @@
 package dev.lucianosantos.intervaltimer
 
-import android.media.audiofx.Equalizer.Settings
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,9 +8,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import dev.lucianosantos.intervaltimer.core.data.TimerSettingsRepository
+import dev.lucianosantos.intervaltimer.core.ui.NumberPickerHelper
+import dev.lucianosantos.intervaltimer.core.utils.getMinutesFromSeconds
+import dev.lucianosantos.intervaltimer.core.utils.getSecondsFromMinutesAndSeconds
+import dev.lucianosantos.intervaltimer.core.utils.getSecondsFromSeconds
 import dev.lucianosantos.intervaltimer.core.viewmodels.SettingsViewModel
 import dev.lucianosantos.intervaltimer.databinding.FragmentSettingsBinding
-import dev.lucianosantos.intervaltimer.databinding.FragmentTimerRunningBinding
 
 /**
  * A simple [Fragment] subclass.
@@ -36,14 +38,72 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.uiState.observe(viewLifecycleOwner) {
+            binding.editTextNumber.text = it.timerSettings.sections.toString()
+
+            binding.trainTimeMinutesNumberPicker.value = getMinutesFromSeconds(it.timerSettings.trainTimeSeconds)
+            binding.trainTimeSecondsNumberPicker.value = getSecondsFromSeconds(it.timerSettings.trainTimeSeconds)
+            binding.restTimeMinutesNumberPicker.value = getMinutesFromSeconds(it.timerSettings.restTimeSeconds)
+            binding.restTimeSecondsNumberPicker.value = getSecondsFromSeconds(it.timerSettings.restTimeSeconds)
+        }
+
+        setupSectionPicker()
+        setupTimePickers()
+
         binding.startButton.setOnClickListener {
             val sets = viewModel.uiState.value?.timerSettings?.sections ?: 1
-//            val trainTime = viewModel.uiState.value?.timerSettings?.trainTimeSeconds ?: 60
-            val trainTime = 5
+            val trainTime = viewModel.uiState.value?.timerSettings?.trainTimeSeconds ?: 60
             val restTime = viewModel.uiState.value?.timerSettings?.restTimeSeconds ?: 60
-            val action = SettingsFragmentDirections.actionSettingsFragmentToTimerRunningFragment(sets, trainTime, restTime)
+            val action = SettingsFragmentDirections.actionSettingsFragmentToTimerRunningFragment(sets = sets, trainTime = trainTime, restTime = restTime)
 
             findNavController().navigate(action)
         }
     }
+
+    private fun setupSectionPicker() {
+        binding.sectionMinusButton.setOnClickListener {
+            viewModel.decrementSections()
+        }
+
+        binding.sectionPlusButton.setOnClickListener {
+            viewModel.incrementSections()
+        }
+    }
+
+    private fun setupTimePickers() {
+        NumberPickerHelper().setupNumberPickersFocus(listOf(
+            binding.restTimeMinutesNumberPicker,
+            binding.restTimeSecondsNumberPicker,
+            binding.trainTimeMinutesNumberPicker,
+            binding.trainTimeSecondsNumberPicker,
+        ))
+
+        binding.trainTimeSecondsNumberPicker.setOnValueChangedListener { picker, oldVal, newVal ->
+            viewModel.setTrainTime(getTrainSeconds())
+        }
+        binding.trainTimeMinutesNumberPicker.setOnValueChangedListener { picker, oldVal, newVal ->
+            viewModel.setTrainTime(getTrainSeconds())
+        }
+
+        binding.restTimeSecondsNumberPicker.setOnValueChangedListener { picker, oldVal, newVal ->
+            viewModel.setRestTime(getRestSeconds())
+        }
+        binding.restTimeMinutesNumberPicker.setOnValueChangedListener { picker, oldVal, newVal ->
+            viewModel.setRestTime(getRestSeconds())
+        }
+    }
+
+    private fun getTrainSeconds() : Int {
+        val seconds = binding.trainTimeSecondsNumberPicker.value
+        val minutes = binding.trainTimeMinutesNumberPicker.value
+        return getSecondsFromMinutesAndSeconds(minutes, seconds)
+    }
+
+    private fun getRestSeconds() : Int {
+        val seconds = binding.restTimeSecondsNumberPicker.value
+        val minutes = binding.restTimeMinutesNumberPicker.value
+        return getSecondsFromMinutesAndSeconds(minutes, seconds)
+    }
+
 }

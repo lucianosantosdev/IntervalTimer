@@ -1,8 +1,9 @@
-package dev.lucianosantos.intervaltimer
+package dev.lucianosantos.intervaltimer.core.ui
 
 import android.view.MotionEvent
 import androidx.core.content.res.ResourcesCompat
 import com.shawnlin.numberpicker.NumberPicker
+import dev.lucianosantos.intervaltimer.core.R
 
 private fun NumberPicker.setFocus() {
     this.textColor = ResourcesCompat.getColor(resources, R.color.np_textColorOnFocus, null)

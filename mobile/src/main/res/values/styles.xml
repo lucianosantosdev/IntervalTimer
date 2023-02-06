@@ -19,10 +19,28 @@
         <item name="android:windowBackground">@drawable/splash_bg</item>
     </style>
 
+    <style name="LabelTextStyle" parent="Theme.AppCompat.Light">
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
     <style name="NumberPickerTimerDividerStyle" parent="Theme.AppCompat.Light">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">30sp</item>
         <item name="android:text">:</item>
+    </style>
+
+    <style name="NumberPickerStyle" parent="Theme.AppCompat.Light">
+        <item name="np_dividerColor">@color/np_dividerColor</item>
+        <item name="np_textColor">@color/np_textColor</item>
+        <item name="np_selectedTextColor">@color/np_selectedTextColor</item>
+        <item name="np_formatter">%02d</item>
+        <item name="np_min">0</item>
+        <item name="np_max">59</item>
+        <item name="np_selectedTextAlign">selectedTextAlignCenter</item>
+        <item name="np_textAlign">textAlignCenter</item>
+        <item name="np_fadingEdgeEnabled">true</item>
+        <item name="np_textSize">30sp</item>
+        <item name="np_selectedTextSize">30sp</item>
     </style>
 
     <style name="RemainingSectionsTextAppearance" parent="TextAppearance.Material3.TitleLarge" >
