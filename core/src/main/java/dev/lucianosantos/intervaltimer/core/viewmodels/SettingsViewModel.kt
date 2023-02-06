@@ -3,7 +3,6 @@ package dev.lucianosantos.intervaltimer.core.viewmodels
 import androidx.lifecycle.*
 import dev.lucianosantos.intervaltimer.core.data.ITimerSettingsRepository
 import dev.lucianosantos.intervaltimer.core.data.TimerSettings
-import dev.lucianosantos.intervaltimer.core.data.TimerSettingsRepository
 
 class SettingsViewModel(private val timerSettingsRepository: ITimerSettingsRepository) : ViewModel() {
 
@@ -14,13 +13,8 @@ class SettingsViewModel(private val timerSettingsRepository: ITimerSettingsRepos
 
     fun incrementSections() {
         _uiState.value?.let { currentUiState ->
-            _uiState.value = currentUiState.copy(
-                timerSettings = currentUiState.timerSettings.copy(
-                    sections = currentUiState.timerSettings.sections + 1
-                )
-            )
+            setSections( currentUiState.timerSettings.sections + 1)
         }
-        persistSettings()
     }
 
     fun decrementSections() {
@@ -28,13 +22,8 @@ class SettingsViewModel(private val timerSettingsRepository: ITimerSettingsRepos
             if (currentUiState.timerSettings.sections == 1) {
                 return
             }
-            _uiState.value = currentUiState.copy(
-                timerSettings = currentUiState.timerSettings.copy(
-                    sections = currentUiState.timerSettings.sections - 1
-                )
-            )
+            setSections( currentUiState.timerSettings.sections - 1)
         }
-        persistSettings()
     }
 
     fun setSections(sections: Int) {
@@ -48,6 +37,21 @@ class SettingsViewModel(private val timerSettingsRepository: ITimerSettingsRepos
         persistSettings()
     }
 
+    fun incrementRestTime() {
+        _uiState.value?.let { currentUiState ->
+            setRestTime( currentUiState.timerSettings.restTimeSeconds + 1)
+        }
+    }
+
+    fun decrementRestTime() {
+        _uiState.value?.let { currentUiState ->
+            if (currentUiState.timerSettings.restTimeSeconds == 0) {
+                return
+            }
+            setRestTime( currentUiState.timerSettings.restTimeSeconds - 1)
+        }
+    }
+
     fun setRestTime(restTimeSeconds: Int) {
         _uiState.value?.let { currentUiState ->
             _uiState.value = currentUiState.copy(
@@ -57,6 +61,21 @@ class SettingsViewModel(private val timerSettingsRepository: ITimerSettingsRepos
             )
         }
         persistSettings()
+    }
+
+    fun incrementTrainTime() {
+        _uiState.value?.let { currentUiState ->
+            setTrainTime( currentUiState.timerSettings.trainTimeSeconds + 1)
+        }
+    }
+
+    fun decrementTrainTime() {
+        _uiState.value?.let { currentUiState ->
+            if (currentUiState.timerSettings.trainTimeSeconds == 1) {
+                return
+            }
+            setTrainTime(currentUiState.timerSettings.trainTimeSeconds - 1)
+        }
     }
 
     fun setTrainTime(trainTimeSeconds: Int) {
@@ -70,7 +89,7 @@ class SettingsViewModel(private val timerSettingsRepository: ITimerSettingsRepos
         persistSettings()
     }
 
-    fun persistSettings() {
+    private fun persistSettings() {
         _uiState.value?.let { currentUiState ->
             timerSettingsRepository.saveSettings(currentUiState.timerSettings)
         }

@@ -1,16 +1,17 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
     namespace 'dev.lucianosantos.intervaltimer'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "dev.lucianosantos.intervaltimer"
-        minSdk 30
-        targetSdk 32
+        minSdk 22
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -30,6 +31,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
@@ -38,8 +42,14 @@ dependencies {
     implementation 'com.google.android.material:material:1.7.0'
     implementation 'com.google.android.gms:play-services-wearable:18.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
+    implementation 'io.github.ShawnLin013:number-picker:2.4.13'
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    implementation project(":core")
     wearApp project(":wear")
 }

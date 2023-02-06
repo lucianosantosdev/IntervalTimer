@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="horizontal_margin">16dp</dimen>
+    <dimen name="vertical_margin">16dp</dimen>
+
+    <!-- NumberPicker -->
+    <dimen name="np_textSize">10sp</dimen>
+    <dimen name="np_selectedTextSize">20sp</dimen>
+    <dimen name="np_itemSpacing">100dp</dimen>
+
+</resources>

@@ -1,18 +1,12 @@
 package dev.lucianosantos.intervaltimer
 
 import android.os.Bundle
-import android.os.Handler
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
-import android.widget.TextView
-import androidx.annotation.RestrictTo.Scope
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import dev.lucianosantos.intervaltimer.core.data.DefaultTimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerSettingsRepository
 import dev.lucianosantos.intervaltimer.core.viewmodels.SettingsViewModel
 import dev.lucianosantos.intervaltimer.databinding.FragmentSetupSectionsBinding
@@ -36,8 +30,6 @@ class SetupSectionsFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentSetupSectionsBinding.inflate(layoutInflater, container, false)
-
-
         return binding.root
     }
 
