@@ -20,7 +20,9 @@
     </style>
 
     <style name="LabelTextStyle" parent="Theme.AppCompat.Light">
-        <item name="android:gravity">center_vertical</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">30sp</item>
+
     </style>
 
     <style name="NumberPickerTimerDividerStyle" parent="Theme.AppCompat.Light">
@@ -81,5 +83,11 @@
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_marginTop">24dp</item>
         <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="IncrementDecrementButtonStyle" parent="TextAppearance.AppCompat.Button">
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 </resources>

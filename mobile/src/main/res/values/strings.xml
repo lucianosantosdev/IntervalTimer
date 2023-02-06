@@ -6,7 +6,7 @@
     <string name="state_rest_text">REST</string>
     <string name="state_finished_text">DONE!</string>
     <string name="label_sections">SECTIONS</string>
-    <string name="label_train_number_picker">TRAIN</string>
-    <string name="label_rest_number_picker">REST</string>
+    <string name="label_train_number_picker">TRAIN TIME</string>
+    <string name="label_rest_number_picker">REST TIME</string>
     <string name="button_start">START</string>
 </resources>

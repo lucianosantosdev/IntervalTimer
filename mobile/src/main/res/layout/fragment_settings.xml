@@ -4,72 +4,81 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingsFragment">
+    tools:context=".SettingsFragment"
+    android:fillViewport="true">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginStart="@dimen/horizontal_margin"
-        android:layout_marginTop="@dimen/vertical_margin"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent ">
+        app:layout_constraintTop_toTopOf="parent">
 
-
-        <LinearLayout
-            android:id="@+id/sectionsLinearLayout"
+        <TextView
+            android:id="@+id/sectionsLabelTextView"
+            style="@style/LabelTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="@string/label_sections"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                style="@style/LabelTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="@string/label_sections" />
+        <LinearLayout
+            android:id="@+id/sectionsInputLinearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sectionsLabelTextView">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/sectionMinusButton"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_gravity="center"
-                android:text="-"/>
+                style="@style/IncrementDecrementButtonStyle"
+                android:text="-" />
 
             <TextView
                 android:id="@+id/editTextNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:textSize="30sp"
                 android:ems="2"
                 android:gravity="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textSize="30sp" />
 
             <Button
                 android:id="@+id/sectionPlusButton"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_gravity="center"
-                android:text="+"/>
+                style="@style/IncrementDecrementButtonStyle"
+                android:text="+" />
         </LinearLayout>
 
-
-        <LinearLayout
-            android:id="@+id/restLinearLayout"
+        <TextView
+            android:id="@+id/trainLabelTextView"
+            style="@style/LabelTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:text="@string/label_train_number_picker"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sectionsInputLinearLayout" />
 
-            <TextView
-                style="@style/LabelTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="@string/label_train_number_picker" />
+        <LinearLayout
+            android:id="@+id/trainInputLinearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/trainLabelTextView">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/trainMinusButton"
+                style="@style/IncrementDecrementButtonStyle"
+                android:text="-" />
 
             <com.shawnlin.numberpicker.NumberPicker
                 android:id="@+id/trainTimeMinutesNumberPicker"
@@ -81,8 +90,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:layout_marginBottom="10dp"
+                android:gravity="center"
                 android:theme="@style/NumberPickerTimerDividerStyle" />
 
             <com.shawnlin.numberpicker.NumberPicker
@@ -91,33 +100,49 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center" />
+
+            <Button
+                android:id="@+id/trainPlusButton"
+                style="@style/IncrementDecrementButtonStyle"
+                android:layout_gravity="center"
+                android:text="+" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/trainLinearLayout"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/restLabelTextView"
+            style="@style/LabelTextStyle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:text="@string/label_rest_number_picker"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/trainInputLinearLayout" />
 
-            <TextView
-                style="@style/LabelTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="@string/label_rest_number_picker" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/restLabelTextView">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/restMinusButton"
+                style="@style/IncrementDecrementButtonStyle"
+                android:text="-" />
 
             <com.shawnlin.numberpicker.NumberPicker
                 android:id="@+id/restTimeMinutesNumberPicker"
                 style="@style/NumberPickerStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                tools:ignore="DuplicateIds" />
+                android:layout_gravity="center" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:layout_marginBottom="10dp"
+                android:gravity="center"
                 android:theme="@style/NumberPickerTimerDividerStyle" />
 
             <com.shawnlin.numberpicker.NumberPicker
@@ -126,56 +151,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/restPlusButton"
+                style="@style/IncrementDecrementButtonStyle"
+                android:text="+" />
         </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-<!--        <com.google.android.material.textfield.TextInputLayout-->
-<!--            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.FilledBox.Dense"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            >-->
-<!--            <com.google.android.material.textfield.TextInputEditText-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:hint="@string/label_sections"-->
-<!--                android:inputType="text"-->
-<!--                android:lines="1"-->
-<!--                />-->
-<!--        </com.google.android.material.textfield.TextInputLayout>-->
-
-<!--        <com.google.android.material.textfield.TextInputLayout-->
-<!--            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.FilledBox.Dense"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            >-->
-<!--            <com.google.android.material.textfield.TextInputEditText-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:hint="@string/label_train_number_picker"-->
-<!--                android:inputType="text"-->
-<!--                android:lines="1"-->
-<!--                />-->
-<!--        </com.google.android.material.textfield.TextInputLayout>-->
-
-<!--        <com.google.android.material.textfield.TextInputLayout-->
-<!--            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.FilledBox.Dense"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            >-->
-<!--            <com.google.android.material.textfield.TextInputEditText-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:hint="@string/label_rest_number_picker"-->
-<!--                android:inputType="text"-->
-<!--                android:lines="1"-->
-<!--                />-->
-<!--        </com.google.android.material.textfield.TextInputLayout>-->
-
-    </LinearLayout>
     <Button
         android:id="@+id/startButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/button_start"
+        android:layout_marginStart="@dimen/horizontal_margin"
+        android:layout_marginEnd="@dimen/horizontal_margin"
+        android:layout_marginBottom="@dimen/vertical_margin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

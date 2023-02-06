@@ -69,6 +69,22 @@ class SettingsFragment : Fragment() {
         binding.sectionPlusButton.setOnClickListener {
             viewModel.incrementSections()
         }
+
+        binding.trainMinusButton.setOnClickListener {
+            viewModel.decrementTrainTime()
+        }
+
+        binding.trainPlusButton.setOnClickListener {
+            viewModel.incrementTrainTime()
+        }
+
+        binding.restMinusButton.setOnClickListener {
+            viewModel.decrementRestTime()
+        }
+
+        binding.restPlusButton.setOnClickListener {
+            viewModel.incrementRestTime()
+        }
     }
 
     private fun setupTimePickers() {
