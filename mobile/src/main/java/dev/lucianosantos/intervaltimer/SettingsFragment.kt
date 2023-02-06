@@ -36,9 +36,10 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.button.setOnClickListener {
+        binding.startButton.setOnClickListener {
             val sets = viewModel.uiState.value?.timerSettings?.sections ?: 1
-            val trainTime = viewModel.uiState.value?.timerSettings?.trainTimeSeconds ?: 60
+//            val trainTime = viewModel.uiState.value?.timerSettings?.trainTimeSeconds ?: 60
+            val trainTime = 5
             val restTime = viewModel.uiState.value?.timerSettings?.restTimeSeconds ?: 60
             val action = SettingsFragmentDirections.actionSettingsFragmentToTimerRunningFragment(sets, trainTime, restTime)
 

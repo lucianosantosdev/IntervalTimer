@@ -28,5 +28,16 @@
         <argument
             android:name="restTime"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_timerRunningFragment_to_timerFinishedFragment"
+            app:destination="@id/timerFinishedFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/timerFinishedFragment"
+        android:name="dev.lucianosantos.intervaltimer.TimerFinishedFragment"
+        android:label="TimerFinishedFragment" >
+        <action
+            android:id="@+id/action_timerFinishedFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
 </navigation>

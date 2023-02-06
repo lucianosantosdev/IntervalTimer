@@ -8,4 +8,5 @@
     <string name="label_sections">SECTIONS</string>
     <string name="label_train_number_picker">TRAIN</string>
     <string name="label_rest_number_picker">REST</string>
+    <string name="button_start">START</string>
 </resources>

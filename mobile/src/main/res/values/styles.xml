@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.App" parent="Theme.Material3.Dark">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primary_500</item>
+        <item name="colorPrimaryVariant">@color/primary_700</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/secondary_800</item>
+        <item name="colorSecondaryVariant">@color/secondary_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Customize your theme here. -->
+        <item name="colorSurface">@color/white</item>
+        <item name="colorOnSurfaceVariant">@color/primary_800</item>
+        <item name="colorOutline">@color/primary_400</item>
+    </style>
+
+    <style name="Theme.Splash"  parent="Theme.Material3.Dark">
+        <item name="android:windowBackground">@drawable/splash_bg</item>
+    </style>
+
+    <style name="NumberPickerTimerDividerStyle" parent="Theme.AppCompat.Light">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:text">:</item>
+    </style>
+
+    <style name="TimerTextAppearance" parent="TextAppearance.Material3.TitleLarge" >
+        <item name="android:textSize">60sp</item>
+    </style>
+
+    <style name="FAB" parent="@style/Widget.MaterialComponents.ExtendedFloatingActionButton">
+        <item name="iconGravity">textTop</item>
+        <item name="cornerRadius">24dp</item>
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:layout_marginBottom">16dp</item>
+    </style>
+
+    <style name="FABOnRunning" parent="@style/FAB">
+        <item name="android:backgroundTint">@color/primary_700</item>
+        <item name="iconTint">@android:color/white</item>
+    </style>
+
+    <style name="setupTextViewTitle" parent="Theme.Material3.Dark">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginTop">24dp</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+</resources>

@@ -54,7 +54,7 @@ class TimerRunningFragment : Fragment() {
 
         viewModel.uiState.observe(viewLifecycleOwner) {
             if (it.timerState == TimerState.FINISHED) {
-//                findNavController().navigate(R.id.action_timerRunningFragment_to_timerFinishedFragment)
+                findNavController().navigate(R.id.action_timerRunningFragment_to_timerFinishedFragment)
             } else {
                 binding.timerTextView.text = it.currentTime
                 setBackgroundColor(it.timerState)
@@ -64,35 +64,35 @@ class TimerRunningFragment : Fragment() {
         }
         viewModel.startTimer()
 
-//        binding.pauseButton.setOnClickListener {
-//            pause()
-//        }
-//
-//        binding.stopButton.setOnClickListener {
-//            stop()
-//        }
-//
-//        binding.resumeButton.setOnClickListener {
-//            resume()
-//        }
+        binding.pauseButton.setOnClickListener {
+            pause()
+        }
+
+        binding.stopButton.setOnClickListener {
+            stop()
+        }
+
+        binding.resumeButton.setOnClickListener {
+            resume()
+        }
     }
 
     private fun pause() {
-//        binding.pauseButton.visibility = View.INVISIBLE
-//        binding.stopButton.visibility = View.VISIBLE
-//        binding.resumeButton.visibility = View.VISIBLE
+        binding.pauseButton.visibility = View.INVISIBLE
+        binding.stopButton.visibility = View.VISIBLE
+        binding.resumeButton.visibility = View.VISIBLE
         viewModel.pauseTimer()
     }
 
     private fun resume() {
-//        binding.stopButton.visibility = View.INVISIBLE
-//        binding.resumeButton.visibility = View.INVISIBLE
-//        binding.pauseButton.visibility = View.VISIBLE
+        binding.stopButton.visibility = View.INVISIBLE
+        binding.resumeButton.visibility = View.INVISIBLE
+        binding.pauseButton.visibility = View.VISIBLE
         viewModel.resumeTimer()
     }
 
     private fun stop() {
-//        findNavController().navigate(R.id.action_timerRunningFragment_to_setupSectionsFragment)
+        findNavController().navigateUp()
     }
 
     private fun setBackgroundColor(state: TimerState) {
