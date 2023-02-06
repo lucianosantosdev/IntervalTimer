@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TimerRunningFragment">
+
+    <TextView
+        android:id="@+id/remainingSectionsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/stateTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:id="@+id/stateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/state_prepare_text"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/timerTextView" />
+
+    <TextView
+        android:id="@+id/timerTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:00"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+<!--    <com.google.android.material.button.MaterialButton-->
+<!--        android:id="@+id/pauseButton"-->
+<!--        app:icon="@drawable/ic_baseline_pause_24"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        />-->
+
+<!--    <com.google.android.material.button.MaterialButton-->
+<!--        android:id="@+id/stopButton"-->
+<!--        android:layout_marginStart="38dp"-->
+<!--        android:icon="@drawable/ic_baseline_stop_24"-->
+<!--        android:layout_constraintBottom_toBottomOf="parent"-->
+<!--        android:layout_constraintEnd_toStartOf="@+id/resumeButton"-->
+<!--        android:visibility="invisible"-->
+<!--        android:layout_constraintStart_toStartOf="parent" />-->
+
+<!--    <com.google.android.material.button.MaterialButton-->
+<!--        android:id="@+id/resumeButton"-->
+<!--        android:layout_marginEnd="38dp"-->
+<!--        android:icon="@drawable/ic_baseline_play_arrow_24"-->
+<!--        android:layout_constraintBottom_toBottomOf="parent"-->
+<!--        android:layout_constraintEnd_toEndOf="parent"-->
+<!--        android:visibility="invisible"-->
+<!--        android:layout_constraintStart_toEndOf="@+id/stopButton" />-->
+</androidx.constraintlayout.widget.ConstraintLayout>
