@@ -23,8 +23,12 @@ platform :android do
 
   desc "Deploy a beta version to the Google Play"
   lane :beta do
-      gradle(task: "clean :mobile:bundleRelease")
-      upload_to_play_store(track: 'beta', release_status: 'draft')
+      gradle(task: "clean Release")
+      upload_to_play_store(
+        track: 'beta', 
+        release_status: 'draft',
+        skip_upload_apk: true
+      )
   end
 
   desc "Deploy a new version to the Google Play"
