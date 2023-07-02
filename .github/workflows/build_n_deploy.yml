@@ -19,12 +19,12 @@ jobs:
   build:
     uses: ./.github/workflows/build.yml
     with:
-      variant: ${{ inputs.variant }}
+      target: ${{ inputs.target }}
     secrets: inherit
   
   deploy:
     needs: build
     uses: ./.github/workflows/deploy.yml
     with:
-      variant: ${{ inputs.variant }}
+      target: ${{ inputs.target }}
     secrets: inherit
