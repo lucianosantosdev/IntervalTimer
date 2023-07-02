@@ -21,19 +21,27 @@ platform :android do
     gradle(task: "test")
   end
 
-  desc "Deploy a beta version to the Google Play"
-  lane :beta do
-      gradle(task: "clean assembleRelease")
-      upload_to_play_store(
-        track: 'beta', 
-        release_status: 'draft',
-        skip_upload_apk: true
-      )
+  desc "Submit a new relase candidate to internal tests"
+  lane :internal do |options|
+    package_name = options[:packageName]
+    artifact = options[:artifact]
+
+    upload_to_play_store(
+      package_name: package_name,
+      track: "internal",
+      aab: artifact
+    )
   end
 
-  desc "Deploy a new version to the Google Play"
-  lane :deploy do
-    gradle(task: "clean assembleRelease")
-    upload_to_play_store
+  desc "Deploy a new version to production"
+  lane :production do |options|
+    package_name = options[:packageName]
+    artifact = options[:artifact]
+
+    upload_to_play_store(
+      package_name: package_name,
+      track: "production",
+      aab: artifact
+    )
   end
 end

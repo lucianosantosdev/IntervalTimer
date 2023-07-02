@@ -1,0 +1,30 @@
+name: Reusable build and release workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        type: choice
+        description: Choose a target
+        options:
+        - mobile
+        - wear
+  workflow_call:
+    inputs:
+      target:
+        required: true
+        type: string
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+    with:
+      variant: ${{ inputs.variant }}
+    secrets: inherit
+  
+  deploy:
+    needs: build
+    uses: ./.github/workflows/deploy.yml
+    with:
+      variant: ${{ inputs.variant }}
+    secrets: inherit
