@@ -61,7 +61,7 @@ jobs:
 
       - name: Build
         run: |
-          ./gradlew copyAssets :${{inputs.target}}:bundleRelease
+          ./gradlew :${{inputs.target}}:bundleRelease
 
       - name: Move artifacts
         run: |
