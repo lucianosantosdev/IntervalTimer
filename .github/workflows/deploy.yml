@@ -32,15 +32,7 @@ jobs:
           base64 -d -i play_config.json.b64 > play_config.json
       
       - name: Distribute app to Internal Testing track 🚀
-        # if: ${{ contains(github.ref, 'release/') }}
         run: |
           bundle exec fastlane internal \
-            artifact:$(find . -iname "*.aab") \
-            packageName:dev.lucianosantos.intervaltimer
-
-      - name: Distribute app to Production track 🚀
-        if: ${{ startsWith(github.ref, 'refs/tags/') }}
-        run: |
-          bundle exec fastlane production \
             artifact:$(find . -iname "*.aab") \
             packageName:dev.lucianosantos.intervaltimer
