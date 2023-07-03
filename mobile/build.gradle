@@ -10,7 +10,6 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
-
 android {
     namespace 'dev.lucianosantos.intervaltimer'
     compileSdk 33
