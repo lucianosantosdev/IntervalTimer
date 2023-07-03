@@ -1,0 +1,76 @@
+name: Reusable build variant release workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        type: choice
+        description: Choose a target
+        options:
+        - mobile
+        - wear
+      
+  workflow_call:
+    inputs:
+      target:
+        required: true
+        type: string
+
+jobs:
+  build:
+    name: 'Build to ${{ inputs.target }}'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+          ssh-key: ${{ secrets.GH_SSH_KEY }}
+          fetch-depth: 0
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '15'
+      
+      - name: Cache Gradle packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: ${{ runner.os }}-gradle
+
+      - name: Set versions
+        run: |
+          pip3 install gitpython
+          python3 ./scripts/set_app_version.py ${{ inputs.target }}
+
+      - name: Configure Keystore
+        env:
+          ANDROID_KEYSTORE_FILE: ${{ secrets.ANDROID_KEYSTORE_FILE }}
+          KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
+          KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
+          KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_STORE_PASSWORD }}
+        run: |
+          echo "storeFile=keystore.jks" >> keystore.properties
+          echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> keystore.properties
+          echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> keystore.properties
+          echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> keystore.properties
+          mv keystore.properties ${{inputs.target}}/
+          echo "$ANDROID_KEYSTORE_FILE" > keystore.jks.b64
+          base64 -d -i keystore.jks.b64 > ${{inputs.target}}/keystore.jks
+
+      - name: Build
+        run: |
+          ./gradlew :${{inputs.target}}:bundleRelease
+
+      - name: Move artifacts
+        run: |
+          mkdir -p ${{ github.workspace }}/artifacts
+          find ${{ github.workspace }} -name *.aab -exec cp {} ${{github.workspace}}/artifacts/ \;
+
+      - name: Uploading Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ inputs.target }}
+          path: ${{ github.workspace }}/artifacts/*release.aab
