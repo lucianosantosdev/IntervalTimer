@@ -15,7 +15,8 @@ import dev.lucianosantos.intervaltimer.core.data.TimerState
 import dev.lucianosantos.intervaltimer.core.utils.AlertUserHelper
 import dev.lucianosantos.intervaltimer.core.utils.CountDownTimerHelper
 import dev.lucianosantos.intervaltimer.core.viewmodels.TimerViewModel
-import dev.lucianosantos.intervaltimer.databinding.FragmentTimerRunningBinding
+import dev.lucianosantos.intervaltimer.mobile.R
+import dev.lucianosantos.intervaltimer.mobile.databinding.FragmentTimerRunningBinding
 
 /**
  * A simple [Fragment] subclass.

@@ -13,7 +13,8 @@ import dev.lucianosantos.intervaltimer.core.utils.getMinutesFromSeconds
 import dev.lucianosantos.intervaltimer.core.utils.getSecondsFromMinutesAndSeconds
 import dev.lucianosantos.intervaltimer.core.utils.getSecondsFromSeconds
 import dev.lucianosantos.intervaltimer.core.viewmodels.SettingsViewModel
-import dev.lucianosantos.intervaltimer.databinding.FragmentSetupTimeTrainBinding
+import dev.lucianosantos.intervaltimer.wear.R
+import dev.lucianosantos.intervaltimer.wear.databinding.FragmentSetupTimeTrainBinding
 
 /**
  * A simple [Fragment] subclass.

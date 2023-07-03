@@ -2,7 +2,8 @@ package dev.lucianosantos.intervaltimer
 
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
-import dev.lucianosantos.intervaltimer.databinding.ActivityMainBinding
+import dev.lucianosantos.intervaltimer.wear.databinding.ActivityMainBinding
+import dev.lucianosantos.intervaltimer.wear.R
 
 class MainActivity : FragmentActivity() {
 

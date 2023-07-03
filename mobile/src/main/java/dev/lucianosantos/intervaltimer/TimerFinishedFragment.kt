@@ -6,7 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import dev.lucianosantos.intervaltimer.databinding.FragmentTimerFinishedBinding
+import dev.lucianosantos.intervaltimer.mobile.R
+import dev.lucianosantos.intervaltimer.mobile.databinding.FragmentTimerFinishedBinding
 
 /**
  * A simple [Fragment] subclass.

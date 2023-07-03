@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "IntervalTimer"
-include ':mobile'
-include ':wear'
-include ':core'
+include("mobile")
+include("wear")
+include("core")
