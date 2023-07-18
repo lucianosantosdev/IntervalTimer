@@ -5,13 +5,13 @@ plugins {
 }
 
 android {
-    namespace = "dev.lucianosantos.intervaltimer.mobile"
-    compileSdk = 33
+    namespace = "dev.lucianosantos.intervaltimer"
+    compileSdk = Versions.COMPILE_SDK
 
     defaultConfig {
         applicationId = "dev.lucianosantos.intervaltimer"
-        minSdk = 22
-        targetSdk = 33
+        minSdk = Versions.MIN_SDK
+        targetSdk = Versions.TARGET_SDK
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -29,7 +29,7 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = Versions.JVM_TARGET
     }
 
     buildFeatures {
@@ -39,18 +39,15 @@ android {
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.appcompat:appcompat:1.5.1")
-    implementation("com.google.android.material:material:1.7.0")
-    implementation("com.google.android.gms:play-services-wearable:18.0.0")
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
     implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
-    implementation("io.github.ShawnLin013:number-picker:2.4.13")
+    implementation(libs.numberPicker)
 
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    testImplementation(libs.bundles.tests)
+    androidTestImplementation(libs.bundles.androidTests)
 
     implementation(project(":core"))
     wearApp(project(":wear"))

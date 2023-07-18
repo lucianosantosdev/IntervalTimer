@@ -5,13 +5,13 @@ plugins {
 }
 
 android {
-    namespace = "dev.lucianosantos.intervaltimer.wear"
-    compileSdk = 33
+    namespace = "dev.lucianosantos.intervaltimer"
+    compileSdk = Versions.COMPILE_SDK
 
     defaultConfig {
         applicationId = "dev.lucianosantos.intervaltimer"
-        minSdk = 23
-        targetSdk = 32
+        minSdk = Versions.MIN_SDK
+        targetSdk = Versions.TARGET_SDK
     }
 
     buildTypes {
@@ -28,8 +28,8 @@ android {
 }
 
 dependencies {
-    implementation("androidx.appcompat:appcompat:1.5.1")
-    implementation("com.google.android.material:material:1.7.0")
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.wear:wear:1.2.0")
     implementation("com.google.android.gms:play-services-wearable:18.0.0")
