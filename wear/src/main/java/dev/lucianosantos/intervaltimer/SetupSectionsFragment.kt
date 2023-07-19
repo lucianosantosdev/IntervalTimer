@@ -9,8 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import dev.lucianosantos.intervaltimer.core.data.TimerSettingsRepository
 import dev.lucianosantos.intervaltimer.core.viewmodels.SettingsViewModel
-import dev.lucianosantos.intervaltimer.wear.R
-import dev.lucianosantos.intervaltimer.wear.databinding.FragmentSetupSectionsBinding
+import dev.lucianosantos.intervaltimer.databinding.FragmentSetupSectionsBinding
 
 /**
  * A simple [Fragment] subclass.

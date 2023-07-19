@@ -1,3 +1,5 @@
+import org.gradle.api.JavaVersion
+
 /*
  * Copyright 2020 Google LLC
  *
@@ -16,7 +18,7 @@
 
 object Versions {
     const val COMPILE_SDK = 33
-    const val TARGET_SDK = 33
-    const val MIN_SDK = 21
-    const val JVM_TARGET = "1.8"
+    const val MIN_SDK = 23
+    const val JVM_TARGET = "17"
+    val JAVA_VERSION = JavaVersion.VERSION_17
 }

@@ -12,6 +12,7 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+
 rootProject.name = "IntervalTimer"
 include("mobile")
 include("wear")
