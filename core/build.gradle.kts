@@ -4,10 +4,6 @@ plugins {
     id("com.dicedmelon.gradle.jacoco-android")
 }
 
-jacoco {
-    toolVersion = "0.8.4"
-}
-
 android {
     namespace = "dev.lucianosantos.intervaltimer.core"
     compileSdk = Versions.COMPILE_SDK

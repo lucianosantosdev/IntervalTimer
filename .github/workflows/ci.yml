@@ -33,6 +33,7 @@ jobs:
         name: JUnit Tests
         path: core/build/test-results/testDebugUnitTest/**/TEST-*.xml
         reporter: 'java-junit'
+
     - name: Publish Coverage to Codecov
       uses: codecov/codecov-action@v3
       if: success()

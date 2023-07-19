@@ -1,0 +1,11 @@
+Easy to use interval timer for Android and Wear OS. 
+You can set the number of series, train time and rest time.
+Colorful interface to easily help you identify the current state of the timer.
+
+Can be used for any of your train activities:
+- HIIT Training
+- Tabata
+- Circuit training
+...
+
+Also adequate to use as Pomodoro timer.
