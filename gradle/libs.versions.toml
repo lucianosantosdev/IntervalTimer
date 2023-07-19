@@ -1,0 +1,56 @@
+[versions]
+# plugins
+kotlin = "1.8.22"
+androidGradlePlugin-version = "7.4.2"
+androidxCore = "1.7.10"
+
+# libraries
+junit-version = "4.13.2"
+junitExt-version = "1.1.5"
+mockitoCore-version = "4.8.0"
+mockitoKotlin-version = "4.0.0"
+coroutinesTest-version = "1.6.4"
+espressoCore-version = "3.5.0"
+appcompat-version = "1.5.1"
+androidx-lifecycle-version = "2.4.0"
+material-version = "1.7.0"
+numberPicker-version = "2.4.13"
+androidx-arch-core-version = "2.2.0"
+navigation-safe-args-version = "2.5.3"
+jacoco-plugin-version = "0.1.5"
+
+[libraries]
+kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+
+# Tests
+junit = { module = "junit:junit", version.ref = "junit-version" }
+junit-ext = { module = "androidx.test.ext:junit", version.ref = "junitExt-version" }
+jacoco = { module = "com.dicedmelon.gradle:jacoco-android", version.ref = "jacoco-plugin-version" }
+
+
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCore-version" }
+mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlin-version" }
+
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
+androidx-arch-core = { module = "androidx.arch.core:core-testing", version.ref = "androidx-arch-core-version" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutinesTest-version" }
+androidx-espresso-test = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore-version" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat-version" }
+androidx-lifecycle-common =  { group = "androidx.lifecycle", name = "lifecycle-common", version.ref = "androidx-lifecycle-version" }
+androidx-lifecycle-runtime =  { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidx-lifecycle-version" }
+androidx-lifecycle-livedata =  { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "androidx-lifecycle-version" }
+androidx-lifecycle-viewmodel =  { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle-version" }
+androidx-navigationSafeArgsGradlePlugin = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "navigation-safe-args-version" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material-version" }
+numberPicker = { group = "io.github.ShawnLin013", name = "number-picker", version.ref = "numberPicker-version" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin-version" }
+android-library = { id = "com.android.library", version.ref = "androidGradlePlugin-version" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+
+[bundles]
+tests = [ "junit", "mockito-core", "mockito-kotlin", "kotlinx-coroutines-test", "androidx-arch-core"]
+androidTests = [ "junit-ext", "androidx-espresso-test"]
+lifecycle = ["androidx-lifecycle-common", "androidx-lifecycle-runtime", "androidx-lifecycle-livedata", "androidx-lifecycle-viewmodel"]
