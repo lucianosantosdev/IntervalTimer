@@ -33,16 +33,28 @@ android {
     buildFeatures {
         viewBinding = true
         dataBinding = true
+        compose = true
     }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = Versions.COMPOSE_COMPILER
+    }
+
 }
 
 dependencies {
+    implementation(libs.kotlin.stdlib)
+    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
-    implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.6.0-alpha02")
+    implementation("androidx.navigation:navigation-ui-ktx:2.6.0-alpha02")
     implementation(libs.numberPicker)
+
+    implementation(libs.bundles.lifecycle)
+    implementation(libs.bundles.compose)
+    debugImplementation(libs.bundles.composeDebug)
 
     testImplementation(libs.bundles.tests)
     androidTestImplementation(libs.bundles.androidTests)

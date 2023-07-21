@@ -27,6 +27,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.kotlin.stdlib)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
