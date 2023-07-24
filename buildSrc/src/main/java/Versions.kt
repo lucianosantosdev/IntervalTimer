@@ -19,6 +19,8 @@ import org.gradle.api.JavaVersion
 object Versions {
     const val COMPILE_SDK = 33
     const val MIN_SDK = 23
-    const val JVM_TARGET = "17"
-    val JAVA_VERSION = JavaVersion.VERSION_17
+    const val JVM_TARGET = "1.8"
+    const val COMPOSE_COMPILER = "1.4.3"
+    const val JACOCO_TOOL_VERSION = "0.8.10"
+    val JAVA_VERSION = JavaVersion.VERSION_1_8
 }

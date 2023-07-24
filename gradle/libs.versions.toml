@@ -1,8 +1,8 @@
 [versions]
 # plugins
-kotlin = "1.8.22"
+kotlin = "1.8.10"
 androidGradlePlugin-version = "7.4.2"
-androidxCore = "1.7.10"
+androidxCore = "1.9.0"
 
 # libraries
 junit-version = "4.13.2"
@@ -11,13 +11,23 @@ mockitoCore-version = "4.8.0"
 mockitoKotlin-version = "4.0.0"
 coroutinesTest-version = "1.6.4"
 espressoCore-version = "3.5.0"
-appcompat-version = "1.5.1"
-androidx-lifecycle-version = "2.4.0"
+
+appcompat-version = "1.7.0-alpha01"
+androidx-lifecycle-version = "2.4.1"
 material-version = "1.7.0"
 numberPicker-version = "2.4.13"
 androidx-arch-core-version = "2.2.0"
 navigation-safe-args-version = "2.5.3"
 jacoco-plugin-version = "0.1.5"
+material3-version= "1.0.1"
+compose-version = "1.3.3"
+compose-bom-version = "2023.05.00"
+lifecycle-compose-version = "2.6.0-alpha02"
+
+google-services-version = "4.3.14"
+firebase-crashlytics-version = "18.3.2"
+firebase-analytics-version = "21.2.0"
+firebase-crashlytics-gradle-version = "2.9.2"
 
 [libraries]
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -27,10 +37,10 @@ junit = { module = "junit:junit", version.ref = "junit-version" }
 junit-ext = { module = "androidx.test.ext:junit", version.ref = "junitExt-version" }
 jacoco = { module = "com.dicedmelon.gradle:jacoco-android", version.ref = "jacoco-plugin-version" }
 
-
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCore-version" }
 mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlin-version" }
 
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
 androidx-arch-core = { module = "androidx.arch.core:core-testing", version.ref = "androidx-arch-core-version" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutinesTest-version" }
@@ -44,13 +54,31 @@ androidx-navigationSafeArgsGradlePlugin = { module = "androidx.navigation:naviga
 material = { group = "com.google.android.material", name = "material", version.ref = "material-version" }
 numberPicker = { group = "io.github.ShawnLin013", name = "number-picker", version.ref = "numberPicker-version" }
 
+#compose
+material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3-version" }
+ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "compose-version" }
+ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "compose-version" }
+ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "compose-version" }
+ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest", version.ref = "compose-version" }
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom-version" }
+compose-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle-compose-version" }
+compose-runtime = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "compose-version" }
+
+google-services = { group = "com.google.gms", name = "google-services", version.ref= "google-services-version" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx", version.ref= "firebase-analytics-version" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx", version.ref= "firebase-crashlytics-version" }
+firebase-crashlytics-gradle = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref= "firebase-crashlytics-gradle-version" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin-version" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin-version" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 
 [bundles]
 tests = [ "junit", "mockito-core", "mockito-kotlin", "kotlinx-coroutines-test", "androidx-arch-core"]
-androidTests = [ "junit-ext", "androidx-espresso-test"]
+androidTests = [ "junit-ext", "androidx-espresso-test", "compose-bom"]
 lifecycle = ["androidx-lifecycle-common", "androidx-lifecycle-runtime", "androidx-lifecycle-livedata", "androidx-lifecycle-viewmodel"]
+compose = ["material3", "ui-tooling-preview", "compose-bom", "compose-lifecycle-viewmodel", "compose-runtime"]
+composeDebug = ["ui-tooling"]
+firebase = ["firebase-crashlytics", "firebase-analytics"]

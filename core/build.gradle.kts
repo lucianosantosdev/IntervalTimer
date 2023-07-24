@@ -40,7 +40,12 @@ android {
     }
 }
 
+jacoco {
+    toolVersion = Versions.JACOCO_TOOL_VERSION
+}
+
 dependencies {
+    implementation(libs.kotlin.stdlib)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.bundles.lifecycle)
