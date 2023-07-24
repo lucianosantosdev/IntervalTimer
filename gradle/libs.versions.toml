@@ -24,6 +24,11 @@ compose-version = "1.3.3"
 compose-bom-version = "2023.05.00"
 lifecycle-compose-version = "2.6.0-alpha02"
 
+google-services-version = "4.3.14"
+firebase-crashlytics-version = "18.3.2"
+firebase-analytics-version = "21.2.0"
+firebase-crashlytics-gradle-version = "2.9.2"
+
 [libraries]
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 
@@ -31,7 +36,6 @@ kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-pl
 junit = { module = "junit:junit", version.ref = "junit-version" }
 junit-ext = { module = "androidx.test.ext:junit", version.ref = "junitExt-version" }
 jacoco = { module = "com.dicedmelon.gradle:jacoco-android", version.ref = "jacoco-plugin-version" }
-
 
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCore-version" }
 mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlin-version" }
@@ -60,6 +64,11 @@ compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = 
 compose-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle-compose-version" }
 compose-runtime = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "compose-version" }
 
+google-services = { group = "com.google.gms", name = "google-services", version.ref= "google-services-version" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx", version.ref= "firebase-analytics-version" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx", version.ref= "firebase-crashlytics-version" }
+firebase-crashlytics-gradle = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref= "firebase-crashlytics-gradle-version" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin-version" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin-version" }
@@ -72,3 +81,4 @@ androidTests = [ "junit-ext", "androidx-espresso-test", "compose-bom"]
 lifecycle = ["androidx-lifecycle-common", "androidx-lifecycle-runtime", "androidx-lifecycle-livedata", "androidx-lifecycle-viewmodel"]
 compose = ["material3", "ui-tooling-preview", "compose-bom", "compose-lifecycle-viewmodel", "compose-runtime"]
 composeDebug = ["ui-tooling"]
+firebase = ["firebase-crashlytics", "firebase-analytics"]

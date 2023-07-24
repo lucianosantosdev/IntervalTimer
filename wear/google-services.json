@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "418082152253",
+    "project_id": "interval-timer-9b3c8",
+    "storage_bucket": "interval-timer-9b3c8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:418082152253:android:d942086cd4ede7a46b2f54",
+        "android_client_info": {
+          "package_name": "dev.lucianosantos.intervaltimer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "418082152253-vkqvu2lr9g0e19u94ds497s6rqsekofd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.lucianosantos.intervaltimer",
+            "certificate_hash": "d95c9b74de3ff7a3960aadff0b0f80d003dc95ce"
+          }
+        },
+        {
+          "client_id": "418082152253-o732647k22nfd4sugi6nbove4ftnv8r6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4myFdISBTAopQmsyd8LwYNJmN1PN6vzs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "418082152253-o732647k22nfd4sugi6nbove4ftnv8r6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -7,6 +7,8 @@ buildscript {
     dependencies {
         classpath(libs.androidx.navigationSafeArgsGradlePlugin)
         classpath(libs.jacoco)
+        classpath(libs.google.services)
+        classpath(libs.firebase.crashlytics.gradle)
     }
 }
 
