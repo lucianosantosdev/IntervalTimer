@@ -19,10 +19,9 @@ numberPicker-version = "2.4.13"
 androidx-arch-core-version = "2.2.0"
 navigation-safe-args-version = "2.5.3"
 jacoco-plugin-version = "0.1.5"
-material3-version= "1.0.1"
-compose-version = "1.3.3"
 compose-bom-version = "2023.05.00"
-lifecycle-compose-version = "2.6.0-alpha02"
+activity-compose-version = "1.7.2"
+navigation-compose-version = "2.6.0"
 
 google-services-version = "4.3.14"
 firebase-crashlytics-version = "18.3.2"
@@ -55,14 +54,16 @@ material = { group = "com.google.android.material", name = "material", version.r
 numberPicker = { group = "io.github.ShawnLin013", name = "number-picker", version.ref = "numberPicker-version" }
 
 #compose
-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3-version" }
-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "compose-version" }
-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "compose-version" }
-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "compose-version" }
-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest", version.ref = "compose-version" }
+material3 = { group = "androidx.compose.material3", name = "material3" }
+ui = { group = "androidx.compose.ui", name = "ui" }
+ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom-version" }
-compose-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle-compose-version" }
-compose-runtime = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "compose-version" }
+compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose-version" }
+navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose-version" }
 
 google-services = { group = "com.google.gms", name = "google-services", version.ref= "google-services-version" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx", version.ref= "firebase-analytics-version" }
@@ -79,6 +80,5 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 tests = [ "junit", "mockito-core", "mockito-kotlin", "kotlinx-coroutines-test", "androidx-arch-core"]
 androidTests = [ "junit-ext", "androidx-espresso-test", "compose-bom"]
 lifecycle = ["androidx-lifecycle-common", "androidx-lifecycle-runtime", "androidx-lifecycle-livedata", "androidx-lifecycle-viewmodel"]
-compose = ["material3", "ui-tooling-preview", "compose-bom", "compose-lifecycle-viewmodel", "compose-runtime"]
 composeDebug = ["ui-tooling"]
 firebase = ["firebase-crashlytics", "firebase-analytics"]

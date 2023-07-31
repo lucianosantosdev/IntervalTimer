@@ -54,12 +54,17 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.6.0-alpha02")
     implementation(libs.numberPicker)
     implementation(libs.bundles.firebase)
-
-
     implementation(libs.bundles.lifecycle)
-    implementation(libs.bundles.compose)
-    debugImplementation(libs.bundles.composeDebug)
 
+    implementation(libs.compose.activity)
+    implementation(libs.navigation.compose)
+    implementation(platform(libs.compose.bom))
+    implementation(libs.ui)
+    implementation(libs.ui.graphics)
+    implementation(libs.ui.tooling.preview)
+    implementation(libs.material3)
+
+    debugImplementation(libs.bundles.composeDebug)
     testImplementation(libs.bundles.tests)
     androidTestImplementation(libs.bundles.androidTests)
 
