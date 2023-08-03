@@ -22,14 +22,14 @@ class TimerViewModel(
     private val eventChannel = Channel<Event>()
     private val eventsFlow = eventChannel.receiveAsFlow()
 
-    private val _uiState: MutableLiveData<UiState> by lazy {
-        MutableLiveData<UiState>(UiState(
+    private val _uiState: MutableLiveData<TimerUiState> by lazy {
+        MutableLiveData<TimerUiState>(TimerUiState(
             remainingSections = timerSettings.sections,
             currentTime = "",
             timerState = TimerState.PREPARE
         ))
     }
-    val uiState get() : LiveData<UiState> = _uiState
+    val timerUiState get() : LiveData<TimerUiState> = _uiState
     
     init {
         setEventHandler()
@@ -161,11 +161,6 @@ class TimerViewModel(
         }
     }
 
-    data class UiState(
-        val remainingSections : Int,
-        val currentTime : String,
-        val timerState : TimerState,
-    )
 
     sealed class Event {
         object Prepare: Event()

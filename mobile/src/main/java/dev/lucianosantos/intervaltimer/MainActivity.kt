@@ -17,12 +17,12 @@ import dev.lucianosantos.intervaltimer.theme.IntervalTimerTheme
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-//        setContent {
-//            IntervalTimerTheme {
-//                MainApp()
-//            }
-//        }
+//        setContentView(R.layout.activity_main)
+        setContent {
+            IntervalTimerTheme {
+                MainApp()
+            }
+        }
     }
 }
 

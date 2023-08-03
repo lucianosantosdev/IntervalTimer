@@ -15,7 +15,6 @@ import dev.lucianosantos.intervaltimer.core.data.TimerState
 import dev.lucianosantos.intervaltimer.core.utils.AlertUserHelper
 import dev.lucianosantos.intervaltimer.core.utils.CountDownTimerHelper
 import dev.lucianosantos.intervaltimer.core.viewmodels.TimerViewModel
-import dev.lucianosantos.intervaltimer.R
 import dev.lucianosantos.intervaltimer.databinding.FragmentTimerRunningBinding
 
 /**
@@ -53,7 +52,7 @@ class TimerRunningFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.uiState.observe(viewLifecycleOwner) {
+        viewModel.timerUiState.observe(viewLifecycleOwner) {
             if (it.timerState == TimerState.FINISHED) {
                 findNavController().navigate(R.id.action_timerRunningFragment_to_timerFinishedFragment)
             } else {

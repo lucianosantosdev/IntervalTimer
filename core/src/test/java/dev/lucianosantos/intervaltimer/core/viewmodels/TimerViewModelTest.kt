@@ -43,7 +43,7 @@ class TimerViewModelTest {
 
         // Act
         val viewModel = TimerViewModel(timerSettings, mockCountDownTimerHelper, mockBeepHelper)
-        val uiState = viewModel.uiState.getOrAwaitValue()
+        val uiState = viewModel.timerUiState.getOrAwaitValue()
 
         // Assert
         assert(uiState.remainingSections == 10)
@@ -57,7 +57,7 @@ class TimerViewModelTest {
         viewModel.startTimer()
 
         // Assert
-        val uiState = viewModel.uiState.getOrAwaitValue()
+        val uiState = viewModel.timerUiState.getOrAwaitValue()
         verify(mockCountDownTimerHelper, times(1)).startCountDown(eq(timerSettings.prepareTimeSeconds), anyOrNull(), anyOrNull())
         verify(mockBeepHelper, times(1)).startPrepareAlert()
         assert(uiState.currentTime == "00:05")
@@ -75,7 +75,7 @@ class TimerViewModelTest {
                 onTickCallback(seconds.toLong())
 
                 // Assert
-                val uiState = viewModel.uiState.getOrAwaitValue()
+                val uiState = viewModel.timerUiState.getOrAwaitValue()
                 assert(uiState.currentTime == formatMinutesAndSeconds(seconds))
             }
         }.`when`(mockCountDownTimerHelper).startCountDown(eq(5), anyOrNull(), anyOrNull())
@@ -122,7 +122,7 @@ class TimerViewModelTest {
         // Prepare timer
         doAnswer {
             // Assert uiState
-            val uiState = viewModel.uiState.getOrAwaitValue()
+            val uiState = viewModel.timerUiState.getOrAwaitValue()
             assert(uiState.currentTime == formatMinutesAndSeconds(timerSettings.prepareTimeSeconds))
             assert(uiState.timerState == TimerState.PREPARE)
 
@@ -137,7 +137,7 @@ class TimerViewModelTest {
         doAnswer {
 
             // Assert uiState
-            val uiState = viewModel.uiState.getOrAwaitValue()
+            val uiState = viewModel.timerUiState.getOrAwaitValue()
             assert(uiState.currentTime == formatMinutesAndSeconds(timerSettings.trainTimeSeconds))
             assert(uiState.timerState == TimerState.TRAIN)
             assert(uiState.remainingSections == timerSettings.sections - sectionCounter)
@@ -152,7 +152,7 @@ class TimerViewModelTest {
         // Rest timer
         doAnswer {
             // Assert uiState
-            val uiState = viewModel.uiState.getOrAwaitValue()
+            val uiState = viewModel.timerUiState.getOrAwaitValue()
             assert(uiState.currentTime == formatMinutesAndSeconds(timerSettings.restTimeSeconds))
             assert(uiState.timerState == TimerState.REST)
 
@@ -169,7 +169,7 @@ class TimerViewModelTest {
         verify(mockCountDownTimerHelper, times(numberOfsections)).startCountDown(eq(timerSettings.trainTimeSeconds), anyOrNull(), anyOrNull())
         verify(mockCountDownTimerHelper, times(numberOfsections - 1)).startCountDown(eq(timerSettings.restTimeSeconds), anyOrNull(), anyOrNull())
 
-        val uiState = viewModel.uiState.getOrAwaitValue()
+        val uiState = viewModel.timerUiState.getOrAwaitValue()
         assert(uiState.currentTime == "00:00")
         assert(uiState.remainingSections == 0)
         assert(uiState.timerState == TimerState.FINISHED)

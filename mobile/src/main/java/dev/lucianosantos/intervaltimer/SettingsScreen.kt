@@ -7,26 +7,52 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.viewmodel.compose.viewModel
+import dev.lucianosantos.intervaltimer.core.data.TimerSettingsRepository
+import dev.lucianosantos.intervaltimer.core.viewmodels.SettingsViewModel
 
 @Composable
 fun SettingsScreen(
     onStartClicked: () -> Unit = {}
 ) {
+    val settingsViewModel : SettingsViewModel = viewModel(
+        factory = SettingsViewModel.Factory(TimerSettingsRepository(LocalContext.current))
+    )
+
+    val uiState by settingsViewModel.uiState.collectAsState()
+
     Surface() {
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             LabelText(text = stringResource(R.string.label_sections))
-            NumberPicker()
+            NumberPicker(
+                uiState.timerSettings.sections
+            ) {
+                settingsViewModel.setSections(it)
+            }
             LabelText(text = stringResource(R.string.label_train_number_picker))
-            NumberPicker()
+            NumberPicker(
+                uiState.timerSettings.trainTimeSeconds
+            ) {
+                settingsViewModel.setTrainTime(it)
+            }
             LabelText(text = stringResource(R.string.label_rest_number_picker))
-            NumberPicker()
+            NumberPicker(
+                uiState.timerSettings.restTimeSeconds
+            ) {
+                settingsViewModel.setRestTime(it)
+            }
             Button(onClick = onStartClicked) {
                 Text(text = stringResource(R.string.button_start))
             }
@@ -44,8 +70,19 @@ fun LabelText(text: String) {
 }
 
 @Composable
-fun NumberPicker() {
-    Text(text = "Number Picker")
+fun NumberPicker(value: Int, onValueChange: (Int) -> Unit) {
+    Button(onClick = {
+        onValueChange(value - 1)
+    }) {
+        Text(text = "-")
+    }
+
+    Text(text = "Number Picker: $value")
+    Button(onClick = {
+        onValueChange(value + 1)
+    }) {
+        Text(text = "+")
+    }
 }
 
 @Composable
