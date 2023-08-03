@@ -13,4 +13,5 @@
     <string name="stop_content_description">stop</string>
     <string name="resume_content_description">resume</string>
     <string name="restart_content_description">restart</string>
+    <string name="pause_content_description">Pause</string>
 </resources>

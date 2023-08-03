@@ -5,7 +5,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import dev.lucianosantos.intervaltimer.core.data.TimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerState
+import kotlin.concurrent.timer
 
 @Composable
 fun IntervalTimerNavHost(
@@ -22,16 +24,11 @@ fun IntervalTimerNavHost(
         }
 
         composable(route = TimerRunning.route) {
-            TimerRunningScreen(1, "00:00", TimerState.REST, {}, {
-                navController.navigate(TimerFinished.route)
-            } )
-        }
-
-        composable(route = TimerFinished.route) {
-            TimerFinishedScreen(
-                onStopClicked = { navController.navigate(Settings.route) },
-                onRestartClicked = { navController.navigate(TimerRunning.route) }
-            )
+            TimerRunningScreen(
+                timerSettings = TimerSettings(
+                    5, 5, 5, 5
+                ),
+                onStopClicked = { navController.navigate(Settings.route) })
         }
     }
 }
@@ -46,8 +43,4 @@ object Settings : IntervalTimerDestination {
 
 object TimerRunning : IntervalTimerDestination {
     override val route: String = "TimerRunning"
-}
-
-object TimerFinished : IntervalTimerDestination {
-    override val route: String = "TimerFinished"
 }

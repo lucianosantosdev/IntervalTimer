@@ -6,4 +6,6 @@ interface ICountDownTimerHelper {
     fun pause()
 
     fun resume()
+
+    fun stop()
 }

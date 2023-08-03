@@ -44,7 +44,7 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect{
                     binding.editTextNumber.text = it.timerSettings.sections.toString()
@@ -57,22 +57,13 @@ class SettingsFragment : Fragment() {
             }
         }
 
-//        viewModel.uiState.asLiveData().observe(viewLifecycleOwner) {
-//            binding.editTextNumber.text = it.timerSettings.sections.toString()
-//
-//            binding.trainTimeMinutesNumberPicker.value = getMinutesFromSeconds(it.timerSettings.trainTimeSeconds)
-//            binding.trainTimeSecondsNumberPicker.value = getSecondsFromSeconds(it.timerSettings.trainTimeSeconds)
-//            binding.restTimeMinutesNumberPicker.value = getMinutesFromSeconds(it.timerSettings.restTimeSeconds)
-//            binding.restTimeSecondsNumberPicker.value = getSecondsFromSeconds(it.timerSettings.restTimeSeconds)
-//        }
-
         setupSectionPicker()
         setupTimePickers()
 
         binding.startButton.setOnClickListener {
-            val sets = viewModel.uiState.value.timerSettings.sections ?: 1
-            val trainTime = viewModel.uiState.value.timerSettings.trainTimeSeconds ?: 60
-            val restTime = viewModel.uiState.value.timerSettings.restTimeSeconds ?: 60
+            val sets = viewModel.uiState.value.timerSettings.sections
+            val trainTime = viewModel.uiState.value.timerSettings.trainTimeSeconds
+            val restTime = viewModel.uiState.value.timerSettings.restTimeSeconds
             val action = SettingsFragmentDirections.actionSettingsFragmentToTimerRunningFragment(sets = sets, trainTime = trainTime, restTime = restTime)
 
             findNavController().navigate(action)

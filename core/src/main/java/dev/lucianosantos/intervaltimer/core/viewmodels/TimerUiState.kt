@@ -6,4 +6,5 @@ data class TimerUiState(
     val remainingSections : Int,
     val currentTime : String,
     val timerState : TimerState,
+    val isPaused: Boolean
 )

@@ -17,15 +17,14 @@ class SettingsViewModel(private val timerSettingsRepository: ITimerSettingsRepos
     }
 
     fun decrementSections() {
-        _uiState.value.let { currentUiState ->
-            if (currentUiState.timerSettings.sections == 1) {
-                return
-            }
-            setSections( currentUiState.timerSettings.sections - 1)
-        }
+        setSections( _uiState.value.timerSettings.sections - 1)
     }
 
     fun setSections(sections: Int) {
+        if(sections <= 0) {
+            return
+        }
+
         _uiState.value.let { currentUiState ->
             _uiState.value = currentUiState.copy(
                 timerSettings = currentUiState.timerSettings.copy(
@@ -41,15 +40,14 @@ class SettingsViewModel(private val timerSettingsRepository: ITimerSettingsRepos
     }
 
     fun decrementRestTime() {
-        _uiState.value.let { currentUiState ->
-            if (currentUiState.timerSettings.restTimeSeconds == 0) {
-                return
-            }
-            setRestTime( currentUiState.timerSettings.restTimeSeconds - 1)
-        }
+        setRestTime( _uiState.value.timerSettings.restTimeSeconds - 1)
     }
 
     fun setRestTime(restTimeSeconds: Int) {
+        if(restTimeSeconds < 0) {
+            return
+        }
+
         _uiState.value.let { currentUiState ->
             _uiState.value = currentUiState.copy(
                 timerSettings = currentUiState.timerSettings.copy(
@@ -65,15 +63,14 @@ class SettingsViewModel(private val timerSettingsRepository: ITimerSettingsRepos
     }
 
     fun decrementTrainTime() {
-        _uiState.value.let { currentUiState ->
-            if (currentUiState.timerSettings.trainTimeSeconds == 1) {
-                return
-            }
-            setTrainTime(currentUiState.timerSettings.trainTimeSeconds - 1)
-        }
+        setTrainTime(_uiState.value.timerSettings.trainTimeSeconds - 1)
     }
 
     fun setTrainTime(trainTimeSeconds: Int) {
+        if (trainTimeSeconds < 0) {
+            return
+        }
+
         _uiState.value.let { currentUiState ->
             _uiState.value = currentUiState.copy(
                 timerSettings = currentUiState.timerSettings.copy(

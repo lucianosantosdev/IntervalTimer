@@ -7,6 +7,9 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import dev.lucianosantos.intervaltimer.core.data.DefaultTimerSettings
@@ -14,8 +17,11 @@ import dev.lucianosantos.intervaltimer.core.data.TimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerState
 import dev.lucianosantos.intervaltimer.core.utils.AlertUserHelper
 import dev.lucianosantos.intervaltimer.core.utils.CountDownTimerHelper
+import dev.lucianosantos.intervaltimer.core.utils.getMinutesFromSeconds
+import dev.lucianosantos.intervaltimer.core.utils.getSecondsFromSeconds
 import dev.lucianosantos.intervaltimer.core.viewmodels.TimerViewModel
 import dev.lucianosantos.intervaltimer.databinding.FragmentTimerRunningBinding
+import kotlinx.coroutines.launch
 
 /**
  * A simple [Fragment] subclass.
@@ -52,17 +58,20 @@ class TimerRunningFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.timerUiState.observe(viewLifecycleOwner) {
-            if (it.timerState == TimerState.FINISHED) {
-                findNavController().navigate(R.id.action_timerRunningFragment_to_timerFinishedFragment)
-            } else {
-                binding.timerTextView.text = it.currentTime
-                setBackgroundColor(it.timerState)
-                setStateTextView(it.timerState)
-                binding.remainingSectionsTextView.text = it.remainingSections.toString()
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.timerUiState.collect {
+                    if (it.timerState == TimerState.FINISHED) {
+                        findNavController().navigate(R.id.action_timerRunningFragment_to_timerFinishedFragment)
+                    } else {
+                        binding.timerTextView.text = it.currentTime
+                        setBackgroundColor(it.timerState)
+                        setStateTextView(it.timerState)
+                        binding.remainingSectionsTextView.text = it.remainingSections.toString()
+                    }
+                }
             }
         }
-        viewModel.startTimer()
 
         binding.pauseButton.setOnClickListener {
             pause()
@@ -97,10 +106,10 @@ class TimerRunningFragment : Fragment() {
 
     private fun setBackgroundColor(state: TimerState) {
         val color = when(state) {
-            TimerState.PREPARE -> R.color.orange
-            TimerState.TRAIN -> R.color.green
-            TimerState.REST -> R.color.blue
-            TimerState.FINISHED -> R.color.blue
+            TimerState.PREPARE -> R.color.prepare_color
+            TimerState.TRAIN -> R.color.train_color
+            TimerState.REST -> R.color.rest_color
+            TimerState.FINISHED -> R.color.finished_color
         }
         binding.root.setBackgroundColor(ContextCompat.getColor(requireContext(), color))
     }
