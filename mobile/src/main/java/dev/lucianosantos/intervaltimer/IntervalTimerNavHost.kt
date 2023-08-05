@@ -26,7 +26,7 @@ fun IntervalTimerNavHost(
         composable(route = TimerRunning.route) {
             TimerRunningScreen(
                 timerSettings = TimerSettings(
-                    5, 5, 5, 5
+                    1, 5, 5, 5
                 ),
                 onStopClicked = { navController.navigate(Settings.route) })
         }

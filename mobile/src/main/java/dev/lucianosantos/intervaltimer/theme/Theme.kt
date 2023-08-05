@@ -14,7 +14,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
+import dev.lucianosantos.intervaltimer.R
+import dev.lucianosantos.intervaltimer.SettingsScreen
 
 private val DarkColorScheme = darkColorScheme(
     surface = Blue,
@@ -23,17 +27,32 @@ private val DarkColorScheme = darkColorScheme(
     onPrimary = Chartreuse
 )
 
-private val LightColorScheme = lightColorScheme(
-    surface = Blue,
-    onSurface = Color.White,
-    primary = LightBlue,
-    onPrimary = Navy
+@Composable
+private fun customColorScheme() = darkColorScheme(
+//    <!-- Primary brand color. -->
+//    <item name="colorPrimary">@color/primary_500</item>
+//    <item name="colorPrimaryVariant">@color/primary_700</item>
+//    <item name="colorOnPrimary">@color/white</item>
+//    <!-- Secondary brand color. -->
+//    <item name="colorSecondary">@color/secondary_800</item>
+//    <item name="colorSecondaryVariant">@color/secondary_700</item>
+//    <item name="colorOnSecondary">@color/black</item>
+//    <!-- Customize your theme here. -->
+//    <item name="colorSurface">@color/white</item>
+//    <item name="colorOnSurfaceVariant">@color/primary_800</item>
+//    <item name="colorOutline">@color/primary_400</item>
+
+    primary =  colorResource(id = R.color.primary_500),
+    onPrimary = colorResource(id = R.color.white),
+    secondary = colorResource(id = R.color.secondary_800),
+    onSecondary = colorResource(id = R.color.black),
+    surface = colorResource(id = R.color.white),
+    onSurface = colorResource(id = R.color.primary_400)
 )
 
 @Composable
 fun IntervalTimerTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
+    darkTheme: Boolean = false,
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
@@ -44,7 +63,7 @@ fun IntervalTimerTheme(
         }
 
         darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+        else -> customColorScheme()
     }
     val view = LocalView.current
     if (!view.isInEditMode) {
@@ -60,4 +79,12 @@ fun IntervalTimerTheme(
         typography = Typography,
         content = content
     )
+}
+
+@Preview(locale = "pt", showBackground = true)
+@Composable
+fun themePreview() {
+    IntervalTimerTheme {
+        SettingsScreen()
+    }
 }

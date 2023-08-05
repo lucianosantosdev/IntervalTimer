@@ -39,5 +39,7 @@ fun MainApp() {
 @Preview(widthDp = 320, heightDp = 640)
 @Composable
 fun MainAppPreview() {
-    MainApp()
+    IntervalTimerTheme {
+        MainApp()
+    }
 }
