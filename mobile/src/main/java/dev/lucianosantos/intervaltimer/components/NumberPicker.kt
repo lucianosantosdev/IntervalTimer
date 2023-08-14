@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -16,15 +17,19 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListLayoutInfo
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,14 +43,17 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.lucianosantos.intervaltimer.core.utils.getMinutesFromSeconds
+import dev.lucianosantos.intervaltimer.core.utils.getSecondsFromMinutesAndSeconds
 import dev.lucianosantos.intervaltimer.core.utils.getSecondsFromSeconds
 import kotlinx.coroutines.NonDisposableHandle.parent
+import kotlinx.coroutines.launch
 import kotlin.math.abs
 import kotlin.math.absoluteValue
 import kotlin.time.Duration.Companion.minutes
@@ -69,84 +77,129 @@ fun NumberPicker(
         Button(onClick = {
             onValueChange(value - 1)
         }) {
-            Text(text = "-")
+            Text(
+                text = "-",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold
+            )
         }
+
+        Spacer(Modifier.weight(1f))
 
         if(type == NumberPickerType.TIME) {
             TimerNumberPicker(
                 value = value,
-                onValueChange = onValueChange
+                onValueChange = onValueChange,
             )
         } else {
-            Text(
-                text = value.toString(),
-                style = MaterialTheme.typography.headlineLarge.copy(
-                    fontFamily = FontFamily.Monospace
-                )
+            NumberSlider(
+                value= value,
+                onValueChange = onValueChange
             )
         }
+
+        Spacer(Modifier.weight(1f))
 
         Button(onClick = {
             onValueChange(value + 1)
         }) {
-            Text(text = "+")
+            Text(
+                text = "+",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold
+            )
         }
     }
 }
 
 @Composable
 fun TimerNumberPicker(
+    modifier: Modifier = Modifier,
     value: Int,
-    onValueChange: (Int) -> Unit
+    onValueChange: (Int) -> Unit,
 ) {
-    val minutes = getMinutesFromSeconds(value)
-    val seconds = getSecondsFromSeconds(value)
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
 
-    Text(text = minutes.toString())
-    Text(text = seconds.toString())
-    NumberSlider(
-        value = getMinutesFromSeconds(value),
-        onValueChange = {
-            onValueChange(getSecondsFromSeconds(it))
-        }
-    )
-    Text(text = ":", fontSize = 32.sp)
-    NumberSlider(
-        value = getSecondsFromSeconds(value),
-        onValueChange = {
-            onValueChange(getSecondsFromSeconds(it))
-        }
-    )
+        NumberSlider(
+            value = getMinutesFromSeconds(value),
+            onValueChange = {
+                val newMinutes = it
+                val seconds = getSecondsFromSeconds(value)
+                onValueChange(getSecondsFromMinutesAndSeconds(newMinutes, seconds))
+            },
+            padStart = 2,
+            itemCount = 59
+        )
+        Text(text = " : ", fontSize = 32.sp)
+        NumberSlider(
+            value = getSecondsFromSeconds(value),
+            onValueChange = {
+                val minutes = getMinutesFromSeconds(value)
+                val newSeconds = it
+                onValueChange(getSecondsFromMinutesAndSeconds(minutes, newSeconds))
+            },
+            padStart = 2,
+            itemCount = 59
+        )
+
+    }
 
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NumberSlider(
+    modifier: Modifier = Modifier,
     value: Int,
-    onValueChange: (Int) -> Unit
+    onValueChange: (Int) -> Unit,
+    padStart: Int = 0,
+    itemCount: Int = 100,
 ) {
-    val itemCount = 1000
+    val list = List(itemCount + 3) { it }
+
+    val visibleColumns = 3
     val lazyListState = rememberLazyListState(
-        initialFirstVisibleItemIndex = (itemCount / 2 ) - (itemCount/2 % 60) + (value),
+        initialFirstVisibleItemIndex = value,
+        initialFirstVisibleItemScrollOffset = 100
     )
+
+    val isScrolling by remember {
+        derivedStateOf {
+            lazyListState.isScrollInProgress
+        }
+    }
+    val currentIndex = lazyListState.firstVisibleItemIndex + visibleColumns / 2
+
+
+    LaunchedEffect(isScrolling) {
+        val index = lazyListState.firstVisibleItemIndex
+        if (!isScrolling) {
+            onValueChange(list[index])
+        }
+    }
+
+    LaunchedEffect(value) {
+        lazyListState.scrollToItem(
+            value,
+            0
+        )
+    }
+
     val snapBehavior = rememberSnapFlingBehavior(lazyListState = lazyListState)
-    val elementSize = 50.dp
+    val elementSize = 40.dp
 
-    val list = List(itemCount) { it }
-
-    var isFocused by remember { mutableStateOf(false) }
-    val visibleColumns = if (isFocused) 3 else 1
 
     LazyColumn(
-        modifier = Modifier
+        modifier = modifier
             .height(elementSize * visibleColumns)
-            .onFocusChanged {
-                isFocused = it.isFocused
-            }
             .focusable(),
         state = lazyListState,
         flingBehavior = snapBehavior,
+
     ) {
         itemsIndexed(
             list
@@ -155,31 +208,31 @@ fun NumberSlider(
                 modifier = Modifier.height(elementSize),
                 contentAlignment = Alignment.Center
             ) {
-                val text = (item % 60).toString().padStart(2, '0')
-                val fontSize = (elementSize.value / text.length).coerceIn(1f, 100f)
-                val currentIndex = lazyListState.firstVisibleItemIndex + visibleColumns / 2
+                val text = if(i == 0 || i == itemCount + 2) "" else (item - 1).toString().padStart(padStart, '0')
 
                 Text(
                     modifier = Modifier.alpha(
-                        if (i == currentIndex) {
-                            1F
-                        } else {
-                            0.5F
-                        },
+                        when {
+                            i == currentIndex -> 1F
+                            isScrolling -> 0.5F
+                            else -> 0F
+                        }
                     ),
                     style = MaterialTheme.typography.bodySmall.copy(
-                        fontSize = fontSize.sp,
+                        fontSize = 32.sp,
                     ),
                     color = when {
-                        !isFocused -> MaterialTheme.colorScheme.onBackground
+                        !isScrolling -> MaterialTheme.colorScheme.onBackground
                         i == currentIndex -> MaterialTheme.colorScheme.error
                         else -> MaterialTheme.colorScheme.error
                     },
                     text = text
                 )
+
             }
         }
     }
+
 }
 
 @OptIn(ExperimentalFoundationApi::class)

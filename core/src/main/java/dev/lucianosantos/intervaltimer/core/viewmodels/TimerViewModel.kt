@@ -99,8 +99,8 @@ class TimerViewModel(
 
     private fun resolveNextEvent() {
         viewModelScope.launch {
-            val currentRemainingSections = _uiState.value?.remainingSections ?: 0
-            Log.d(TAG, "Current state: ${_uiState.value?.timerState} - Remaining sections : $currentRemainingSections")
+            val currentRemainingSections = _uiState.value.remainingSections
+            Log.d(TAG, "Current state: ${_uiState.value.timerState} - Remaining sections : $currentRemainingSections")
 
             when (_uiState.value.timerState) {
                 TimerState.PREPARE -> {

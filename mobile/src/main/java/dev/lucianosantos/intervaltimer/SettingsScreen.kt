@@ -29,19 +29,22 @@ import dev.lucianosantos.intervaltimer.theme.IntervalTimerTheme
 
 @Composable
 fun SettingsScreen(
+    settingsViewModel: SettingsViewModel = viewModel(
+        factory = SettingsViewModel.Factory(TimerSettingsRepository(LocalContext.current))
+    ),
     onStartClicked: () -> Unit = {}
 ) {
-    val settingsViewModel : SettingsViewModel = viewModel(
-        factory = SettingsViewModel.Factory(TimerSettingsRepository(LocalContext.current))
-    )
-
     val uiState by settingsViewModel.uiState.collectAsState()
 
     Surface(
         color = MaterialTheme.colorScheme.background,
         modifier = Modifier.fillMaxSize()
     ) {
-        Box(Modifier.fillMaxSize()) {
+        Box(
+            Modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp)
+        ) {
             Column(
                 modifier = Modifier.align(Alignment.Center),
                 verticalArrangement = Arrangement.spacedBy(16.dp),

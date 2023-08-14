@@ -34,15 +34,15 @@ import dev.lucianosantos.intervaltimer.theme.IntervalTimerTheme
 @Composable
 fun TimerRunningScreen(
     timerSettings: TimerSettings,
-    timerViewModel : TimerViewModel = viewModel(
+    onStopClicked: () -> Unit
+) {
+    val timerViewModel : TimerViewModel = viewModel(
         factory = TimerViewModel.Factory(
             timerSettings = timerSettings,
             countDownTimerHelper = CountDownTimerHelper(),
             beepHelper = AlertUserHelper(LocalContext.current),
         )
-    ),
-    onStopClicked: () -> Unit
-) {
+    )
     val timerUiState by timerViewModel.timerUiState.collectAsState()
 
     TimerRunningComponent(
@@ -86,13 +86,11 @@ fun TimerRunningComponent(
                 verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                if (timerState != TimerState.FINISHED) {
-                    Text(
-                        text = remainingSections.toString(),
-                        style = MaterialTheme.typography.headlineLarge,
-                        color = colorResource(id = R.color.white)
-                    )
-                }
+                Text(
+                    text = if (timerState != TimerState.FINISHED) remainingSections.toString() else " ",
+                    style = MaterialTheme.typography.headlineLarge,
+                    color = colorResource(id = R.color.white)
+                )
                 Text(
                     text = currentTime,
                     style = MaterialTheme.typography.headlineLarge.copy(
