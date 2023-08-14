@@ -2,12 +2,10 @@ package dev.lucianosantos.intervaltimer
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import dev.lucianosantos.intervaltimer.core.data.TimerSettings
-import dev.lucianosantos.intervaltimer.core.data.TimerState
-import kotlin.concurrent.timer
 
 @Composable
 fun IntervalTimerNavHost(

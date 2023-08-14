@@ -17,8 +17,6 @@ import dev.lucianosantos.intervaltimer.core.data.TimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerState
 import dev.lucianosantos.intervaltimer.core.utils.AlertUserHelper
 import dev.lucianosantos.intervaltimer.core.utils.CountDownTimerHelper
-import dev.lucianosantos.intervaltimer.core.utils.getMinutesFromSeconds
-import dev.lucianosantos.intervaltimer.core.utils.getSecondsFromSeconds
 import dev.lucianosantos.intervaltimer.core.viewmodels.TimerViewModel
 import dev.lucianosantos.intervaltimer.databinding.FragmentTimerRunningBinding
 import kotlinx.coroutines.launch
