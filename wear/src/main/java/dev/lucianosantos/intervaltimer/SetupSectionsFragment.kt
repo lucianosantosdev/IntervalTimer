@@ -6,10 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import dev.lucianosantos.intervaltimer.core.data.TimerSettingsRepository
+import dev.lucianosantos.intervaltimer.core.utils.getMinutesFromSeconds
+import dev.lucianosantos.intervaltimer.core.utils.getSecondsFromSeconds
 import dev.lucianosantos.intervaltimer.core.viewmodels.SettingsViewModel
 import dev.lucianosantos.intervaltimer.databinding.FragmentSetupSectionsBinding
+import kotlinx.coroutines.launch
 
 /**
  * A simple [Fragment] subclass.
@@ -36,8 +42,12 @@ class SetupSectionsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.uiState.observe(viewLifecycleOwner) {
-            binding.editTextNumber.text = it.timerSettings.sections.toString()
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect{
+                    binding.editTextNumber.text = it.timerSettings.sections.toString()
+                }
+            }
         }
 
         binding.sectionMinusButton.setOnClickListener {

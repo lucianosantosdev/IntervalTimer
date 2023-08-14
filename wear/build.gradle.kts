@@ -31,9 +31,9 @@ android {
 dependencies {
     implementation(libs.kotlin.stdlib)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
     implementation(libs.bundles.firebase)
 
+    implementation(libs.material)
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.wear:wear:1.2.0")
     implementation("com.google.android.gms:play-services-wearable:18.0.0")
@@ -44,6 +44,10 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
     implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
     implementation("io.github.ShawnLin013:number-picker:2.4.13")
+
+
+    implementation(libs.bundles.wear.compose)
+    implementation(libs.horologist.composables)
 
     implementation(project(":core"))
 }

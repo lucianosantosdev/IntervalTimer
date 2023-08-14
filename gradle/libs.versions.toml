@@ -28,6 +28,9 @@ firebase-crashlytics-version = "18.3.2"
 firebase-analytics-version = "21.2.0"
 firebase-crashlytics-gradle-version = "2.9.2"
 
+wear-compose-version = "1.2.0"
+horologist-composables-version = "0.3.11"
+
 [libraries]
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 
@@ -70,6 +73,11 @@ firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx", version.ref= "firebase-crashlytics-version" }
 firebase-crashlytics-gradle = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref= "firebase-crashlytics-gradle-version" }
 
+wear-compose-material = { group = "androidx.wear.compose", name = "compose-material", version.ref = "wear-compose-version" }
+wear-compose-foundation = { group = "androidx.wear.compose", name = "compose-foundation", version.ref = "wear-compose-version" }
+wear-compose-navigation = { group = "androidx.wear.compose", name = "compose-navigation", version.ref = "wear-compose-version" }
+horologist-composables = { group = "com.google.android.horologist", name = "horologist-composables", version.ref = "horologist-composables-version" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin-version" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin-version" }
@@ -82,3 +90,4 @@ androidTests = [ "junit-ext", "androidx-espresso-test", "compose-bom"]
 lifecycle = ["androidx-lifecycle-common", "androidx-lifecycle-runtime", "androidx-lifecycle-livedata", "androidx-lifecycle-viewmodel"]
 composeDebug = ["ui-tooling"]
 firebase = ["firebase-crashlytics", "firebase-analytics"]
+wear-compose = ["wear-compose-material", "wear-compose-foundation", "wear-compose-navigation"]
