@@ -41,7 +41,6 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = Versions.COMPOSE_COMPILER
     }
-
 }
 
 dependencies {
@@ -59,9 +58,9 @@ dependencies {
     implementation(libs.compose.activity)
     implementation(libs.navigation.compose)
     implementation(platform(libs.compose.bom))
-    implementation(libs.ui)
-    implementation(libs.ui.graphics)
-    implementation(libs.ui.tooling.preview)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.ui.graphics)
+    implementation(libs.compose.ui.tooling.preview)
     implementation(libs.material3)
 
     debugImplementation(libs.bundles.composeDebug)

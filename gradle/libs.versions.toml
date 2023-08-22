@@ -22,6 +22,7 @@ jacoco-plugin-version = "0.1.5"
 compose-bom-version = "2023.05.00"
 activity-compose-version = "1.7.2"
 navigation-compose-version = "2.6.0"
+navigation = "2.7.0"
 
 google-services-version = "4.3.14"
 firebase-crashlytics-version = "18.3.2"
@@ -29,7 +30,8 @@ firebase-analytics-version = "21.2.0"
 firebase-crashlytics-gradle-version = "2.9.2"
 
 wear-compose-version = "1.2.0"
-horologist-composables-version = "0.3.11"
+horologist-composables-version = "0.5.4"
+composeUiTooling = "1.2.0"
 
 [libraries]
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -58,10 +60,11 @@ numberPicker = { group = "io.github.ShawnLin013", name = "number-picker", versio
 
 #compose
 material3 = { group = "androidx.compose.material3", name = "material3" }
-ui = { group = "androidx.compose.ui", name = "ui" }
-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+compose-ui = { group = "androidx.compose.ui", name = "ui" }
+compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
+compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom-version" }
@@ -74,9 +77,15 @@ firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashly
 firebase-crashlytics-gradle = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref= "firebase-crashlytics-gradle-version" }
 
 wear-compose-material = { group = "androidx.wear.compose", name = "compose-material", version.ref = "wear-compose-version" }
+compose-material-icons-core = { group = "androidx.compose.material", name = "material-icons-core", version.ref = "wear-compose-version" }
+compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "wear-compose-version" }
 wear-compose-foundation = { group = "androidx.wear.compose", name = "compose-foundation", version.ref = "wear-compose-version" }
 wear-compose-navigation = { group = "androidx.wear.compose", name = "compose-navigation", version.ref = "wear-compose-version" }
+navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
+wear-compose-tooling-preview = { group = "androidx.wear.compose", name = "compose-ui-tooling" }
+
 horologist-composables = { group = "com.google.android.horologist", name = "horologist-composables", version.ref = "horologist-composables-version" }
+androidx-compose-ui-tooling = { group = "androidx.wear.compose", name = "compose-ui-tooling", version.ref = "composeUiTooling" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin-version" }
@@ -88,6 +97,6 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 tests = [ "junit", "mockito-core", "mockito-kotlin", "kotlinx-coroutines-test", "androidx-arch-core"]
 androidTests = [ "junit-ext", "androidx-espresso-test", "compose-bom"]
 lifecycle = ["androidx-lifecycle-common", "androidx-lifecycle-runtime", "androidx-lifecycle-livedata", "androidx-lifecycle-viewmodel"]
-composeDebug = ["ui-tooling"]
+composeDebug = ["compose-ui-tooling"]
 firebase = ["firebase-crashlytics", "firebase-analytics"]
-wear-compose = ["wear-compose-material", "wear-compose-foundation", "wear-compose-navigation"]
+wear-compose = ["compose-activity", "wear-compose-tooling-preview", "wear-compose-material", "wear-compose-foundation", "wear-compose-navigation"]

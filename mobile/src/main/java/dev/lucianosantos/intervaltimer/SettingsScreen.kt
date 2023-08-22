@@ -21,9 +21,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.lucianosantos.intervaltimer.components.NumberPicker
-import dev.lucianosantos.intervaltimer.components.NumberPickerType
+import dev.lucianosantos.intervaltimer.components.PickerType
 import dev.lucianosantos.intervaltimer.core.data.TimerSettingsRepository
-import dev.lucianosantos.intervaltimer.core.utils.formatMinutesAndSeconds
 import dev.lucianosantos.intervaltimer.core.viewmodels.SettingsViewModel
 import dev.lucianosantos.intervaltimer.theme.IntervalTimerTheme
 
@@ -63,7 +62,7 @@ fun SettingsScreen(
                 LabelText(text = stringResource(R.string.label_train_number_picker))
                 NumberPicker(
                     uiState.timerSettings.trainTimeSeconds,
-                    type = NumberPickerType.TIME,
+                    type = PickerType.TIME,
                     onValueChange = {
                         settingsViewModel.setTrainTime(it)
                     }
@@ -72,7 +71,7 @@ fun SettingsScreen(
                 LabelText(text = stringResource(R.string.label_rest_number_picker))
                 NumberPicker(
                     value = uiState.timerSettings.restTimeSeconds,
-                    type = NumberPickerType.TIME,
+                    type = PickerType.TIME,
                     onValueChange = {
                         settingsViewModel.setRestTime(it)
                     }
