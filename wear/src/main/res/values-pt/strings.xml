@@ -8,4 +8,24 @@
     <string name="label_sections">SÉRIES</string>
     <string name="label_train_number_picker">TREINAR</string>
     <string name="label_rest_number_picker">DESCANÇAR</string>
+    <string name="stop_icon_content_description">Parar</string>
+    <string name="arrow_forward_icon_content_description">Próximo</string>
+    <string name="label_minute">minuto</string>
+    <string name="label_second">segundo</string>
+    <string name="play_icon_content_description">Play</string>
+    <string name="pause_icon_content_description">Pausar</string>
+    <string name="refresh_icon_content_description">Reiniciar</string>
+
+    <plurals name="time_picker_sections_content_description" >
+        <item quantity="one">%d Série</item>
+        <item quantity="other">%d Séries</item>
+    </plurals>
+    <plurals name="time_picker_minutes_content_description" >
+        <item quantity="one">%d Minuto</item>
+        <item quantity="other">%d Minutos</item>
+    </plurals>
+    <plurals name="time_picker_seconds_content_description" >
+        <item quantity="one">%d Segundo</item>
+        <item quantity="other">%d Segundos</item>
+    </plurals>
 </resources>

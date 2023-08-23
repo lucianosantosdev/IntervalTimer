@@ -8,7 +8,6 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,7 +19,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Pause
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Stop
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -29,7 +31,6 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,40 +41,32 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.focused
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.wear.compose.material.Button
-import androidx.wear.compose.material.ButtonDefaults
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.MaterialTheme
-import androidx.wear.compose.material.Picker
 import androidx.wear.compose.material.PickerGroup
 import androidx.wear.compose.material.PickerGroupItem
 import androidx.wear.compose.material.PickerScope
-import androidx.wear.compose.material.PickerState
 import androidx.wear.compose.material.Text
 import androidx.wear.compose.material.TouchExplorationStateProvider
 import androidx.wear.compose.material.rememberPickerGroupState
 import androidx.wear.compose.material.rememberPickerState
 import androidx.wear.compose.ui.tooling.preview.WearPreviewLargeRound
-import androidx.wear.compose.ui.tooling.preview.WearPreviewSmallRound
 import com.google.android.horologist.composables.TimePicker
 import dev.lucianosantos.intervaltimer.core.ui.PickerType
 import dev.lucianosantos.intervaltimer.core.utils.getMinutesFromSeconds
 import dev.lucianosantos.intervaltimer.core.utils.getSecondsFromMinutesAndSeconds
 import dev.lucianosantos.intervaltimer.core.utils.getSecondsFromSeconds
-import kotlinx.coroutines.launch
-import java.time.LocalTime
 
 @Composable
 fun PickerScreenComponent(
@@ -100,10 +93,12 @@ fun PickerScreenComponent(
         initialNumberOfOptions = 60,
         initiallySelectedOption = getSecondsFromSeconds(seconds = value)
     )
-    val numberState = rememberPickerState(
+    val sectionState = rememberPickerState(
         initialNumberOfOptions = 100,
         initiallySelectedOption = value
     )
+
+
 
     val touchExplorationStateProvider = remember { DefaultTouchExplorationStateProvider() }
     val touchExplorationServicesEnabled by touchExplorationStateProvider
@@ -121,8 +116,33 @@ fun PickerScreenComponent(
                 FocusableElementsTimePicker.HOURS.index
             )
         }
+
+        val sectionString = stringResource(R.string.label_sections)
+        val minuteString = stringResource(R.string.label_minute)
+        val secondString = stringResource(R.string.label_second)
+
+        val sectionContentDescription = createDescription(
+            pickerGroupState,
+            sectionState.selectedOption,
+            sectionString,
+            R.plurals.time_picker_sections_content_description
+        )
+
+        val minuteContentDescription = createDescription(
+            pickerGroupState,
+            minuteState.selectedOption,
+            minuteString,
+            R.plurals.time_picker_minutes_content_description
+        )
+
+        val secondContentDescription = createDescription(
+            pickerGroupState,
+            secondState.selectedOption,
+            secondString,
+            R.plurals.time_picker_seconds_content_description
+        )
+
         val textStyle = MaterialTheme.typography.display3
-        val optionColor = MaterialTheme.colors.secondary
         val pickerOption = pickerTextOption(textStyle) { "%02d".format(it) }
         val focusRequesterConfirmButton = remember { FocusRequester() }
 
@@ -150,7 +170,6 @@ fun PickerScreenComponent(
                 Spacer(Modifier.height(12.dp))
                 Text(
                     text = title,
-                    color = optionColor,
                     style = MaterialTheme.typography.button,
                     maxLines = 1
                 )
@@ -176,7 +195,7 @@ fun PickerScreenComponent(
                                         FocusableElementsTimePicker.SECONDS
                                     )
                                 },
-                                contentDescription = "",
+                                contentDescription = minuteContentDescription,
                                 option = pickerOption
                             ),
                             PickerGroupItem(
@@ -188,14 +207,14 @@ fun PickerScreenComponent(
                                         FocusableElementsTimePicker.CONFIRM_BUTTON
                                     )
                                 },
-                                contentDescription = "",
+                                contentDescription = secondContentDescription,
                                 option = pickerOption
                             )
                         )
                     } else {
                         mutableListOf(
                             PickerGroupItem(
-                                pickerState = numberState,
+                                pickerState = sectionState,
                                 modifier = Modifier.size(40.dp, 100.dp),
                                 onSelected = {
                                     onPickerSelected(
@@ -203,7 +222,7 @@ fun PickerScreenComponent(
                                         FocusableElementsTimePicker.CONFIRM_BUTTON
                                     )
                                 },
-                                contentDescription = "",
+                                contentDescription = sectionContentDescription,
                                 option = pickerOption
                             )
                         )
@@ -229,7 +248,7 @@ fun PickerScreenComponent(
                                 seconds = secondState.selectedOption
                             )
                         } else {
-                            numberState.selectedOption
+                            sectionState.selectedOption
                         }
                         onValueChange(selectedValue)
                     },
@@ -243,7 +262,7 @@ fun PickerScreenComponent(
                 ) {
                     Icon(
                         imageVector = icon,
-                        contentDescription = "",
+                        contentDescription = buttonContentDescription(icon),
                         modifier = Modifier
                             .size(24.dp)
                             .wrapContentSize(align = Alignment.Center)
@@ -260,6 +279,16 @@ fun PickerScreenComponent(
 }
 
 @Composable
+fun buttonContentDescription(icon : ImageVector) = when(icon) {
+    Icons.Default.PlayArrow -> stringResource(id = R.string.play_icon_content_description)
+    Icons.Default.Pause -> stringResource(id = R.string.pause_icon_content_description)
+    Icons.Default.Stop -> stringResource(id = R.string.stop_icon_content_description)
+    Icons.Default.ArrowForward -> stringResource(id = R.string.arrow_forward_icon_content_description)
+    Icons.Default.Refresh -> stringResource(id = R.string.refresh_icon_content_description)
+    else -> ""
+}
+
+@Composable
 fun Separator(width: Dp, textStyle: TextStyle) {
     Spacer(Modifier.width(width))
     Text(
@@ -273,7 +302,7 @@ fun Separator(width: Dp, textStyle: TextStyle) {
 
 internal class DefaultTouchExplorationStateProvider : TouchExplorationStateProvider {
     @Composable
-    public override fun touchExplorationState(): State<Boolean> {
+    override fun touchExplorationState(): State<Boolean> {
         val context = LocalContext.current
         val accessibilityManager = remember {
             context.getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager

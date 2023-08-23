@@ -75,7 +75,12 @@ fun WearNavHost(
         composable(route = TimerRunning.route) {
             TimerRunningScreen(
                 timerSettings = settings.timerSettings,
-                onStopClicked = { navController.navigate(SetSections.route) }
+                onStopClicked = { navController.navigate(SetSections.route) },
+                onRefreshClicked = {
+                    navController.navigate(TimerRunning.route) {
+                        popUpTo(TimerRunning.route) { inclusive = true }
+                    }
+                }
             )
         }
     }
