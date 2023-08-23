@@ -1,9 +1,11 @@
 package dev.lucianosantos.intervaltimer.core.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.asLiveData
 import dev.lucianosantos.intervaltimer.core.data.DefaultTimerSettings
 import dev.lucianosantos.intervaltimer.core.data.ITimerSettingsRepository
 import dev.lucianosantos.intervaltimer.core.data.TimerSettings
+import dev.lucianosantos.intervaltimer.core.utils.MainDispatcherRule
 import dev.lucianosantos.intervaltimer.core.utils.getOrAwaitValue
 import org.junit.Rule
 import org.junit.Test
@@ -16,6 +18,9 @@ import org.mockito.junit.MockitoJUnitRunner
 class SettingsViewModelTest {
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
+
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
 
     @Mock
     private lateinit var mockTimerSettingsRepository : ITimerSettingsRepository
@@ -45,7 +50,7 @@ class SettingsViewModelTest {
 
         // Act
         viewModel.incrementSections()
-        val uiState = viewModel.uiState.getOrAwaitValue()
+        val uiState = viewModel.uiState.asLiveData().getOrAwaitValue()
 
         // Assert
         assert(uiState.timerSettings.sections == 2)
@@ -62,7 +67,7 @@ class SettingsViewModelTest {
 
         // Act
         viewModel.decrementSections()
-        val uiState = viewModel.uiState.getOrAwaitValue()
+        val uiState = viewModel.uiState.asLiveData().getOrAwaitValue()
 
         // Assert
         assert(uiState.timerSettings.sections == 1)
@@ -79,7 +84,7 @@ class SettingsViewModelTest {
 
         // Act
         viewModel.decrementSections()
-        val uiState = viewModel.uiState.getOrAwaitValue()
+        val uiState = viewModel.uiState.asLiveData().getOrAwaitValue()
 
         // Assert
         assert(uiState.timerSettings.sections == 1)
@@ -94,7 +99,7 @@ class SettingsViewModelTest {
 
         // Act
         viewModel.setSections(10)
-        val uiState = viewModel.uiState.getOrAwaitValue()
+        val uiState = viewModel.uiState.asLiveData().getOrAwaitValue()
 
         // Assert
         assert(uiState.timerSettings == DefaultTimerSettings.settings.copy(
@@ -111,7 +116,7 @@ class SettingsViewModelTest {
 
         // Act
         viewModel.setTrainTime(42)
-        val uiState = viewModel.uiState.getOrAwaitValue()
+        val uiState = viewModel.uiState.asLiveData().getOrAwaitValue()
 
         // Assert
         assert(uiState.timerSettings == DefaultTimerSettings.settings.copy(
@@ -128,7 +133,7 @@ class SettingsViewModelTest {
 
         // Act
         viewModel.setRestTime(42)
-        val uiState = viewModel.uiState.getOrAwaitValue()
+        val uiState = viewModel.uiState.asLiveData().getOrAwaitValue()
 
         // Assert
         assert(uiState.timerSettings == DefaultTimerSettings.settings.copy(

@@ -36,7 +36,6 @@ class TimerViewModel(
     
     init {
         setEventHandler()
-        startTimer()
     }
 
     private fun setEventHandler() {
@@ -62,11 +61,9 @@ class TimerViewModel(
         }.launchIn(viewModelScope)
     }
 
-    fun startTimer() {
+    suspend fun startTimer() {
         setIsPaused(false)
-        viewModelScope.launch {
-            eventChannel.send(Event.Prepare)
-        }
+        eventChannel.send(Event.Prepare)
     }
 
     fun pauseTimer() {
