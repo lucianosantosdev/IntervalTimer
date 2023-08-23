@@ -62,7 +62,6 @@ import androidx.wear.compose.material.TouchExplorationStateProvider
 import androidx.wear.compose.material.rememberPickerGroupState
 import androidx.wear.compose.material.rememberPickerState
 import androidx.wear.compose.ui.tooling.preview.WearPreviewLargeRound
-import com.google.android.horologist.composables.TimePicker
 import dev.lucianosantos.intervaltimer.core.ui.PickerType
 import dev.lucianosantos.intervaltimer.core.utils.getMinutesFromSeconds
 import dev.lucianosantos.intervaltimer.core.utils.getSecondsFromMinutesAndSeconds
@@ -428,12 +427,3 @@ fun PickerScreenComponentPreview() {
         icon = Icons.Default.ArrowForward,
     )
 }
-
-@WearPreviewLargeRound
-@Composable
-fun HorologistPreview() {
-    WearAppTheme {
-        TimePicker(onTimeConfirm = {  })
-    }
-}
-

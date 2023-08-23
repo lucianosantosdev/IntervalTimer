@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
-import dev.lucianosantos.intervaltimer.components.NumberSliderPreview
 import dev.lucianosantos.intervaltimer.theme.IntervalTimerTheme
 
 class MainActivity : AppCompatActivity() {
@@ -33,7 +32,7 @@ class MainActivity : AppCompatActivity() {
 fun MainApp() {
     val navController = rememberNavController()
 
-    IntervalTimerNavHost(
+    MobileNavHost(
         navController = navController,
         modifier = Modifier.fillMaxSize()
     )

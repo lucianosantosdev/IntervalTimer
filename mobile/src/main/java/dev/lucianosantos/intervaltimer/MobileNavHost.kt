@@ -9,15 +9,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import dev.lucianosantos.intervaltimer.core.data.TimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerSettingsRepository
-import dev.lucianosantos.intervaltimer.core.utils.AlertUserHelper
-import dev.lucianosantos.intervaltimer.core.utils.CountDownTimerHelper
 import dev.lucianosantos.intervaltimer.core.viewmodels.SettingsViewModel
-import dev.lucianosantos.intervaltimer.core.viewmodels.TimerViewModel
 
 @Composable
-fun IntervalTimerNavHost(
+fun MobileNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {

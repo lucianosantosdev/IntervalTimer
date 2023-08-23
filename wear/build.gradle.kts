@@ -39,14 +39,7 @@ dependencies {
     implementation(libs.bundles.firebase)
 
     implementation(libs.material)
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.wear:wear:1.2.0")
     implementation("com.google.android.gms:play-services-wearable:18.0.0")
-    implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.percentlayout:percentlayout:1.0.0")
-    implementation("androidx.legacy:legacy-support-v4:1.0.0")
-    implementation("androidx.recyclerview:recyclerview:1.2.1")
-    implementation("io.github.ShawnLin013:number-picker:2.4.13")
 
     implementation(libs.compose.activity)
     implementation(libs.compose.ui.tooling.preview)
@@ -63,9 +56,6 @@ dependencies {
     implementation(libs.bundles.lifecycle)
 
     debugImplementation(libs.compose.ui.tooling)
-
-
-    implementation(libs.horologist.composables)
 
     implementation(project(":core"))
     implementation(libs.androidx.compose.ui.tooling)
