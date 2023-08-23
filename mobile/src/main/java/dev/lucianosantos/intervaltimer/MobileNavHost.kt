@@ -42,7 +42,13 @@ fun IntervalTimerNavHost(
         composable(route = TimerRunning.route) {
             TimerRunningScreen(
                 settings.timerSettings,
-                onStopClicked = { navController.navigate(Settings.route) })
+                onStopClicked = { navController.navigate(Settings.route) },
+                onRestartClicked = {
+                    navController.navigate(TimerRunning.route) {
+                        popUpTo(TimerRunning.route) { inclusive = true }
+                    }
+                },
+            )
         }
     }
 }

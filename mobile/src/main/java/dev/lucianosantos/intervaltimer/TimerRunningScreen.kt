@@ -34,7 +34,8 @@ import dev.lucianosantos.intervaltimer.theme.IntervalTimerTheme
 @Composable
 fun TimerRunningScreen(
     timerSettings: TimerSettings,
-    onStopClicked: () -> Unit
+    onStopClicked: () -> Unit,
+    onRestartClicked: () -> Unit
 ) {
     val timerViewModel : TimerViewModel = viewModel(
         factory = TimerViewModel.Factory(
@@ -59,6 +60,10 @@ fun TimerRunningScreen(
         onStopClicked = {
             timerViewModel.stopTimer()
             onStopClicked()
+        },
+        onRestartClicked = {
+            timerViewModel.stopTimer()
+            onRestartClicked()
         }
     )
 }
@@ -72,6 +77,7 @@ fun TimerRunningComponent(
     onPlayClicked : () -> Unit,
     onPauseClicked : () -> Unit,
     onStopClicked : () -> Unit,
+    onRestartClicked : () -> Unit
 ) {
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -123,7 +129,7 @@ fun TimerRunningComponent(
                             contentDescription = R.string.stop_content_description
                         )
                         ActionButton(
-                            onClick = onPlayClicked,
+                            onClick = onRestartClicked,
                             icon = R.drawable.ic_baseline_refresh_24,
                             contentDescription = R.string.restart_content_description
                         )
@@ -161,6 +167,7 @@ fun TimerRunningScreenPreview() {
             currentTime = "12:34",
             timerState = TimerState.PREPARE,
             true,
+            {},
             {},
             {},
             {}
