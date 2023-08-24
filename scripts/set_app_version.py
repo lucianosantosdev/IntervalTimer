@@ -26,7 +26,7 @@ def get_version_from_git():
     return re.search(r'[0-9]+.[0-9]+.[0-9]+(-RC[0-9]*)?', last_tag)[0]
         
 def set_app_version(version_name, version_code, target):
-    gradle_file = f'{get_git_root()}/{target}/build.gradle'
+    gradle_file = f'{get_git_root()}/{target}/build.gradle.kts'
 
     with fileinput.FileInput(gradle_file, inplace=True) as file:
         for line in file:
