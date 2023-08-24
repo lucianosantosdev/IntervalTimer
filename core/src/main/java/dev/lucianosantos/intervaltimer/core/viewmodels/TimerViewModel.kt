@@ -8,6 +8,8 @@ import dev.lucianosantos.intervaltimer.core.utils.IAlertUserHelper
 import dev.lucianosantos.intervaltimer.core.utils.ICountDownTimerHelper
 import dev.lucianosantos.intervaltimer.core.utils.formatMinutesAndSeconds
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -22,14 +24,15 @@ class TimerViewModel(
     private val eventChannel = Channel<Event>()
     private val eventsFlow = eventChannel.receiveAsFlow()
 
-    private val _uiState: MutableLiveData<UiState> by lazy {
-        MutableLiveData<UiState>(UiState(
+    private val _uiState = MutableStateFlow(
+        TimerUiState(
             remainingSections = timerSettings.sections,
             currentTime = "",
-            timerState = TimerState.PREPARE
-        ))
-    }
-    val uiState get() : LiveData<UiState> = _uiState
+            timerState = TimerState.PREPARE,
+            isPaused = false
+        )
+    )
+    val timerUiState get() = _uiState.asStateFlow()
     
     init {
         setEventHandler()
@@ -58,18 +61,24 @@ class TimerViewModel(
         }.launchIn(viewModelScope)
     }
 
-    fun startTimer() {
-        viewModelScope.launch {
-            eventChannel.send(Event.Prepare)
-        }
+    suspend fun startTimer() {
+        setIsPaused(false)
+        eventChannel.send(Event.Prepare)
     }
 
     fun pauseTimer() {
+        setIsPaused(true)
         countDownTimerHelper.pause()
     }
 
     fun resumeTimer() {
+        setIsPaused(false)
         countDownTimerHelper.resume()
+    }
+
+    fun stopTimer() {
+        setIsPaused(false)
+        countDownTimerHelper.stop()
     }
 
     private fun startCountDownTimer(seconds: Int) {
@@ -87,10 +96,10 @@ class TimerViewModel(
 
     private fun resolveNextEvent() {
         viewModelScope.launch {
-            val currentRemainingSections = _uiState.value?.remainingSections ?: 0
-            Log.d(TAG, "Current state: ${_uiState.value?.timerState} - Remaining sections : $currentRemainingSections")
+            val currentRemainingSections = _uiState.value.remainingSections
+            Log.d(TAG, "Current state: ${_uiState.value.timerState} - Remaining sections : $currentRemainingSections")
 
-            when (_uiState.value?.timerState) {
+            when (_uiState.value.timerState) {
                 TimerState.PREPARE -> {
                     afterPrepare()
                 }
@@ -124,8 +133,15 @@ class TimerViewModel(
         }
     }
 
+    private fun setIsPaused(isPaused: Boolean) {
+        _uiState.value.let { currentUiState ->
+            _uiState.value = currentUiState.copy(
+                isPaused = isPaused
+            )
+        }
+    }
     private fun setRemainingSections(sections: Int) {
-        _uiState.value?.let { currentUiState ->
+        _uiState.value.let { currentUiState ->
             _uiState.value = currentUiState.copy(
                 remainingSections = sections
             )
@@ -141,12 +157,12 @@ class TimerViewModel(
     }
 
     private fun setCurrentState(timerState: TimerState) {
-        _uiState.value?.let { currentUiState ->
+        _uiState.value.let { currentUiState ->
             _uiState.value = currentUiState.copy(
                 timerState = timerState
             )
         }
-        alertUser(_uiState.value?.timerState)
+        alertUser(_uiState.value.timerState)
     }
 
     private fun alertUser(state: TimerState?) {
@@ -160,12 +176,6 @@ class TimerViewModel(
             }
         }
     }
-
-    data class UiState(
-        val remainingSections : Int,
-        val currentTime : String,
-        val timerState : TimerState,
-    )
 
     sealed class Event {
         object Prepare: Event()

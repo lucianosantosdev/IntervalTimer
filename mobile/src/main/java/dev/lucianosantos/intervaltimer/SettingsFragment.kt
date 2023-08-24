@@ -6,6 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import dev.lucianosantos.intervaltimer.core.data.TimerSettingsRepository
 import dev.lucianosantos.intervaltimer.core.ui.NumberPickerHelper
@@ -14,6 +17,7 @@ import dev.lucianosantos.intervaltimer.core.utils.getSecondsFromMinutesAndSecond
 import dev.lucianosantos.intervaltimer.core.utils.getSecondsFromSeconds
 import dev.lucianosantos.intervaltimer.core.viewmodels.SettingsViewModel
 import dev.lucianosantos.intervaltimer.databinding.FragmentSettingsBinding
+import kotlinx.coroutines.launch
 
 /**
  * A simple [Fragment] subclass.
@@ -39,22 +43,26 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.uiState.observe(viewLifecycleOwner) {
-            binding.editTextNumber.text = it.timerSettings.sections.toString()
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect{
+                    binding.editTextNumber.text = it.timerSettings.sections.toString()
 
-            binding.trainTimeMinutesNumberPicker.value = getMinutesFromSeconds(it.timerSettings.trainTimeSeconds)
-            binding.trainTimeSecondsNumberPicker.value = getSecondsFromSeconds(it.timerSettings.trainTimeSeconds)
-            binding.restTimeMinutesNumberPicker.value = getMinutesFromSeconds(it.timerSettings.restTimeSeconds)
-            binding.restTimeSecondsNumberPicker.value = getSecondsFromSeconds(it.timerSettings.restTimeSeconds)
+                    binding.trainTimeMinutesNumberPicker.value = getMinutesFromSeconds(it.timerSettings.trainTimeSeconds)
+                    binding.trainTimeSecondsNumberPicker.value = getSecondsFromSeconds(it.timerSettings.trainTimeSeconds)
+                    binding.restTimeMinutesNumberPicker.value = getMinutesFromSeconds(it.timerSettings.restTimeSeconds)
+                    binding.restTimeSecondsNumberPicker.value = getSecondsFromSeconds(it.timerSettings.restTimeSeconds)
+                }
+            }
         }
 
         setupSectionPicker()
         setupTimePickers()
 
         binding.startButton.setOnClickListener {
-            val sets = viewModel.uiState.value?.timerSettings?.sections ?: 1
-            val trainTime = viewModel.uiState.value?.timerSettings?.trainTimeSeconds ?: 60
-            val restTime = viewModel.uiState.value?.timerSettings?.restTimeSeconds ?: 60
+            val sets = viewModel.uiState.value.timerSettings.sections
+            val trainTime = viewModel.uiState.value.timerSettings.trainTimeSeconds
+            val restTime = viewModel.uiState.value.timerSettings.restTimeSeconds
             val action = SettingsFragmentDirections.actionSettingsFragmentToTimerRunningFragment(sets = sets, trainTime = trainTime, restTime = restTime)
 
             findNavController().navigate(action)

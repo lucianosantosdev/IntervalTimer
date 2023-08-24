@@ -42,5 +42,9 @@ class CountDownTimerHelper : ICountDownTimerHelper {
         startCountDown(remainingSeconds, _onTickCallback, _onFinishCallback)
     }
 
-
+    override fun stop() {
+        timer?.cancel()
+        timer = null
+        remainingSeconds = 0
+    }
 }

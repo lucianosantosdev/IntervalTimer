@@ -10,4 +10,24 @@
     <string name="label_rest_number_picker">REST</string>
 
     <string name="np_formatter" translatable="false">%02d</string>
+    <string name="play_icon_content_description">Play</string>
+    <string name="pause_icon_content_description">Pause</string>
+    <string name="stop_icon_content_description">Stop</string>
+    <string name="arrow_forward_icon_content_description">Next</string>
+    <string name="label_minute">minute</string>
+    <string name="label_second">second</string>
+    <string name="refresh_icon_content_description">Restart</string>
+
+    <plurals name="time_picker_sections_content_description" >
+        <item quantity="one">%d Section</item>
+        <item quantity="other">%d Sections</item>
+    </plurals>
+    <plurals name="time_picker_minutes_content_description" >
+        <item quantity="one">%d Minute</item>
+        <item quantity="other">%d Minutes</item>
+    </plurals>
+    <plurals name="time_picker_seconds_content_description" >
+        <item quantity="one">%d Second</item>
+        <item quantity="other">%d Seconds</item>
+    </plurals>
 </resources>

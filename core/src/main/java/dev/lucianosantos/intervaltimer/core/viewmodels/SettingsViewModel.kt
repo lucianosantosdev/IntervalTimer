@@ -3,31 +3,29 @@ package dev.lucianosantos.intervaltimer.core.viewmodels
 import androidx.lifecycle.*
 import dev.lucianosantos.intervaltimer.core.data.ITimerSettingsRepository
 import dev.lucianosantos.intervaltimer.core.data.TimerSettings
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class SettingsViewModel(private val timerSettingsRepository: ITimerSettingsRepository) : ViewModel() {
 
-    private val _uiState: MutableLiveData<UiState> by lazy {
-        MutableLiveData<UiState>(UiState(timerSettingsRepository.loadSettings()))
-    }
-    val uiState get() : LiveData<UiState> = _uiState
+    private val _uiState = MutableStateFlow(SettingsUiState(timerSettingsRepository.loadSettings()))
+    val uiState : StateFlow<SettingsUiState> = _uiState.asStateFlow()
 
     fun incrementSections() {
-        _uiState.value?.let { currentUiState ->
-            setSections( currentUiState.timerSettings.sections + 1)
-        }
+        setSections( _uiState.value.timerSettings.sections + 1)
     }
 
     fun decrementSections() {
-        _uiState.value?.let { currentUiState ->
-            if (currentUiState.timerSettings.sections == 1) {
-                return
-            }
-            setSections( currentUiState.timerSettings.sections - 1)
-        }
+        setSections( _uiState.value.timerSettings.sections - 1)
     }
 
     fun setSections(sections: Int) {
-        _uiState.value?.let { currentUiState ->
+        if(sections <= 0) {
+            return
+        }
+
+        _uiState.value.let { currentUiState ->
             _uiState.value = currentUiState.copy(
                 timerSettings = currentUiState.timerSettings.copy(
                     sections = sections
@@ -38,22 +36,19 @@ class SettingsViewModel(private val timerSettingsRepository: ITimerSettingsRepos
     }
 
     fun incrementRestTime() {
-        _uiState.value?.let { currentUiState ->
-            setRestTime( currentUiState.timerSettings.restTimeSeconds + 1)
-        }
+        setRestTime( _uiState.value.timerSettings.restTimeSeconds + 1)
     }
 
     fun decrementRestTime() {
-        _uiState.value?.let { currentUiState ->
-            if (currentUiState.timerSettings.restTimeSeconds == 0) {
-                return
-            }
-            setRestTime( currentUiState.timerSettings.restTimeSeconds - 1)
-        }
+        setRestTime( _uiState.value.timerSettings.restTimeSeconds - 1)
     }
 
     fun setRestTime(restTimeSeconds: Int) {
-        _uiState.value?.let { currentUiState ->
+        if(restTimeSeconds < 0) {
+            return
+        }
+
+        _uiState.value.let { currentUiState ->
             _uiState.value = currentUiState.copy(
                 timerSettings = currentUiState.timerSettings.copy(
                     restTimeSeconds = restTimeSeconds
@@ -64,22 +59,19 @@ class SettingsViewModel(private val timerSettingsRepository: ITimerSettingsRepos
     }
 
     fun incrementTrainTime() {
-        _uiState.value?.let { currentUiState ->
-            setTrainTime( currentUiState.timerSettings.trainTimeSeconds + 1)
-        }
+        setTrainTime( _uiState.value.timerSettings.trainTimeSeconds + 1)
     }
 
     fun decrementTrainTime() {
-        _uiState.value?.let { currentUiState ->
-            if (currentUiState.timerSettings.trainTimeSeconds == 1) {
-                return
-            }
-            setTrainTime(currentUiState.timerSettings.trainTimeSeconds - 1)
-        }
+        setTrainTime(_uiState.value.timerSettings.trainTimeSeconds - 1)
     }
 
     fun setTrainTime(trainTimeSeconds: Int) {
-        _uiState.value?.let { currentUiState ->
+        if (trainTimeSeconds < 0) {
+            return
+        }
+
+        _uiState.value.let { currentUiState ->
             _uiState.value = currentUiState.copy(
                 timerSettings = currentUiState.timerSettings.copy(
                     trainTimeSeconds = trainTimeSeconds
@@ -90,19 +82,14 @@ class SettingsViewModel(private val timerSettingsRepository: ITimerSettingsRepos
     }
 
     private fun persistSettings() {
-        _uiState.value?.let { currentUiState ->
+        _uiState.value.let { currentUiState ->
             timerSettingsRepository.saveSettings(currentUiState.timerSettings)
         }
     }
 
-    data class UiState(
-        val timerSettings: TimerSettings
-    )
-
     @Suppress("UNCHECKED_CAST")
-    class Factory(private val timerSettingsRepository: ITimerSettingsRepository) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return SettingsViewModel(timerSettingsRepository) as T
-        }
+    class Factory(private val timerSettingsRepository: ITimerSettingsRepository) : ViewModelProvider.NewInstanceFactory() {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T =
+            SettingsViewModel(timerSettingsRepository) as T
     }
 }

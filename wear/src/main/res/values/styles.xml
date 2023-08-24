@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.App" parent="Theme.Material3.Dark">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/primary_500</item>
-        <item name="colorPrimaryVariant">@color/primary_700</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/secondary_800</item>
-        <item name="colorSecondaryVariant">@color/secondary_700</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Customize your theme here. -->
-        <item name="colorSurface">@color/white</item>
-        <item name="colorOnSurfaceVariant">@color/primary_800</item>
-        <item name="colorOutline">@color/primary_400</item>
+    <style name="Theme.App" parent="@android:style/Theme.DeviceDefault">
     </style>
     
     <style name="Theme.Splash"  parent="Theme.Material3.Dark">

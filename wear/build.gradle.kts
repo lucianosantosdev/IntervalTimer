@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "dev.lucianosantos.intervaltimer"
-    compileSdk = Versions.COMPILE_SDK
+    compileSdk = Versions.WEAR_COMPILE_SDK
 
     defaultConfig {
         applicationId = "dev.lucianosantos.intervaltimer"
@@ -25,25 +25,38 @@ android {
     buildFeatures {
         viewBinding = true
         dataBinding = true
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = Versions.COMPOSE_COMPILER
     }
 }
 
 dependencies {
     implementation(libs.kotlin.stdlib)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
     implementation(libs.bundles.firebase)
 
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.wear:wear:1.2.0")
+    implementation(libs.material)
     implementation("com.google.android.gms:play-services-wearable:18.0.0")
-    implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.percentlayout:percentlayout:1.0.0")
-    implementation("androidx.legacy:legacy-support-v4:1.0.0")
-    implementation("androidx.recyclerview:recyclerview:1.2.1")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
-    implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
-    implementation("io.github.ShawnLin013:number-picker:2.4.13")
+
+    implementation(libs.compose.activity)
+    implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.compose.foundation)
+    implementation(libs.compose.material.icons.core)
+    implementation(libs.compose.material.icons.extended)
+
+    implementation(libs.wear.compose.material)
+    implementation(libs.wear.compose.foundation)
+    implementation(libs.wear.compose.tooling.preview)
+    implementation(libs.wear.compose.navigation)
+    implementation(libs.navigation.ui.ktx)
+
+    implementation(libs.bundles.lifecycle)
+
+    debugImplementation(libs.compose.ui.tooling)
 
     implementation(project(":core"))
+    implementation(libs.androidx.compose.ui.tooling)
 }
