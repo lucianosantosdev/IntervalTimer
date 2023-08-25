@@ -14,6 +14,9 @@ val keystoreProperties = Properties().apply {
         keystoreFile.inputStream().use { fis ->
             load(fis)
         }
+        println("Keystore file found")
+    } else {
+        println("Keystore file not found")
     }
 }
 
@@ -43,6 +46,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             if (!keystoreProperties.isEmpty) {
+                println("Apply signing config release")
                 signingConfig = signingConfigs.getByName("release")
             }
         }
