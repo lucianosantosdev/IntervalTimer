@@ -24,6 +24,7 @@ android {
     defaultConfig {
         applicationId = "dev.lucianosantos.intervaltimer"
         minSdk = Versions.MIN_SDK
+        targetSdk = Versions.COMPILE_SDK
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 

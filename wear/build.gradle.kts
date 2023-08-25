@@ -24,6 +24,7 @@ android {
     defaultConfig {
         applicationId = "dev.lucianosantos.intervaltimer"
         minSdk = Versions.MIN_SDK
+        targetSdk = Versions.WEAR_COMPILE_SDK
     }
 
     signingConfigs {
