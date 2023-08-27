@@ -32,8 +32,7 @@ def set_app_version(version_name, version_code, target):
 def get_version_code(version_name, target):
     run_number = int(environ.get('GITHUB_RUN_NUMBER', 0))
     target_version = '10' if target == 'mobile' else '30'
-    
-    return int(f'{version_name}{run_number:02d}{target_version}')
+    return int(f'{version_name}{run_number:04d}{target_version}')
        
 def main() -> int:
     target = sys.argv[1]
