@@ -22,13 +22,26 @@ platform :android do
   end
 
   desc "Submit a new relase candidate to internal tests"
-  lane :internal do |options|
+  lane :internal_mobile do |options|
     package_name = options[:packageName]
     artifact = options[:artifact]
 
     upload_to_play_store(
       package_name: package_name,
       track: "internal",
+      aab: artifact
+    )
+  end
+
+
+  desc "Submit a new relase candidate to wear internal tests"
+  lane :internal_wear do |options|
+    package_name = options[:packageName]
+    artifact = options[:artifact]
+
+    upload_to_play_store(
+      package_name: package_name,
+      track: "wear:internal",
       aab: artifact
     )
   end

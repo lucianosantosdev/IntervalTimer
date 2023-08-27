@@ -33,6 +33,6 @@ jobs:
       
       - name: Distribute app to Internal Testing track 🚀
         run: |
-          bundle exec fastlane internal \
+          bundle exec fastlane internal_${{inputs.target}} \
             artifact:$(find . -iname "*.aab") \
             packageName:dev.lucianosantos.intervaltimer
