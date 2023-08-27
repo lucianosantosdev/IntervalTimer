@@ -67,7 +67,7 @@ android {
 
 dependencies {
     implementation(libs.kotlin.stdlib)
-//    implementation(libs.bundles.firebase)
+    implementation(libs.bundles.firebase)
     implementation(libs.material)
 
     implementation(libs.compose.activity)
