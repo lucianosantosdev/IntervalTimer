@@ -9,6 +9,7 @@ on:
 jobs:  
   build_n_deploy_all:
     strategy:
+      fail-fast: false
       max-parallel: 1
       matrix: 
         target: [mobile, wear]
