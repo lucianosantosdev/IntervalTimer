@@ -47,10 +47,7 @@ jacoco {
 dependencies {
     implementation(libs.kotlin.stdlib)
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
     implementation(libs.bundles.lifecycle)
-    implementation(libs.material)
-    implementation(libs.numberPicker)
 
     testImplementation(libs.bundles.tests)
     androidTestImplementation(libs.bundles.androidTests)

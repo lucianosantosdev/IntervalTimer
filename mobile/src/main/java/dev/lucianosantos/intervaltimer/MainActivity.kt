@@ -14,15 +14,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val useCompose = true
-
-        if (!useCompose) {
-            setContentView(R.layout.activity_main)
-        } else {
-            setContent {
-                IntervalTimerTheme {
-                    MainApp()
-                }
+        setContent {
+            IntervalTimerTheme {
+                MainApp()
             }
         }
     }

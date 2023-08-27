@@ -3,7 +3,6 @@ import java.util.Properties
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("androidx.navigation.safeargs.kotlin")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
 }
@@ -72,12 +71,8 @@ android {
 dependencies {
     implementation(libs.kotlin.stdlib)
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.6.0-alpha02")
-    implementation("androidx.navigation:navigation-ui-ktx:2.6.0-alpha02")
-    implementation(libs.numberPicker)
+    implementation(libs.navigation.ui.ktx)
     implementation(libs.bundles.firebase)
     implementation(libs.bundles.lifecycle)
 

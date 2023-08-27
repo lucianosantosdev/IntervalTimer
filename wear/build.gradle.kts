@@ -3,7 +3,6 @@ import java.util.Properties
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("androidx.navigation.safeargs.kotlin")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
 }
@@ -25,6 +24,13 @@ android {
         applicationId = "dev.lucianosantos.intervaltimer"
         minSdk = Versions.MIN_SDK
         targetSdk = Versions.WEAR_COMPILE_SDK
+
+        configurations.all {
+            resolutionStrategy {
+                force("androidx.emoji2:emoji2-views-helper:1.2.0")
+                force("androidx.emoji2:emoji2:1.2.0")
+            }
+        }
     }
 
     signingConfigs {
@@ -61,11 +67,8 @@ android {
 
 dependencies {
     implementation(libs.kotlin.stdlib)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.bundles.firebase)
-
+//    implementation(libs.bundles.firebase)
     implementation(libs.material)
-    implementation("com.google.android.gms:play-services-wearable:18.0.0")
 
     implementation(libs.compose.activity)
     implementation(libs.compose.ui.tooling.preview)

@@ -5,7 +5,6 @@ buildscript {
         maven { url = uri("https://plugins.gradle.org/m2/") }
     }
     dependencies {
-        classpath(libs.androidx.navigationSafeArgsGradlePlugin)
         classpath(libs.jacoco)
         classpath(libs.google.services)
         classpath(libs.firebase.crashlytics.gradle)

@@ -15,10 +15,4 @@
     <color name="yellow">#F9D923</color>
     <color name="green">#36AE7C</color>
     <color name="blue">#187498</color>
-
-    <color name="np_dividerColor">@android:color/transparent</color>
-    <color name="np_textColor">@android:color/transparent</color>
-    <color name="np_textColorOnFocus">@android:color/white</color>
-    <color name="np_selectedTextColor">@android:color/white</color>
-    <color name="np_selectedTextColorOnFocus">@color/secondary_800</color>
 </resources>

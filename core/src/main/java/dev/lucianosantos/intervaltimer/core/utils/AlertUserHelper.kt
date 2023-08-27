@@ -13,11 +13,7 @@ class AlertUserHelper(val context: Context) : IAlertUserHelper {
 
     private fun vibrate(duration: Long) {
         val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        if (Build.VERSION.SDK_INT >= 26) {
-            vibrator.vibrate(VibrationEffect.createOneShot(duration, VibrationEffect.DEFAULT_AMPLITUDE))
-        } else {
-            vibrator.vibrate(duration)
-        }
+        vibrator.vibrate(VibrationEffect.createOneShot(duration, VibrationEffect.DEFAULT_AMPLITUDE))
     }
 
     private fun shortBeep() {

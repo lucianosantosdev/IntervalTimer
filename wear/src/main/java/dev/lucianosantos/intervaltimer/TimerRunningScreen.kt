@@ -53,7 +53,6 @@ import java.util.Locale
 @Composable
 fun TimerRunningScreen(
     timerSettings: TimerSettings,
-    onStopClicked: () -> Unit,
     onRefreshClicked: () -> Unit
 ) {
     val timerViewModel : TimerViewModel = viewModel(
@@ -76,10 +75,6 @@ fun TimerRunningScreen(
         onPauseClicked = {
             timerViewModel.pauseTimer()
         },
-        onStopClicked = {
-            timerViewModel.stopTimer()
-            onStopClicked()
-        },
         onRefreshClicked = {
             timerViewModel.stopTimer()
             onRefreshClicked()
@@ -99,7 +94,6 @@ fun TimerRunningComponent(
     isPaused: Boolean,
     onPlayClicked : () -> Unit,
     onPauseClicked : () -> Unit,
-    onStopClicked : () -> Unit,
     onRefreshClicked: () -> Unit = {}
 ) {
     Box(

@@ -20,10 +20,4 @@
     <color name="train_color">@color/green</color>
     <color name="rest_color">@color/red</color>
     <color name="finished_color">@color/blue</color>
-
-    <color name="np_dividerColor">@android:color/transparent</color>
-    <color name="np_textColor">@android:color/transparent</color>
-    <color name="np_textColorOnFocus">@android:color/white</color>
-    <color name="np_selectedTextColor">@android:color/white</color>
-    <color name="np_selectedTextColorOnFocus">@color/secondary_800</color>
 </resources>

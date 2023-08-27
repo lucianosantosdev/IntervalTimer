@@ -22,7 +22,7 @@ jacoco-plugin-version = "0.1.5"
 compose-bom-version = "2023.05.00"
 activity-compose-version = "1.7.2"
 navigation-compose-version = "2.6.0"
-navigation = "2.7.0"
+navigation = "2.6.0"
 
 google-services-version = "4.3.14"
 firebase-crashlytics-version = "18.3.2"
@@ -54,7 +54,6 @@ androidx-lifecycle-common =  { group = "androidx.lifecycle", name = "lifecycle-c
 androidx-lifecycle-runtime =  { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidx-lifecycle-version" }
 androidx-lifecycle-livedata =  { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "androidx-lifecycle-version" }
 androidx-lifecycle-viewmodel =  { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle-version" }
-androidx-navigationSafeArgsGradlePlugin = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "navigation-safe-args-version" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material-version" }
 numberPicker = { group = "io.github.ShawnLin013", name = "number-picker", version.ref = "numberPicker-version" }
 
