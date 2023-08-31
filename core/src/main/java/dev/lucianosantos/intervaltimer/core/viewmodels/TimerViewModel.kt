@@ -7,6 +7,7 @@ import dev.lucianosantos.intervaltimer.core.data.TimerState
 import dev.lucianosantos.intervaltimer.core.utils.IAlertUserHelper
 import dev.lucianosantos.intervaltimer.core.utils.ICountDownTimerHelper
 import dev.lucianosantos.intervaltimer.core.utils.formatMinutesAndSeconds
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -166,7 +167,7 @@ class TimerViewModel(
     }
 
     private fun alertUser(state: TimerState?) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             when (state) {
                 TimerState.PREPARE -> alertUserHelper.startPrepareAlert()
                 TimerState.TRAIN -> alertUserHelper.startTrainAlert()
