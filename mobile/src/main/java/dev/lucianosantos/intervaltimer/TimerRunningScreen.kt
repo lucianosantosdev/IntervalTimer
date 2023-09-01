@@ -28,12 +28,13 @@ import dev.lucianosantos.intervaltimer.components.ActionButton
 import dev.lucianosantos.intervaltimer.core.data.TimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerState
 import dev.lucianosantos.intervaltimer.core.utils.AlertUserHelper
-import dev.lucianosantos.intervaltimer.core.utils.CountDownTimerHelper
+import dev.lucianosantos.intervaltimer.core.utils.ICountDownTimerHelper
 import dev.lucianosantos.intervaltimer.core.viewmodels.TimerViewModel
 import dev.lucianosantos.intervaltimer.theme.IntervalTimerTheme
 
 @Composable
 fun TimerRunningScreen(
+    countDownTimer: ICountDownTimerHelper,
     timerSettings: TimerSettings,
     onStopClicked: () -> Unit,
     onRestartClicked: () -> Unit
@@ -41,7 +42,7 @@ fun TimerRunningScreen(
     val timerViewModel : TimerViewModel = viewModel(
         factory = TimerViewModel.Factory(
             timerSettings = timerSettings,
-            countDownTimerHelper = CountDownTimerHelper(),
+            countDownTimerHelper = countDownTimer,
             beepHelper = AlertUserHelper(LocalContext.current),
         )
     )

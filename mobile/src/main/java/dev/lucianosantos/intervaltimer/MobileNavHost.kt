@@ -10,10 +10,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import dev.lucianosantos.intervaltimer.core.data.TimerSettingsRepository
+import dev.lucianosantos.intervaltimer.core.utils.ICountDownTimerHelper
 import dev.lucianosantos.intervaltimer.core.viewmodels.SettingsViewModel
 
 @Composable
 fun MobileNavHost(
+    countDownTimer: ICountDownTimerHelper,
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
@@ -37,7 +39,8 @@ fun MobileNavHost(
 
         composable(route = TimerRunning.route) {
             TimerRunningScreen(
-                settings.timerSettings,
+                countDownTimer = countDownTimer,
+                timerSettings = settings.timerSettings,
                 onStopClicked = { navController.navigate(Settings.route) },
                 onRestartClicked = {
                     navController.navigate(TimerRunning.route) {
