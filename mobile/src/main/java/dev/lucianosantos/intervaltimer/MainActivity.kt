@@ -10,9 +10,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import dev.lucianosantos.intervaltimer.core.TimerActivity
+import dev.lucianosantos.intervaltimer.core.service.CountDownTimerService
 import dev.lucianosantos.intervaltimer.core.utils.CountDownTimerHelper
 import dev.lucianosantos.intervaltimer.core.utils.ICountDownTimerHelper
 import dev.lucianosantos.intervaltimer.theme.IntervalTimerTheme
+import java.lang.ref.WeakReference
 
 class MainActivity : TimerActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +31,7 @@ class MainActivity : TimerActivity() {
 }
 
 @Composable
-fun MainApp(countDownTimer: ICountDownTimerHelper) {
+fun MainApp(countDownTimer: CountDownTimerService) {
     val navController = rememberNavController()
 
     MobileNavHost(
@@ -43,6 +45,6 @@ fun MainApp(countDownTimer: ICountDownTimerHelper) {
 @Composable
 fun MainAppPreview() {
     IntervalTimerTheme {
-        MainApp(CountDownTimerHelper())
+        MainApp(CountDownTimerService())
     }
 }

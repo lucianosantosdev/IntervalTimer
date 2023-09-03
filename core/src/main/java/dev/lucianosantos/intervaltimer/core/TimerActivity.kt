@@ -3,7 +3,9 @@ package dev.lucianosantos.intervaltimer.core
 import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
+import android.os.Bundle
 import android.os.IBinder
+import android.os.PersistableBundle
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,6 +28,10 @@ open class TimerActivity : ComponentActivity() {
         override fun onServiceDisconnected(name: ComponentName?) {
             isBound = false
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+        super.onCreate(savedInstanceState, persistentState)
     }
 
     override fun onStart() {

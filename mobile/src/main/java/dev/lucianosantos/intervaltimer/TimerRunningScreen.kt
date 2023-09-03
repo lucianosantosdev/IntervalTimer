@@ -15,7 +15,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
@@ -27,57 +26,49 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.lucianosantos.intervaltimer.components.ActionButton
 import dev.lucianosantos.intervaltimer.core.data.TimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerState
-import dev.lucianosantos.intervaltimer.core.utils.AlertUserHelper
-import dev.lucianosantos.intervaltimer.core.utils.ICountDownTimerHelper
-import dev.lucianosantos.intervaltimer.core.viewmodels.TimerViewModel
+import dev.lucianosantos.intervaltimer.core.service.CountDownTimerService
+import dev.lucianosantos.intervaltimer.core.utils.formatMinutesAndSeconds
 import dev.lucianosantos.intervaltimer.theme.IntervalTimerTheme
+import java.lang.ref.WeakReference
 
 @Composable
 fun TimerRunningScreen(
-    countDownTimer: ICountDownTimerHelper,
+    countDownTimer: CountDownTimerService,
     timerSettings: TimerSettings,
     onStopClicked: () -> Unit,
     onRestartClicked: () -> Unit
 ) {
-    val timerViewModel : TimerViewModel = viewModel(
-        factory = TimerViewModel.Factory(
-            timerSettings = timerSettings,
-            countDownTimerHelper = countDownTimer,
-            beepHelper = AlertUserHelper(LocalContext.current),
-        )
-    )
-    val timerUiState by timerViewModel.timerUiState.collectAsState()
 
     TimerRunningComponent(
-        remainingSections = timerUiState.remainingSections,
-        currentTime = timerUiState.currentTime,
-        timerState = timerUiState.timerState,
-        isPaused = timerUiState.isPaused,
+        remainingSections = countDownTimer.remainingSections,
+        currentTimeSeconds = countDownTimer.currentTimeSeconds,
+        timerState = countDownTimer.timerState,
+        isPaused = countDownTimer.isPaused,
         onPlayClicked = {
-            timerViewModel.resumeTimer()
+            countDownTimer.resume()
         },
         onPauseClicked = {
-            timerViewModel.pauseTimer()
+            countDownTimer.pause()
         },
         onStopClicked = {
-            timerViewModel.stopTimer()
+            countDownTimer.stop()
             onStopClicked()
         },
         onRestartClicked = {
-            timerViewModel.stopTimer()
+            countDownTimer.stop()
             onRestartClicked()
         }
     )
 
     LaunchedEffect(Unit){
-        timerViewModel.startTimer()
+        countDownTimer.start(timerSettings)
     }
 }
 
 @Composable
 fun TimerRunningComponent(
     remainingSections : Int,
-    currentTime : String,
+    currentTimeSeconds : Int,
     timerState : TimerState,
     isPaused: Boolean,
     onPlayClicked : () -> Unit,
@@ -104,7 +95,7 @@ fun TimerRunningComponent(
                     color = colorResource(id = R.color.white)
                 )
                 Text(
-                    text = currentTime,
+                    text = formatMinutesAndSeconds(currentTimeSeconds),
                     style = MaterialTheme.typography.headlineLarge.copy(
                         fontSize = 100.sp,
                         fontFamily = FontFamily(Typeface.MONOSPACE)
@@ -170,7 +161,7 @@ fun TimerRunningScreenPreview() {
     IntervalTimerTheme {
         TimerRunningComponent(
             remainingSections = 1,
-            currentTime = "12:34",
+            currentTimeSeconds = 754,
             timerState = TimerState.PREPARE,
             true,
             {},
