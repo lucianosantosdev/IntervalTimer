@@ -26,19 +26,6 @@ private val DarkColorScheme = darkColorScheme(
 
 @Composable
 private fun customColorScheme() = darkColorScheme(
-//    <!-- Primary brand color. -->
-//    <item name="colorPrimary">@color/primary_500</item>
-//    <item name="colorPrimaryVariant">@color/primary_700</item>
-//    <item name="colorOnPrimary">@color/white</item>
-//    <!-- Secondary brand color. -->
-//    <item name="colorSecondary">@color/secondary_800</item>
-//    <item name="colorSecondaryVariant">@color/secondary_700</item>
-//    <item name="colorOnSecondary">@color/black</item>
-//    <!-- Customize your theme here. -->
-//    <item name="colorSurface">@color/white</item>
-//    <item name="colorOnSurfaceVariant">@color/primary_800</item>
-//    <item name="colorOutline">@color/primary_400</item>
-
     primary =  colorResource(id = R.color.primary_500),
     onPrimary = colorResource(id = R.color.white),
     secondary = colorResource(id = R.color.secondary_800),
@@ -58,7 +45,6 @@ fun IntervalTimerTheme(
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
-
         darkTheme -> DarkColorScheme
         else -> customColorScheme()
     }
@@ -70,7 +56,6 @@ fun IntervalTimerTheme(
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }
     }
-
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,

@@ -34,18 +34,14 @@ class CountDownTimer(
     private val _remainingSections = MutableStateFlow(timerSettings.sections)
     val remainingSections : StateFlow<Int> = _remainingSections.asStateFlow()
 
-
     private val _currentTimeSeconds = MutableStateFlow(0)
     val currentTimeSeconds : StateFlow<Int> = _currentTimeSeconds.asStateFlow()
-
 
     private val _isPaused = MutableStateFlow(false)
     val isPaused : StateFlow<Boolean> = _isPaused.asStateFlow()
 
-
     private val eventChannel = Channel<Event>()
     private val eventsFlow = eventChannel.receiveAsFlow()
-
     private val corroutineScope = CoroutineScope(Dispatchers.Main)
 
     init {

@@ -47,9 +47,7 @@ fun SettingsScreen(
             Column(
                 modifier = Modifier.align(Alignment.Center),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-
-
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 LabelText(text = stringResource(R.string.label_sections))
                 NumberPicker(
@@ -58,7 +56,6 @@ fun SettingsScreen(
                         settingsViewModel.setSections(it)
                     }
                 )
-
                 LabelText(text = stringResource(R.string.label_train_number_picker))
                 NumberPicker(
                     uiState.timerSettings.trainTimeSeconds,
@@ -67,7 +64,6 @@ fun SettingsScreen(
                         settingsViewModel.setTrainTime(it)
                     }
                 )
-
                 LabelText(text = stringResource(R.string.label_rest_number_picker))
                 NumberPicker(
                     value = uiState.timerSettings.restTimeSeconds,
@@ -87,9 +83,6 @@ fun SettingsScreen(
                 Text(text = stringResource(R.string.button_start))
             }
         }
-
-
-
     }
 }
 

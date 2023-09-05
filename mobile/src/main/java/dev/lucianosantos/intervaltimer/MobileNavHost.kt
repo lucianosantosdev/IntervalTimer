@@ -29,16 +29,12 @@ fun MobileNavHost(
         startDestination = Settings.route,
         modifier = modifier
     ) {
-
         composable(route = Settings.route) {
             SettingsScreen(
                 settingsViewModel = settingsViewModel,
                 onStartClicked = { navController.navigate(TimerRunning.route) })
         }
-
         composable(route = TimerRunning.route) {
-//            timerViewModel.settings = settings.timerSettings
-
             TimerRunningScreen(
                 timerSettings = settings.timerSettings,
                 countDownTimerService = countDownTimerService,
@@ -47,7 +43,7 @@ fun MobileNavHost(
                     navController.navigate(TimerRunning.route) {
                         popUpTo(TimerRunning.route) { inclusive = true }
                     }
-                },
+                }
             )
         }
     }

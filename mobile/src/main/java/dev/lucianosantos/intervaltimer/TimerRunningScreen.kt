@@ -60,7 +60,6 @@ fun TimerRunningScreen(
             onRestartClicked()
         }
     )
-
     LaunchedEffect(Unit){
         countDownTimerService.start(timerSettings)
     }
@@ -86,73 +85,73 @@ fun TimerRunningComponent(
             TimerState.FINISHED -> colorResource(id = R.color.finished_color)
         }
     ) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Text(
-                    text = if (timerState != TimerState.FINISHED) remainingSections.toString() else " ",
-                    style = MaterialTheme.typography.headlineLarge,
-                    color = colorResource(id = R.color.white)
-                )
-                Text(
-                    text = formatMinutesAndSeconds(currentTime),
-                    style = MaterialTheme.typography.headlineLarge.copy(
-                        fontSize = 100.sp,
-                        fontFamily = FontFamily(Typeface.MONOSPACE)
+        Column(
+            verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Text(
+                text = if (timerState != TimerState.FINISHED) remainingSections.toString() else " ",
+                style = MaterialTheme.typography.headlineLarge,
+                color = colorResource(id = R.color.white)
+            )
+            Text(
+                text = formatMinutesAndSeconds(currentTime),
+                style = MaterialTheme.typography.headlineLarge.copy(
+                    fontSize = 100.sp,
+                    fontFamily = FontFamily(Typeface.MONOSPACE)
 
-                    ),
-                    color = colorResource(id = R.color.white)
-                )
-                Text(
-                    text = when(timerState) {
-                        TimerState.PREPARE -> stringResource(id = R.string.state_prepare_text)
-                        TimerState.REST -> stringResource(id = R.string.state_rest_text)
-                        TimerState.TRAIN -> stringResource(id = R.string.state_train_text)
-                        TimerState.FINISHED -> stringResource(id = R.string.state_finished_text)
-                    },
-                    style = MaterialTheme.typography.headlineLarge,
-                    color = colorResource(id = R.color.white),
-                    fontWeight = FontWeight.Bold
-                )
-                Row(
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(32.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    if(timerState == TimerState.FINISHED) {
+                ),
+                color = colorResource(id = R.color.white)
+            )
+            Text(
+                text = when(timerState) {
+                    TimerState.PREPARE -> stringResource(id = R.string.state_prepare_text)
+                    TimerState.REST -> stringResource(id = R.string.state_rest_text)
+                    TimerState.TRAIN -> stringResource(id = R.string.state_train_text)
+                    TimerState.FINISHED -> stringResource(id = R.string.state_finished_text)
+                },
+                style = MaterialTheme.typography.headlineLarge,
+                color = colorResource(id = R.color.white),
+                fontWeight = FontWeight.Bold
+            )
+            Row(
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
+                horizontalArrangement = Arrangement.spacedBy(32.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                if(timerState == TimerState.FINISHED) {
+                    ActionButton(
+                        onClick = onStopClicked,
+                        icon = R.drawable.ic_baseline_stop_24,
+                        contentDescription = R.string.stop_content_description
+                    )
+                    ActionButton(
+                        onClick = onRestartClicked,
+                        icon = R.drawable.ic_baseline_refresh_24,
+                        contentDescription = R.string.restart_content_description
+                    )
+                } else {
+                    if (!isPaused) {
+                        ActionButton(
+                            onClick = onPauseClicked,
+                            icon = R.drawable.ic_baseline_pause_24,
+                            contentDescription = R.string.pause_content_description
+                        )
+                    } else {
                         ActionButton(
                             onClick = onStopClicked,
                             icon = R.drawable.ic_baseline_stop_24,
                             contentDescription = R.string.stop_content_description
                         )
                         ActionButton(
-                            onClick = onRestartClicked,
-                            icon = R.drawable.ic_baseline_refresh_24,
-                            contentDescription = R.string.restart_content_description
+                            onClick = onPlayClicked,
+                            icon = R.drawable.ic_baseline_play_arrow_24,
+                            contentDescription = R.string.resume_content_description
                         )
-                    } else {
-                        if (!isPaused) {
-                            ActionButton(
-                                onClick = onPauseClicked,
-                                icon = R.drawable.ic_baseline_pause_24,
-                                contentDescription = R.string.pause_content_description
-                            )
-                        } else {
-                            ActionButton(
-                                onClick = onStopClicked,
-                                icon = R.drawable.ic_baseline_stop_24,
-                                contentDescription = R.string.stop_content_description
-                            )
-                            ActionButton(
-                                onClick = onPlayClicked,
-                                icon = R.drawable.ic_baseline_play_arrow_24,
-                                contentDescription = R.string.resume_content_description
-                            )
-                        }
                     }
                 }
             }
+        }
     }
 }
 

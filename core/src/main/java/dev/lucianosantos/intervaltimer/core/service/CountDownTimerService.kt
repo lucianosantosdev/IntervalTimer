@@ -33,11 +33,8 @@ class CountDownTimerService : Service() {
     )
 
     val timerState = countDownTimer.timerState
-
     val remainingSections = countDownTimer.remainingSections
-
     val currentTimeSeconds = countDownTimer.currentTimeSeconds
-
     val isPaused = countDownTimer.isPaused
 
     private val binder = CountDownTimerBinder()
@@ -50,7 +47,6 @@ class CountDownTimerService : Service() {
 
     fun start(newTimerSettings: TimerSettings) {
         countDownTimer.timerSettings = newTimerSettings
-
         CoroutineScope(Dispatchers.Default).launch {
             countDownTimer.start()
         }
@@ -71,5 +67,4 @@ class CountDownTimerService : Service() {
     companion object {
         private const val TAG = "CountDownTimerService"
     }
-
 }
