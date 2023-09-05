@@ -36,47 +36,7 @@ class CountDownTimerService : Service() {
 
     private val binder = CountDownTimerBinder()
 
-    private val countDownTimer = CountDownTimerHelper()
-
-    private val eventChannel = Channel<Event>()
-
-    private val eventsFlow = eventChannel.receiveAsFlow()
-
-    private var timerSettings: TimerSettings? = null
-
-    private val corroutineScope = CoroutineScope(Dispatchers.Main)
-
-    init {
-        eventsFlow.onEach {
-            if (timerSettings == null) {
-                return@onEach
-            }
-            when(it) {
-                is Event.Prepare -> {
-                    setTimerStateAndAlert(TimerState.PREPARE)
-                    remainingSections = timerSettings!!.sections
-                    startCountDownTimer(timerSettings!!.prepareTimeSeconds)
-                }
-                is Event.Train -> {
-                    setTimerStateAndAlert(TimerState.TRAIN)
-                    startCountDownTimer(timerSettings!!.trainTimeSeconds)
-                }
-                is Event.Rest -> {
-                    setTimerStateAndAlert(TimerState.REST)
-                    startCountDownTimer(timerSettings!!.restTimeSeconds)
-                }
-                is Event.Finished -> {
-                    remainingSections = 0
-                    setTimerStateAndAlert(TimerState.FINISHED)
-                }
-            }
-        }.launchIn(corroutineScope)
-    }
-
-    private fun setTimerStateAndAlert(state: TimerState) {
-        timerState = state
-        alertUser(state)
-    }
+    private var countDownTimer: CountDownTimer? = null
 
     override fun onBind(intent: Intent?): IBinder = binder
 
@@ -85,99 +45,27 @@ class CountDownTimerService : Service() {
     }
 
     fun start(newTimerSettings: TimerSettings) {
-        timerSettings = newTimerSettings
-        isPaused = false
-        CoroutineScope(Dispatchers.Default).launch {
-            eventChannel.send(Event.Prepare)
-        }
+        countDownTimer = CountDownTimer(
+            newTimerSettings,
+            CountDownTimerHelper(),
+            AlertUserHelper(this)
+        )
 
+        CoroutineScope(Dispatchers.Default).launch {
+            countDownTimer!!.start()
+        }
     }
 
     fun pause() {
-        isPaused = true
-        countDownTimer.pause()
+        countDownTimer?.pause()
     }
 
     fun resume() {
-        isPaused = false
-        countDownTimer.resume()
+        countDownTimer?.resume()
     }
 
     fun stop() {
-        isPaused = false
-        countDownTimer.stop()
-    }
-
-    private fun startCountDownTimer(seconds: Int) {
-        currentTimeSeconds = seconds
-        countDownTimer.startCountDown(seconds, { secondsUntilFinished ->
-            currentTimeSeconds = secondsUntilFinished.toInt()
-            if (secondsUntilFinished <= 3) {
-                alertUser(null)
-            }
-        }, onFinishCallback = {
-            currentTimeSeconds = 0
-            resolveNextEvent()
-        })
-    }
-
-    private fun resolveNextEvent() {
-        corroutineScope.launch {
-            val currentRemainingSections = remainingSections
-            Log.d(TAG, "Current state: ${remainingSections} - Remaining sections : $currentRemainingSections")
-
-            when (timerState) {
-                TimerState.PREPARE -> {
-                    afterPrepare()
-                }
-                TimerState.REST -> {
-                    afterRest(currentRemainingSections)
-                }
-                TimerState.TRAIN -> {
-                    afterTrain(currentRemainingSections)
-                }
-                else -> {
-                    // Nothing to do here.
-                }
-            }
-        }
-    }
-
-    private suspend fun afterPrepare() {
-        eventChannel.send(Event.Train)
-    }
-
-    private suspend fun afterRest(remainingSections: Int) {
-        this.remainingSections = remainingSections - 1
-        eventChannel.send(Event.Train)
-    }
-
-    private suspend fun  afterTrain(remainingSections: Int) {
-        if (remainingSections > 1) {
-            eventChannel.send(Event.Rest)
-        } else {
-            eventChannel.send(Event.Finished)
-        }
-    }
-
-    private fun alertUser(state: TimerState?) {
-        corroutineScope.launch(Dispatchers.IO) {
-            val alertUserHelper = AlertUserHelper(this@CountDownTimerService)
-            when (state) {
-                TimerState.PREPARE -> alertUserHelper.startPrepareAlert()
-                TimerState.TRAIN -> alertUserHelper.startTrainAlert()
-                TimerState.REST -> alertUserHelper.startRestAlert()
-                TimerState.FINISHED -> alertUserHelper.finishedAlert()
-                else -> alertUserHelper.timerAlmostFinishingAlert()
-            }
-        }
-    }
-
-    sealed class Event {
-        object Prepare: Event()
-        object Train: Event()
-        object Rest: Event()
-        object Finished: Event()
+        countDownTimer?.stop()
     }
 
     companion object {
