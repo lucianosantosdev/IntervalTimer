@@ -41,51 +41,45 @@ import androidx.wear.compose.material.TimeTextDefaults
 import androidx.wear.compose.ui.tooling.preview.WearPreviewLargeRound
 import dev.lucianosantos.intervaltimer.core.data.TimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerState
+import dev.lucianosantos.intervaltimer.core.service.CountDownTimerService
 import dev.lucianosantos.intervaltimer.core.utils.AlertUserHelper
 import dev.lucianosantos.intervaltimer.core.utils.ICountDownTimerHelper
+import dev.lucianosantos.intervaltimer.core.utils.formatMinutesAndSeconds
 import java.util.Locale
 
 @Composable
 fun TimerRunningScreen(
-    countDownTimer: ICountDownTimerHelper,
     timerSettings: TimerSettings,
+    countDownTimerService: CountDownTimerService,
     onRefreshClicked: () -> Unit
 ) {
-    val timerViewModel : TimerViewModel = viewModel(
-        factory = TimerViewModel.Factory(
-            timerSettings = timerSettings,
-            countDownTimerHelper = countDownTimer,
-            beepHelper = AlertUserHelper(LocalContext.current),
-        )
-    )
-    val timerUiState by timerViewModel.timerUiState.collectAsState()
 
     TimerRunningComponent(
-        remainingSections = timerUiState.remainingSections,
-        currentTime = timerUiState.currentTime,
-        timerState = timerUiState.timerState,
-        isPaused = timerUiState.isPaused,
+        remainingSections = countDownTimerService.remainingSections,
+        currentTimeSeconds = countDownTimerService.currentTimeSeconds,
+        timerState = countDownTimerService.timerState,
+        isPaused = countDownTimerService.isPaused,
         onPlayClicked = {
-            timerViewModel.resumeTimer()
+            countDownTimerService.resume()
         },
         onPauseClicked = {
-            timerViewModel.pauseTimer()
+            countDownTimerService.pause()
         },
         onRefreshClicked = {
-            timerViewModel.stopTimer()
+            countDownTimerService.stop()
             onRefreshClicked()
         }
     )
 
     LaunchedEffect(Unit){
-        timerViewModel.startTimer()
+        countDownTimerService.start(timerSettings)
     }
 }
 
 @Composable
 fun TimerRunningComponent(
     remainingSections : Int,
-    currentTime : String,
+    currentTimeSeconds : Int,
     timerState : TimerState,
     isPaused: Boolean,
     onPlayClicked : () -> Unit,
@@ -125,7 +119,7 @@ fun TimerRunningComponent(
                 color = colorResource(id = R.color.white)
             )
             Text(
-                text = currentTime,
+                text = formatMinutesAndSeconds(currentTimeSeconds),
                 style = MaterialTheme.typography.title3.copy(
                     fontSize = 40.sp,
                     fontFamily = FontFamily(Typeface.MONOSPACE)
@@ -203,7 +197,7 @@ fun TimerRunningScreenPreview() {
     WearAppTheme {
         TimerRunningComponent(
             remainingSections = 1,
-            currentTime = "12:34",
+            currentTimeSeconds = 1234,
             timerState = TimerState.PREPARE,
             true,
             {},

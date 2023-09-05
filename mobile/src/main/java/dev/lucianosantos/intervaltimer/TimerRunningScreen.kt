@@ -11,8 +11,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -22,53 +20,50 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.lucianosantos.intervaltimer.components.ActionButton
 import dev.lucianosantos.intervaltimer.core.data.TimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerState
 import dev.lucianosantos.intervaltimer.core.service.CountDownTimerService
 import dev.lucianosantos.intervaltimer.core.utils.formatMinutesAndSeconds
 import dev.lucianosantos.intervaltimer.theme.IntervalTimerTheme
-import java.lang.ref.WeakReference
 
 @Composable
 fun TimerRunningScreen(
-    countDownTimer: CountDownTimerService,
     timerSettings: TimerSettings,
+    countDownTimerService: CountDownTimerService,
     onStopClicked: () -> Unit,
     onRestartClicked: () -> Unit
 ) {
-
     TimerRunningComponent(
-        remainingSections = countDownTimer.remainingSections,
-        currentTimeSeconds = countDownTimer.currentTimeSeconds,
-        timerState = countDownTimer.timerState,
-        isPaused = countDownTimer.isPaused,
+        remainingSections = countDownTimerService.remainingSections,
+        currentTime = countDownTimerService.currentTimeSeconds,
+        timerState = countDownTimerService.timerState,
+        isPaused = countDownTimerService.isPaused,
         onPlayClicked = {
-            countDownTimer.resume()
+            countDownTimerService.resume()
         },
         onPauseClicked = {
-            countDownTimer.pause()
+            countDownTimerService.pause()
         },
         onStopClicked = {
-            countDownTimer.stop()
+            countDownTimerService.stop()
             onStopClicked()
         },
         onRestartClicked = {
-            countDownTimer.stop()
+            countDownTimerService.stop()
             onRestartClicked()
         }
     )
 
     LaunchedEffect(Unit){
-        countDownTimer.start(timerSettings)
+        countDownTimerService.start(timerSettings)
     }
 }
 
 @Composable
 fun TimerRunningComponent(
     remainingSections : Int,
-    currentTimeSeconds : Int,
+    currentTime : Int,
     timerState : TimerState,
     isPaused: Boolean,
     onPlayClicked : () -> Unit,
@@ -95,7 +90,7 @@ fun TimerRunningComponent(
                     color = colorResource(id = R.color.white)
                 )
                 Text(
-                    text = formatMinutesAndSeconds(currentTimeSeconds),
+                    text = formatMinutesAndSeconds(currentTime),
                     style = MaterialTheme.typography.headlineLarge.copy(
                         fontSize = 100.sp,
                         fontFamily = FontFamily(Typeface.MONOSPACE)
@@ -161,7 +156,7 @@ fun TimerRunningScreenPreview() {
     IntervalTimerTheme {
         TimerRunningComponent(
             remainingSections = 1,
-            currentTimeSeconds = 754,
+            currentTime = 1234,
             timerState = TimerState.PREPARE,
             true,
             {},
