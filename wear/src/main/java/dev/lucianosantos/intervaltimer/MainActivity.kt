@@ -31,12 +31,10 @@ import dev.lucianosantos.intervaltimer.core.utils.ICountDownTimerHelper
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
+        setTheme(R.style.Theme_App)
         setContent {
             val countDownTimerService = rememberBoundLocalService<CountDownTimerService, CountDownTimerService.CountDownTimerBinder> { getService() }
             if (countDownTimerService != null) {
-                setTheme(R.style.Theme_App)
                 MainApp(countDownTimerService)
             }
         }
@@ -72,7 +70,6 @@ inline fun <reified BoundService : Service, reified BoundServiceBinder : Binder>
             override fun onServiceConnected(className: ComponentName, service: IBinder) {
                 boundService = (service as BoundServiceBinder).getService()
             }
-
             override fun onServiceDisconnected(arg0: ComponentName) {
                 boundService = null
             }

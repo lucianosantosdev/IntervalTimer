@@ -25,13 +25,10 @@ import dev.lucianosantos.intervaltimer.core.service.CountDownTimerService
 import dev.lucianosantos.intervaltimer.theme.IntervalTimerTheme
 
 class MainActivity : ComponentActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContent {
             val countDownTimerService = rememberBoundLocalService<CountDownTimerService, CountDownTimerService.CountDownTimerBinder> { getService() }
-
             if (countDownTimerService !== null) {
                 IntervalTimerTheme {
                     MainApp(countDownTimerService)
@@ -44,7 +41,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainApp(countDownTimerService: CountDownTimerService) {
     val navController = rememberNavController()
-
     MobileNavHost(
         countDownTimerService = countDownTimerService,
         navController = navController,
@@ -64,7 +60,6 @@ inline fun <reified BoundService : Service, reified BoundServiceBinder : Binder>
             override fun onServiceConnected(className: ComponentName, service: IBinder) {
                 boundService = (service as BoundServiceBinder).getService()
             }
-
             override fun onServiceDisconnected(arg0: ComponentName) {
                 boundService = null
             }
