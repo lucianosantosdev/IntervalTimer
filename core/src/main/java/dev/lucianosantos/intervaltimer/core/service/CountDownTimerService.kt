@@ -53,24 +53,29 @@ class CountDownTimerService : Service() {
             }
             when(it) {
                 is Event.Prepare -> {
-                    timerState = TimerState.PREPARE
+                    setTimerStateAndAlert(TimerState.PREPARE)
                     remainingSections = timerSettings!!.sections
                     startCountDownTimer(timerSettings!!.prepareTimeSeconds)
                 }
                 is Event.Train -> {
-                    timerState = TimerState.TRAIN
+                    setTimerStateAndAlert(TimerState.TRAIN)
                     startCountDownTimer(timerSettings!!.trainTimeSeconds)
                 }
                 is Event.Rest -> {
-                    timerState = TimerState.REST
+                    setTimerStateAndAlert(TimerState.REST)
                     startCountDownTimer(timerSettings!!.restTimeSeconds)
                 }
                 is Event.Finished -> {
                     remainingSections = 0
-                    timerState = TimerState.FINISHED
+                    setTimerStateAndAlert(TimerState.FINISHED)
                 }
             }
         }.launchIn(corroutineScope)
+    }
+
+    private fun setTimerStateAndAlert(state: TimerState) {
+        timerState = state
+        alertUser(state)
     }
 
     override fun onBind(intent: Intent?): IBinder = binder
