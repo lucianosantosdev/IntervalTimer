@@ -15,7 +15,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
@@ -23,60 +22,54 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.lucianosantos.intervaltimer.components.ActionButton
 import dev.lucianosantos.intervaltimer.core.data.TimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerState
-import dev.lucianosantos.intervaltimer.core.utils.AlertUserHelper
-import dev.lucianosantos.intervaltimer.core.utils.CountDownTimerHelper
-import dev.lucianosantos.intervaltimer.core.viewmodels.TimerViewModel
+import dev.lucianosantos.intervaltimer.core.service.CountDownTimerService
+import dev.lucianosantos.intervaltimer.core.utils.formatMinutesAndSeconds
 import dev.lucianosantos.intervaltimer.theme.IntervalTimerTheme
 
 @Composable
 fun TimerRunningScreen(
     timerSettings: TimerSettings,
+    countDownTimerService: CountDownTimerService,
     onStopClicked: () -> Unit,
     onRestartClicked: () -> Unit
 ) {
-    val timerViewModel : TimerViewModel = viewModel(
-        factory = TimerViewModel.Factory(
-            timerSettings = timerSettings,
-            countDownTimerHelper = CountDownTimerHelper(),
-            beepHelper = AlertUserHelper(LocalContext.current),
-        )
-    )
-    val timerUiState by timerViewModel.timerUiState.collectAsState()
-
+    val remainingSections by countDownTimerService.remainingSections.collectAsState()
+    val currentTime by countDownTimerService.currentTimeSeconds.collectAsState()
+    val timerState by countDownTimerService.timerState.collectAsState()
+    val isPaused by countDownTimerService.isPaused.collectAsState()
     TimerRunningComponent(
-        remainingSections = timerUiState.remainingSections,
-        currentTime = timerUiState.currentTime,
-        timerState = timerUiState.timerState,
-        isPaused = timerUiState.isPaused,
+        remainingSections = remainingSections,
+        currentTime = currentTime,
+        timerState = timerState,
+        isPaused = isPaused,
         onPlayClicked = {
-            timerViewModel.resumeTimer()
+            countDownTimerService.resume()
         },
         onPauseClicked = {
-            timerViewModel.pauseTimer()
+            countDownTimerService.pause()
         },
         onStopClicked = {
-            timerViewModel.stopTimer()
+            countDownTimerService.stop()
             onStopClicked()
         },
         onRestartClicked = {
-            timerViewModel.stopTimer()
+            countDownTimerService.stop()
             onRestartClicked()
         }
     )
 
     LaunchedEffect(Unit){
-        timerViewModel.startTimer()
+        countDownTimerService.start(timerSettings)
     }
 }
 
 @Composable
 fun TimerRunningComponent(
     remainingSections : Int,
-    currentTime : String,
+    currentTime : Int,
     timerState : TimerState,
     isPaused: Boolean,
     onPlayClicked : () -> Unit,
@@ -103,7 +96,7 @@ fun TimerRunningComponent(
                     color = colorResource(id = R.color.white)
                 )
                 Text(
-                    text = currentTime,
+                    text = formatMinutesAndSeconds(currentTime),
                     style = MaterialTheme.typography.headlineLarge.copy(
                         fontSize = 100.sp,
                         fontFamily = FontFamily(Typeface.MONOSPACE)
@@ -169,7 +162,7 @@ fun TimerRunningScreenPreview() {
     IntervalTimerTheme {
         TimerRunningComponent(
             remainingSections = 1,
-            currentTime = "12:34",
+            currentTime = 1234,
             timerState = TimerState.PREPARE,
             true,
             {},

@@ -48,6 +48,7 @@ dependencies {
     implementation(libs.kotlin.stdlib)
     implementation(libs.androidx.core.ktx)
     implementation(libs.bundles.lifecycle)
+    implementation(libs.compose.activity)
 
     testImplementation(libs.bundles.tests)
     androidTestImplementation(libs.bundles.androidTests)
