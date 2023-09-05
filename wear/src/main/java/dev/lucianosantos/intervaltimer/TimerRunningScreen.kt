@@ -53,12 +53,15 @@ fun TimerRunningScreen(
     countDownTimerService: CountDownTimerService,
     onRefreshClicked: () -> Unit
 ) {
-
+    val remainingSections by countDownTimerService.remainingSections.collectAsState()
+    val currentTime by countDownTimerService.currentTimeSeconds.collectAsState()
+    val timerState by countDownTimerService.timerState.collectAsState()
+    val isPaused by countDownTimerService.isPaused.collectAsState()
     TimerRunningComponent(
-        remainingSections = countDownTimerService.remainingSections,
-        currentTimeSeconds = countDownTimerService.currentTimeSeconds,
-        timerState = countDownTimerService.timerState,
-        isPaused = countDownTimerService.isPaused,
+        remainingSections = remainingSections,
+        currentTimeSeconds = currentTime,
+        timerState = timerState,
+        isPaused = isPaused,
         onPlayClicked = {
             countDownTimerService.resume()
         },

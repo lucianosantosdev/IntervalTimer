@@ -11,6 +11,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -34,11 +36,15 @@ fun TimerRunningScreen(
     onStopClicked: () -> Unit,
     onRestartClicked: () -> Unit
 ) {
+    val remainingSections by countDownTimerService.remainingSections.collectAsState()
+    val currentTime by countDownTimerService.currentTimeSeconds.collectAsState()
+    val timerState by countDownTimerService.timerState.collectAsState()
+    val isPaused by countDownTimerService.isPaused.collectAsState()
     TimerRunningComponent(
-        remainingSections = countDownTimerService.remainingSections,
-        currentTime = countDownTimerService.currentTimeSeconds,
-        timerState = countDownTimerService.timerState,
-        isPaused = countDownTimerService.isPaused,
+        remainingSections = remainingSections,
+        currentTime = currentTime,
+        timerState = timerState,
+        isPaused = isPaused,
         onPlayClicked = {
             countDownTimerService.resume()
         },

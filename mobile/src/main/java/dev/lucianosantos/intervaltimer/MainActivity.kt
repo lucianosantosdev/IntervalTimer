@@ -47,8 +47,6 @@ fun MainApp(countDownTimerService: CountDownTimerService) {
         modifier = Modifier.fillMaxSize()
     )
 }
-
-
 @Composable
 inline fun <reified BoundService : Service, reified BoundServiceBinder : Binder> rememberBoundLocalService(
     crossinline getService: @DisallowComposableCalls BoundServiceBinder.() -> BoundService,

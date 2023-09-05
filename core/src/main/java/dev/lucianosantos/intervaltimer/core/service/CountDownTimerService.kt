@@ -5,9 +5,11 @@ import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
 import android.util.Log
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import dev.lucianosantos.intervaltimer.core.data.DefaultTimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerState
 import dev.lucianosantos.intervaltimer.core.utils.AlertUserHelper
@@ -15,6 +17,8 @@ import dev.lucianosantos.intervaltimer.core.utils.CountDownTimerHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -22,21 +26,21 @@ import kotlinx.coroutines.launch
 
 class CountDownTimerService : Service() {
 
-    var timerState by mutableStateOf(TimerState.PREPARE)
-        private set
+    private var countDownTimer = CountDownTimer(
+        DefaultTimerSettings.settings,
+        CountDownTimerHelper(),
+        AlertUserHelper(this)
+    )
 
-    var remainingSections by mutableStateOf(0)
-        private set
+    val timerState = countDownTimer.timerState
 
-    var currentTimeSeconds by mutableStateOf(0)
-        private set
+    val remainingSections = countDownTimer.remainingSections
 
-    var isPaused by mutableStateOf(false)
-        private set
+    val currentTimeSeconds = countDownTimer.currentTimeSeconds
+
+    val isPaused = countDownTimer.isPaused
 
     private val binder = CountDownTimerBinder()
-
-    private var countDownTimer: CountDownTimer? = null
 
     override fun onBind(intent: Intent?): IBinder = binder
 
@@ -45,27 +49,23 @@ class CountDownTimerService : Service() {
     }
 
     fun start(newTimerSettings: TimerSettings) {
-        countDownTimer = CountDownTimer(
-            newTimerSettings,
-            CountDownTimerHelper(),
-            AlertUserHelper(this)
-        )
+        countDownTimer.timerSettings = newTimerSettings
 
         CoroutineScope(Dispatchers.Default).launch {
-            countDownTimer!!.start()
+            countDownTimer.start()
         }
     }
 
     fun pause() {
-        countDownTimer?.pause()
+        countDownTimer.pause()
     }
 
     fun resume() {
-        countDownTimer?.resume()
+        countDownTimer.resume()
     }
 
     fun stop() {
-        countDownTimer?.stop()
+        countDownTimer.stop()
     }
 
     companion object {

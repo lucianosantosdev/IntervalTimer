@@ -1,4 +1,4 @@
-package dev.lucianosantos.intervaltimer.core.viewmodels
+package dev.lucianosantos.intervaltimer.core.countDownTimers
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.asLiveData
@@ -18,7 +18,7 @@ import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.kotlin.*
 
-class TimerViewModelTest {
+class TimercountDownTimerTest {
 
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
@@ -30,13 +30,12 @@ class TimerViewModelTest {
     private val timerSettings = DefaultTimerSettings.settings
     private lateinit var mockCountDownTimerHelper: ICountDownTimerHelper
     private lateinit var mockBeepHelper: IAlertUserHelper
-    private lateinit var viewModel: CountDownTimer
+
 
     @Before
     fun init() {
         mockCountDownTimerHelper = Mockito.mock(ICountDownTimerHelper::class.java)
         mockBeepHelper = Mockito.mock(IAlertUserHelper::class.java)
-        viewModel = CountDownTimer(timerSettings, mockCountDownTimerHelper, mockBeepHelper)
     }
 
     @Test
@@ -48,30 +47,33 @@ class TimerViewModelTest {
         )
 
         // Act
-        val viewModel = CountDownTimer(timerSettings, mockCountDownTimerHelper, mockBeepHelper)
+        val countDownTimer = CountDownTimer(timerSettings, mockCountDownTimerHelper, mockBeepHelper)
 
         // Assert
-        assert(viewModel.remainingSections == 10)
-        assert(viewModel.timerState == TimerState.PREPARE)
-        assert(viewModel.currentTimeSeconds == 0)
+        assert(countDownTimer.remainingSections.value == 10)
+        assert(countDownTimer.timerState.value == TimerState.PREPARE)
+        assert(countDownTimer.currentTimeSeconds.value == 0)
     }
 
     @Test
     fun `Verify prepare countdown is started with 5 seconds when 'startTimer' is called`() = runTest {
+        // Arrange
+        val countDownTimer = CountDownTimer(timerSettings, mockCountDownTimerHelper, mockBeepHelper)
+
         // Act
-        viewModel.start()
+        countDownTimer.start()
 
         // Assert
         verify(mockCountDownTimerHelper, times(1)).startCountDown(eq(timerSettings.prepareTimeSeconds), anyOrNull(), anyOrNull())
         verify(mockBeepHelper, times(1)).startPrepareAlert()
-        assert(viewModel.currentTimeSeconds == 5)
-        assert(viewModel.timerState == TimerState.PREPARE)
+        assert(countDownTimer.currentTimeSeconds.value == 5)
+        assert(countDownTimer.timerState.value == TimerState.PREPARE)
     }
 
     @Test
     fun `Verify currentTime is updated when 'onTickCallback' is called`() = runTest {
-
         // Arrange
+        val countDownTimer = CountDownTimer(timerSettings, mockCountDownTimerHelper, mockBeepHelper)
         doAnswer {
             val onTickCallback = it.arguments[1] as (secondsUntilFinished: Long) -> Unit
 
@@ -79,12 +81,12 @@ class TimerViewModelTest {
                 onTickCallback(seconds.toLong())
 
                 // Assert
-                assert(viewModel.currentTimeSeconds == seconds)
+                assert(countDownTimer.currentTimeSeconds.value == seconds)
             }
         }.`when`(mockCountDownTimerHelper).startCountDown(eq(5), anyOrNull(), anyOrNull())
 
         // Act
-        viewModel.start()
+        countDownTimer.start()
 
         // Assert
         verify(mockBeepHelper, never()).timerAlmostFinishingAlert();
@@ -93,6 +95,7 @@ class TimerViewModelTest {
     @Test
     fun `Verify beep is called when 'onTickCallback' is called with seconds less or equal 3`() = runTest {
         // Arrange
+        val countDownTimer = CountDownTimer(timerSettings, mockCountDownTimerHelper, mockBeepHelper)
         doAnswer {
             val onTickCallback = it.arguments[1] as (secondsUntilFinished: Long) -> Unit
 
@@ -102,7 +105,7 @@ class TimerViewModelTest {
         }.`when`(mockCountDownTimerHelper).startCountDown(eq(5), anyOrNull(), anyOrNull())
 
         // Act
-        viewModel.start()
+        countDownTimer.start()
 
         // Assert
         verify(mockBeepHelper, times(3)).timerAlmostFinishingAlert()
@@ -114,7 +117,7 @@ class TimerViewModelTest {
         val testTimerSettings = timerSettings.copy(
             sections = 2
         )
-        val viewModel = CountDownTimer(testTimerSettings, mockCountDownTimerHelper, mockBeepHelper)
+        val countDownTimer = CountDownTimer(testTimerSettings, mockCountDownTimerHelper, mockBeepHelper)
 
         // Prepare timer
         doAnswer {
@@ -140,7 +143,7 @@ class TimerViewModelTest {
         }.`when`(mockCountDownTimerHelper).startCountDown(eq(timerSettings.restTimeSeconds), anyOrNull(), anyOrNull())
 
         // Act
-        viewModel.start()
+        countDownTimer.start()
 
         // Assert
         val inOrder = inOrder(mockBeepHelper)

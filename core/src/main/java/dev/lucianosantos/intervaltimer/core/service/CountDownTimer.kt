@@ -10,27 +10,38 @@ import dev.lucianosantos.intervaltimer.core.utils.AlertUserHelper
 import dev.lucianosantos.intervaltimer.core.utils.CountDownTimerHelper
 import dev.lucianosantos.intervaltimer.core.utils.IAlertUserHelper
 import dev.lucianosantos.intervaltimer.core.utils.ICountDownTimerHelper
+import dev.lucianosantos.intervaltimer.core.viewmodels.SettingsUiState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class CountDownTimer(
-    val timerSettings: TimerSettings,
+    var timerSettings: TimerSettings,
     val countDownTimer: ICountDownTimerHelper,
     val alertUserHelper: IAlertUserHelper
 ) {
-    var timerState by mutableStateOf(TimerState.PREPARE)
-        private set
-    var remainingSections by mutableStateOf(timerSettings.sections)
-        private set
-    var currentTimeSeconds by mutableStateOf(0)
-        private set
-    var isPaused by mutableStateOf(false)
-        private set
+
+    private val _timerState = MutableStateFlow(TimerState.PREPARE)
+    val timerState : StateFlow<TimerState> = _timerState.asStateFlow()
+
+    private val _remainingSections = MutableStateFlow(timerSettings.sections)
+    val remainingSections : StateFlow<Int> = _remainingSections.asStateFlow()
+
+
+    private val _currentTimeSeconds = MutableStateFlow(0)
+    val currentTimeSeconds : StateFlow<Int> = _currentTimeSeconds.asStateFlow()
+
+
+    private val _isPaused = MutableStateFlow(false)
+    val isPaused : StateFlow<Boolean> = _isPaused.asStateFlow()
+
 
     private val eventChannel = Channel<Event>()
     private val eventsFlow = eventChannel.receiveAsFlow()
@@ -53,7 +64,7 @@ class CountDownTimer(
                     startCountDownTimer(timerSettings.restTimeSeconds)
                 }
                 is Event.Finished -> {
-                    remainingSections = 0
+                    _remainingSections.value = 0
                     setTimerStateAndAlert(TimerState.FINISHED)
                 }
             }
@@ -61,47 +72,48 @@ class CountDownTimer(
     }
 
     suspend fun start() {
-        isPaused = false
+        _isPaused.value = false
+        _remainingSections.value = timerSettings.sections
         eventChannel.send(Event.Prepare)
     }
 
     fun pause() {
-        isPaused = true
+        _isPaused.value = true
         countDownTimer.pause()
     }
 
     fun resume() {
-        isPaused = false
+        _isPaused.value = false
         countDownTimer.resume()
     }
 
     fun stop() {
-        isPaused = false
+        _isPaused.value = false
         countDownTimer.stop()
     }
 
     private fun setTimerStateAndAlert(state: TimerState) {
-        timerState = state
+        _timerState.value = state
         alertUser(state)
     }
 
     private fun startCountDownTimer(seconds: Int) {
-        currentTimeSeconds = seconds
+        _currentTimeSeconds.value = seconds
         countDownTimer.startCountDown(seconds, { secondsUntilFinished ->
-            currentTimeSeconds = secondsUntilFinished.toInt()
+            _currentTimeSeconds.value = secondsUntilFinished.toInt()
             if (secondsUntilFinished <= 3) {
                 alertUser(null)
             }
         }, onFinishCallback = {
-            currentTimeSeconds = 0
+            _currentTimeSeconds.value = 0
             resolveNextEvent()
         })
     }
 
     private fun resolveNextEvent() {
         corroutineScope.launch {
-            val currentRemainingSections = remainingSections
-            when (timerState) {
+            val currentRemainingSections = _remainingSections.value
+            when (_timerState.value) {
                 TimerState.PREPARE -> {
                     afterPrepare()
                 }
@@ -123,7 +135,7 @@ class CountDownTimer(
     }
 
     private suspend fun afterRest(remainingSections: Int) {
-        this.remainingSections = remainingSections - 1
+        _remainingSections.value = remainingSections - 1
         eventChannel.send(Event.Train)
     }
 
