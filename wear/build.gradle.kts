@@ -89,4 +89,7 @@ dependencies {
 
     implementation(project(":core"))
     implementation(libs.androidx.compose.ui.tooling)
+    implementation("androidx.wear:wear-ongoing:1.0.0")
+    // Includes LocusIdCompat and new Notification categories for Ongoing Activity.
+    implementation("androidx.core:core:1.6.0")
 }

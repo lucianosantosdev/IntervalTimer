@@ -23,12 +23,17 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class CountDownTimer(
-    var timerSettings: TimerSettings,
+    timerSettings: TimerSettings,
     val countDownTimer: ICountDownTimerHelper,
     val alertUserHelper: IAlertUserHelper
 ) {
+    var timerSettings = timerSettings
+        set(value) {
+            _timerState.value = TimerState.NONE
+            field = value
+        }
 
-    private val _timerState = MutableStateFlow(TimerState.PREPARE)
+    private val _timerState = MutableStateFlow(TimerState.NONE)
     val timerState : StateFlow<TimerState> = _timerState.asStateFlow()
 
     private val _remainingSections = MutableStateFlow(timerSettings.sections)

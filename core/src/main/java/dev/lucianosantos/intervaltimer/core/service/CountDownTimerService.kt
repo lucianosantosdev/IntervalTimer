@@ -25,7 +25,6 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class CountDownTimerService : Service() {
-
     private var countDownTimer = CountDownTimer(
         DefaultTimerSettings.settings,
         CountDownTimerHelper(),

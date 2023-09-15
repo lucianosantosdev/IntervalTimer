@@ -1,5 +1,6 @@
 package dev.lucianosantos.intervaltimer
 
+import android.util.Log
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.PlayArrow
@@ -20,10 +21,13 @@ import dev.lucianosantos.intervaltimer.core.viewmodels.SettingsViewModel
 
 @Composable
 fun WearNavHost(
-    countDownTimerService: CountDownTimerService,
+    countDownTimerService: CountDownTimerServiceWear,
     navController: NavHostController,
+    startDestination: IntervalTimerDestination,
     modifier: Modifier = Modifier
 ) {
+    Log.d("WEAR NAV HOST",navController.currentBackStack.toString() )
+
     val settingsViewModel: SettingsViewModel = viewModel(
         factory = SettingsViewModel.Factory(TimerSettingsRepository(LocalContext.current))
     )
@@ -31,7 +35,7 @@ fun WearNavHost(
 
     SwipeDismissableNavHost(
         navController = navController,
-        startDestination = SetSections.route,
+        startDestination = startDestination.route,
         modifier = modifier
     ) {
         composable(route = SetSections.route) {
@@ -59,7 +63,6 @@ fun WearNavHost(
                 icon = Icons.Default.ArrowForward
             )
         }
-
 
         composable(route = SetRestTime.route) {
             PickerScreenComponent(

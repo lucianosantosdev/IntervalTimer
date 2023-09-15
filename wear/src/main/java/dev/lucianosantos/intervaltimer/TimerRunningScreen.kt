@@ -1,4 +1,4 @@
-package dev.lucianosantos.intervaltimer
+    package dev.lucianosantos.intervaltimer
 
 import WearAppTheme
 import android.graphics.Typeface
@@ -50,7 +50,7 @@ import java.util.Locale
 @Composable
 fun TimerRunningScreen(
     timerSettings: TimerSettings,
-    countDownTimerService: CountDownTimerService,
+    countDownTimerService: CountDownTimerServiceWear,
     onRefreshClicked: () -> Unit
 ) {
     val remainingSections by countDownTimerService.remainingSections.collectAsState()
@@ -75,7 +75,9 @@ fun TimerRunningScreen(
     )
 
     LaunchedEffect(Unit){
-        countDownTimerService.start(timerSettings)
+        if (countDownTimerService.timerState.value == TimerState.NONE) {
+            countDownTimerService.start(timerSettings)
+        }
     }
 }
 
@@ -94,6 +96,7 @@ fun TimerRunningComponent(
             .fillMaxSize()
             .background(
                 color = when (timerState) {
+                    TimerState.NONE -> colorResource(id = R.color.prepare_color)
                     TimerState.PREPARE -> colorResource(id = R.color.prepare_color)
                     TimerState.REST -> colorResource(id = R.color.rest_color)
                     TimerState.TRAIN -> colorResource(id = R.color.train_color)
@@ -132,6 +135,7 @@ fun TimerRunningComponent(
             )
             Text(
                 text = when(timerState) {
+                    TimerState.NONE -> stringResource(id = R.string.state_prepare_text)
                     TimerState.PREPARE -> stringResource(id = R.string.state_prepare_text)
                     TimerState.REST -> stringResource(id = R.string.state_rest_text)
                     TimerState.TRAIN -> stringResource(id = R.string.state_train_text)
