@@ -44,8 +44,11 @@ class CountDownTimerService : Service() {
         fun getService(): CountDownTimerService = this@CountDownTimerService
     }
 
-    fun start(newTimerSettings: TimerSettings) {
+    fun setTimerSettings(newTimerSettings: TimerSettings) {
         countDownTimer.timerSettings = newTimerSettings
+    }
+
+    fun start() {
         CoroutineScope(Dispatchers.Default).launch {
             countDownTimer.start()
         }

@@ -65,11 +65,13 @@ fun WearNavHost(
         }
 
         composable(route = SetRestTime.route) {
+            countDownTimerService.stop()
             PickerScreenComponent(
                 title = LocalContext.current.getString(R.string.label_rest_number_picker),
                 value = settings.timerSettings.restTimeSeconds,
                 onValueChange = {
                     settingsViewModel.setRestTime(it)
+                    countDownTimerService.setTimerSettings(settings.timerSettings)
                     navController.navigate(TimerRunning.route)
                 },
                 type = PickerType.TIME,
@@ -79,7 +81,6 @@ fun WearNavHost(
         
         composable(route = TimerRunning.route) {
             TimerRunningScreen(
-                timerSettings = settings.timerSettings,
                 countDownTimerService = countDownTimerService,
                 onRefreshClicked = {
                     navController.navigate(TimerRunning.route) {

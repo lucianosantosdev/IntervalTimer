@@ -49,7 +49,6 @@ import java.util.Locale
 
 @Composable
 fun TimerRunningScreen(
-    timerSettings: TimerSettings,
     countDownTimerService: CountDownTimerServiceWear,
     onRefreshClicked: () -> Unit
 ) {
@@ -76,7 +75,7 @@ fun TimerRunningScreen(
 
     LaunchedEffect(Unit){
         if (countDownTimerService.timerState.value == TimerState.NONE) {
-            countDownTimerService.start(timerSettings)
+            countDownTimerService.start()
         }
     }
 }
