@@ -74,7 +74,7 @@ fun TimerRunningScreen(
     )
 
     LaunchedEffect(Unit){
-        if (countDownTimerService.timerState.value == TimerState.NONE) {
+        if (countDownTimerService.timerState.value == TimerState.STOPED) {
             countDownTimerService.start()
         }
     }
@@ -95,7 +95,7 @@ fun TimerRunningComponent(
             .fillMaxSize()
             .background(
                 color = when (timerState) {
-                    TimerState.NONE -> colorResource(id = R.color.prepare_color)
+                    TimerState.STOPED -> colorResource(id = R.color.prepare_color)
                     TimerState.PREPARE -> colorResource(id = R.color.prepare_color)
                     TimerState.REST -> colorResource(id = R.color.rest_color)
                     TimerState.TRAIN -> colorResource(id = R.color.train_color)
@@ -124,7 +124,11 @@ fun TimerRunningComponent(
                 color = colorResource(id = R.color.white)
             )
             Text(
-                text = formatMinutesAndSeconds(currentTimeSeconds),
+                text = if (timerState != TimerState.FINISHED) {
+                    formatMinutesAndSeconds(currentTimeSeconds)
+                } else {
+                    stringResource(id = R.string.state_finished_text)
+                },
                 style = MaterialTheme.typography.title3.copy(
                     fontSize = 40.sp,
                     fontFamily = FontFamily(Typeface.MONOSPACE)
@@ -132,18 +136,20 @@ fun TimerRunningComponent(
                 ),
                 color = colorResource(id = R.color.white)
             )
-            Text(
-                text = when(timerState) {
-                    TimerState.NONE -> stringResource(id = R.string.state_prepare_text)
-                    TimerState.PREPARE -> stringResource(id = R.string.state_prepare_text)
-                    TimerState.REST -> stringResource(id = R.string.state_rest_text)
-                    TimerState.TRAIN -> stringResource(id = R.string.state_train_text)
-                    TimerState.FINISHED -> stringResource(id = R.string.state_finished_text)
-                },
-                style = MaterialTheme.typography.title3,
-                color = colorResource(id = R.color.white),
-                fontWeight = FontWeight.Bold
-            )
+            if(timerState != TimerState.FINISHED) {
+                Text(
+                    text = when(timerState) {
+                        TimerState.STOPED -> stringResource(id = R.string.state_prepare_text)
+                        TimerState.PREPARE -> stringResource(id = R.string.state_prepare_text)
+                        TimerState.REST -> stringResource(id = R.string.state_rest_text)
+                        TimerState.TRAIN -> stringResource(id = R.string.state_train_text)
+                        else -> ""
+                    },
+                    style = MaterialTheme.typography.title3,
+                    color = colorResource(id = R.color.white),
+                    fontWeight = FontWeight.Bold
+                )
+            }
             Spacer(
                 Modifier
                     .fillMaxWidth()

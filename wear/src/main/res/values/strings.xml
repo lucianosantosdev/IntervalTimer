@@ -4,7 +4,7 @@
     <string name="state_prepare_text">PREPARE</string>
     <string name="state_train_text">TRAIN</string>
     <string name="state_rest_text">REST</string>
-    <string name="state_finished_text">DONE!</string>
+    <string name="state_finished_text">DONE</string>
     <string name="label_sections">SECTIONS</string>
     <string name="label_train_number_picker">TRAIN</string>
     <string name="label_rest_number_picker">REST</string>

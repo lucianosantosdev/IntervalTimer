@@ -83,7 +83,7 @@ class CountDownTimerServiceWear : LifecycleService() {
         Log.d(TAG, "$configurationChange")
         Log.d(TAG, "$walkingWorkoutActive")
 
-        if (!configurationChange && timerState.value != TimerState.NONE) {
+        if (!configurationChange && timerState.value != TimerState.STOPED) {
             Log.d(TAG, "Start foreground service")
             val notification = generateNotification("")
             startForeground(NOTIFICATION_ID, notification)
@@ -168,7 +168,7 @@ class CountDownTimerServiceWear : LifecycleService() {
     }
 
     fun setTimerSettings(newTimerSettings: TimerSettings) {
-        countDownTimer.timerSettings = newTimerSettings
+        countDownTimer.setTimerSettings(newTimerSettings)
     }
     fun start() {
         CoroutineScope(Dispatchers.Default).launch {

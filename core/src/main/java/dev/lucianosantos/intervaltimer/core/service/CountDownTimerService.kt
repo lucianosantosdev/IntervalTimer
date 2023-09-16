@@ -45,7 +45,7 @@ class CountDownTimerService : Service() {
     }
 
     fun setTimerSettings(newTimerSettings: TimerSettings) {
-        countDownTimer.timerSettings = newTimerSettings
+        countDownTimer.setTimerSettings(newTimerSettings)
     }
 
     fun start() {

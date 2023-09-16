@@ -80,7 +80,7 @@ fun TimerRunningComponent(
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = when(timerState) {
-            TimerState.NONE -> colorResource(id = R.color.prepare_color)
+            TimerState.STOPED -> colorResource(id = R.color.prepare_color)
             TimerState.PREPARE -> colorResource(id = R.color.prepare_color)
             TimerState.REST -> colorResource(id = R.color.rest_color)
             TimerState.TRAIN -> colorResource(id = R.color.train_color)
@@ -107,7 +107,7 @@ fun TimerRunningComponent(
             )
             Text(
                 text = when(timerState) {
-                    TimerState.NONE -> stringResource(id = R.string.state_prepare_text)
+                    TimerState.STOPED -> stringResource(id = R.string.state_prepare_text)
                     TimerState.PREPARE -> stringResource(id = R.string.state_prepare_text)
                     TimerState.REST -> stringResource(id = R.string.state_rest_text)
                     TimerState.TRAIN -> stringResource(id = R.string.state_train_text)
