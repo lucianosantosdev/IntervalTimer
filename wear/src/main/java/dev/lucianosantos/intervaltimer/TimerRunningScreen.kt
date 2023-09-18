@@ -24,6 +24,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -90,19 +94,30 @@ fun TimerRunningComponent(
     onPauseClicked : () -> Unit,
     onRefreshClicked: () -> Unit = {}
 ) {
+    val backgroundColor =
+        when (timerState) {
+            TimerState.STOPED -> colorResource(id = R.color.prepare_color)
+            TimerState.PREPARE -> colorResource(id = R.color.prepare_color)
+            TimerState.REST -> colorResource(id = R.color.rest_color)
+            TimerState.TRAIN -> colorResource(id = R.color.train_color)
+            TimerState.FINISHED -> colorResource(id = R.color.finished_color)
+        }
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                color = when (timerState) {
-                    TimerState.STOPED -> colorResource(id = R.color.prepare_color)
-                    TimerState.PREPARE -> colorResource(id = R.color.prepare_color)
-                    TimerState.REST -> colorResource(id = R.color.rest_color)
-                    TimerState.TRAIN -> colorResource(id = R.color.train_color)
-                    TimerState.FINISHED -> colorResource(id = R.color.finished_color)
-                }
-            ),
+        modifier = Modifier.fillMaxSize()
     ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .scale(0.8F)
+                .background(
+                    brush = Brush.radialGradient(
+                        colors = listOf(
+                            backgroundColor,
+                            Color(0xFF000000)
+                        ),
+                    )
+                )
+        )
         TimeText(
             timeSource = TimeTextDefaults.timeSource(
                 DateFormat.getBestDateTimePattern(Locale.getDefault(), "hh:mm")

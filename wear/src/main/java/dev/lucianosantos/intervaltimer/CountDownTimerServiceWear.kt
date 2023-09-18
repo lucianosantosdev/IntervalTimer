@@ -17,6 +17,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.stringArrayResource
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleService
@@ -31,6 +32,7 @@ import dev.lucianosantos.intervaltimer.core.data.TimerState
 import dev.lucianosantos.intervaltimer.core.service.CountDownTimer
 import dev.lucianosantos.intervaltimer.core.utils.AlertUserHelper
 import dev.lucianosantos.intervaltimer.core.utils.CountDownTimerHelper
+import dev.lucianosantos.intervaltimer.core.utils.formatMinutesAndSeconds
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -66,6 +68,17 @@ class CountDownTimerServiceWear : LifecycleService() {
         Log.d(TAG, "On create!")
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         startService(Intent(applicationContext, CountDownTimerServiceWear::class.java))
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                currentTimeSeconds.collect {
+                    if (serviceRunningInForeground) {
+                        val notification = generateNotification(formatNotification(it))
+                        notificationManager.notify(NOTIFICATION_ID, notification)
+                    }
+                }
+            }
+        }
     }
     override fun onBind(intent: Intent): IBinder? {
         super.onBind(intent)
@@ -85,15 +98,26 @@ class CountDownTimerServiceWear : LifecycleService() {
 
         if (!configurationChange && timerState.value != TimerState.STOPED) {
             Log.d(TAG, "Start foreground service")
-            val notification = generateNotification("")
+            val notification = generateNotification(formatNotification(currentTimeSeconds.value))
             startForeground(NOTIFICATION_ID, notification)
             serviceRunningInForeground = true
         }
 
         return true
     }
-    private fun generateNotification(mainText: String?): Notification {
-        Log.d(TAG, "generateNotification()")
+
+    private fun formatNotification(seconds: Int) : String {
+        val status = when(timerState.value) {
+            TimerState.STOPED -> ""
+            TimerState.PREPARE -> getString(R.string.state_prepare_text)
+            TimerState.TRAIN -> getString(R.string.state_train_text)
+            TimerState.REST -> getString(R.string.state_rest_text)
+            TimerState.FINISHED -> getString(R.string.state_finished_text)
+        }
+        val time = formatMinutesAndSeconds(seconds)
+        return "$status · $time"
+    }
+    private fun generateNotification(mainText: String): Notification {
         val titleText =getString(R.string.app_name)
         val notificationChannel = NotificationChannel(
             NOTIFICATION_CHANNEL_ID,
@@ -117,7 +141,6 @@ class CountDownTimerServiceWear : LifecycleService() {
         val notificationCompatBuilder =
             NotificationCompat.Builder(applicationContext, NOTIFICATION_CHANNEL_ID)
 
-        // TODO: Review Notification builder code.
         val notificationBuilder = notificationCompatBuilder
             .setStyle(bigTextStyle)
             .setContentTitle(titleText)
@@ -127,18 +150,9 @@ class CountDownTimerServiceWear : LifecycleService() {
             .setOngoing(true)
             .setCategory(NotificationCompat.CATEGORY_WORKOUT)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-//            .addAction(
-//                R.drawable.plat, getString(R.string.launch_activity),
-//                activityPendingIntent
-//            )
-//            .addAction(
-//                R.drawable.ic_cancel,
-//                getString(R.string.stop_walking_workout_notification_text),
-//                servicePendingIntent
-//            )
 
         val ongoingActivityStatus = Status.Builder()
-//            .addTemplate(mainText)
+            .addTemplate(mainText)
             .build()
 
         val ongoingActivity =
