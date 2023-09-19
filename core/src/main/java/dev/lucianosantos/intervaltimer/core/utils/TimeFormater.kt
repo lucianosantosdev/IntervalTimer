@@ -1,6 +1,8 @@
 package dev.lucianosantos.intervaltimer.core.utils
 
-fun getMinutesFromSeconds(seconds: Int) = seconds / 60
+import kotlin.math.floor
+
+fun getMinutesFromSeconds(seconds: Int) = floor(seconds / 60F).toInt()
 
 fun getSecondsFromSeconds(seconds: Int) = seconds % 60
 

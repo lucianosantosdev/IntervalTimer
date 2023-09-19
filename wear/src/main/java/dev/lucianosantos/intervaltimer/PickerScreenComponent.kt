@@ -85,7 +85,7 @@ fun PickerScreenComponent(
         )
     )
     val minuteState = rememberPickerState(
-        initialNumberOfOptions = 24,
+        initialNumberOfOptions = 100,
         initiallySelectedOption = getMinutesFromSeconds(seconds = value)
     )
     val secondState = rememberPickerState(
