@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
@@ -33,6 +34,8 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -105,6 +108,8 @@ fun TimerRunningComponent(
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
+        val timerSize = 34.sp
+        val labelSize = 14.sp
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -123,11 +128,15 @@ fun TimerRunningComponent(
                 DateFormat.getBestDateTimePattern(Locale.getDefault(), "hh:mm")
             )
         )
+
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().padding(
+                top = 15.dp
+            ),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
+
             Spacer(
                 Modifier
                     .fillMaxWidth()
@@ -135,7 +144,9 @@ fun TimerRunningComponent(
             )
             Text(
                 text = if (timerState != TimerState.FINISHED) remainingSections.toString() else " ",
-                style = MaterialTheme.typography.title3,
+                style = MaterialTheme.typography.body1.copy(
+                    fontSize = labelSize
+                ),
                 color = colorResource(id = R.color.white)
             )
             Text(
@@ -145,7 +156,7 @@ fun TimerRunningComponent(
                     stringResource(id = R.string.state_finished_text)
                 },
                 style = MaterialTheme.typography.title3.copy(
-                    fontSize = 40.sp,
+                    fontSize = timerSize,
                     fontFamily = FontFamily(Typeface.MONOSPACE)
 
                 ),
@@ -160,7 +171,9 @@ fun TimerRunningComponent(
                         TimerState.TRAIN -> stringResource(id = R.string.state_train_text)
                         else -> ""
                     },
-                    style = MaterialTheme.typography.title3,
+                    style = MaterialTheme.typography.body1.copy(
+                        fontSize = labelSize
+                    ),
                     color = colorResource(id = R.color.white),
                     fontWeight = FontWeight.Bold
                 )
@@ -218,18 +231,48 @@ fun TimerRunningComponent(
     }
 }
 
-@Composable
-@WearPreviewLargeRound
-fun TimerRunningScreenPreview() {
-    WearAppTheme {
-        TimerRunningComponent(
-            remainingSections = 1,
-            currentTimeSeconds = 1234,
-            timerState = TimerState.PREPARE,
-            true,
-            {},
-            {},
-            {}
-        )
+    @Composable
+    @Preview(
+        device = Devices.WEAR_OS_LARGE_ROUND,
+        backgroundColor = 0xff000000,
+        showBackground = true,
+        group = "Devices - Large Round",
+        showSystemUi = true,
+        fontScale = 1.6F
+    )
+    fun TimerRunningScreenBigPreview() {
+        WearAppTheme {
+            TimerRunningComponent(
+                remainingSections = 7,
+                currentTimeSeconds = 3,
+                timerState = TimerState.PREPARE,
+                true,
+                {},
+                {},
+                {}
+            )
+        }
     }
-}
+
+
+    @Composable
+    @Preview(
+        device = Devices.WEAR_OS_LARGE_ROUND,
+        backgroundColor = 0xff000000,
+        showBackground = true,
+        group = "Devices - Large Round",
+        showSystemUi = true
+    )
+    fun TimerRunningScreenPreview() {
+        WearAppTheme {
+            TimerRunningComponent(
+                remainingSections = 7,
+                currentTimeSeconds = 3,
+                timerState = TimerState.PREPARE,
+                true,
+                {},
+                {},
+                {}
+            )
+        }
+    }
