@@ -19,6 +19,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.rounded.Pause
+import androidx.compose.material.icons.rounded.PlayArrow
+import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -40,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.wear.compose.material.Button
+import androidx.wear.compose.material.ButtonDefaults
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.MaterialTheme
 import androidx.wear.compose.material.Text
@@ -188,39 +192,33 @@ fun TimerRunningComponent(
             ) {
                 if(timerState == TimerState.FINISHED) {
                     Button(
-                        onClick = onRefreshClicked
+                        onClick = onRefreshClicked,
+                        modifier = Modifier.size(ButtonDefaults.SmallButtonSize),
                     ) {
                         Icon(
-                            imageVector = Icons.Filled.Refresh,
-                            contentDescription = stringResource(id = R.string.refresh_icon_content_description),
-                            modifier = Modifier
-                                .size(24.dp)
-                                .wrapContentSize(align = Alignment.Center)
+                            imageVector = Icons.Rounded.Refresh,
+                            contentDescription = stringResource(id = R.string.refresh_icon_content_description)
                         )
                     }
                 } else {
                     if (!isPaused) {
                         Button(
-                            onClick = onPauseClicked
+                            onClick = onPauseClicked,
+                            modifier = Modifier.size(ButtonDefaults.SmallButtonSize),
                         ) {
                             Icon(
-                                imageVector = Icons.Filled.Pause,
-                                contentDescription = stringResource(id = R.string.pause_icon_content_description),
-                                modifier = Modifier
-                                    .size(24.dp)
-                                    .wrapContentSize(align = Alignment.Center)
+                                imageVector = Icons.Rounded.Pause,
+                                contentDescription = stringResource(id = R.string.pause_icon_content_description)
                             )
                         }
                     } else {
                         Button(
-                            onClick = onPlayClicked
+                            onClick = onPlayClicked,
+                            modifier = Modifier.size(ButtonDefaults.SmallButtonSize),
                         ) {
                             Icon(
-                                imageVector = Icons.Filled.PlayArrow,
-                                contentDescription = stringResource(id = R.string.play_icon_content_description),
-                                modifier = Modifier
-                                    .size(24.dp)
-                                    .wrapContentSize(align = Alignment.Center)
+                                imageVector = Icons.Rounded.PlayArrow,
+                                contentDescription = stringResource(id = R.string.play_icon_content_description)
                             )
                         }
                     }

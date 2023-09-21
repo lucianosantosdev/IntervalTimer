@@ -91,5 +91,17 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling)
     implementation("androidx.wear:wear-ongoing:1.0.0")
     // Includes LocusIdCompat and new Notification categories for Ongoing Activity.
-    implementation("androidx.core:core:1.6.0")
+
+    val core_version = "1.6.0"
+    implementation("androidx.core:core:$core_version")
+    implementation("androidx.core:core-ktx:$core_version")
+
+    // To use RoleManagerCompat
+    implementation("androidx.core:core-role:1.0.0")
+
+    // To use the Animator APIs
+    implementation("androidx.core:core-animation:1.0.0-beta01")
+    // To test the Animator APIs
+    androidTestImplementation("androidx.core:core-animation-testing:1.0.0-beta01")
+    implementation("androidx.core:core-splashscreen:1.0.1")
 }

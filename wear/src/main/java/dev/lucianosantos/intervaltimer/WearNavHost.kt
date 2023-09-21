@@ -2,8 +2,8 @@ package dev.lucianosantos.intervaltimer
 
 import android.util.Log
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.rounded.ArrowForward
+import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -14,9 +14,7 @@ import androidx.navigation.NavHostController
 import androidx.wear.compose.navigation.SwipeDismissableNavHost
 import androidx.wear.compose.navigation.composable
 import dev.lucianosantos.intervaltimer.core.data.TimerSettingsRepository
-import dev.lucianosantos.intervaltimer.core.service.CountDownTimerService
 import dev.lucianosantos.intervaltimer.core.ui.PickerType
-import dev.lucianosantos.intervaltimer.core.utils.ICountDownTimerHelper
 import dev.lucianosantos.intervaltimer.core.viewmodels.SettingsViewModel
 
 @Composable
@@ -47,7 +45,7 @@ fun WearNavHost(
                     navController.navigate(SetTrainTime.route)
                 },
                 type = PickerType.NUMBER,
-                icon = Icons.Default.ArrowForward
+                icon = Icons.Rounded.ArrowForward
             )
         }
 
@@ -60,7 +58,7 @@ fun WearNavHost(
                     navController.navigate(SetRestTime.route)
                 },
                 type = PickerType.TIME,
-                icon = Icons.Default.ArrowForward
+                icon = Icons.Rounded.ArrowForward
             )
         }
 
@@ -75,7 +73,7 @@ fun WearNavHost(
                     navController.navigate(TimerRunning.route)
                 },
                 type = PickerType.TIME,
-                icon = Icons.Default.PlayArrow
+                icon = Icons.Rounded.PlayArrow
             )
         }
         

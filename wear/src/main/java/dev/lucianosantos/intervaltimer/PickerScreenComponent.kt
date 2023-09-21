@@ -52,6 +52,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.wear.compose.material.Button
+import androidx.wear.compose.material.ButtonDefaults
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.MaterialTheme
 import androidx.wear.compose.material.PickerGroup
@@ -251,20 +252,11 @@ fun PickerScreenComponent(
                         }
                         onValueChange(selectedValue)
                     },
-                    modifier = Modifier
-                        .semantics {
-                            focused = pickerGroupState.selectedIndex ==
-                                    FocusableElementsTimePicker.CONFIRM_BUTTON.index
-                        }
-                        .focusRequester(focusRequesterConfirmButton)
-                        .focusable()
+                    modifier = Modifier.size(ButtonDefaults.SmallButtonSize),
                 ) {
                     Icon(
                         imageVector = icon,
-                        contentDescription = buttonContentDescription(icon),
-                        modifier = Modifier
-                            .size(24.dp)
-                            .wrapContentSize(align = Alignment.Center)
+                        contentDescription = buttonContentDescription(icon)
                     )
                 }
                 Spacer(Modifier.height(12.dp))

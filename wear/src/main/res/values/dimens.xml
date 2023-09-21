@@ -18,4 +18,6 @@
     <dimen name="np_selectedTextSize">20sp</dimen>
     <dimen name="np_itemSpacing">100dp</dimen>
 
+    <dimen name="splash_screen_icon_size">48dp</dimen>
+
 </resources>
