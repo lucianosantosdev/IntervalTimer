@@ -10,6 +10,7 @@ import android.os.Binder
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -59,7 +60,6 @@ class MainActivity : ComponentActivity() {
         setTheme(R.style.Theme_App)
 
         val fromNotification = intent.getBooleanExtra(EXTRA_LAUNCH_FROM_NOTIFICATION, false)
-
         setContent {
             val navController = rememberSwipeDismissableNavController()
 
@@ -76,6 +76,7 @@ class MainActivity : ComponentActivity() {
                 )
             }
         }
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
     override fun onStart() {
