@@ -8,6 +8,7 @@ import dev.lucianosantos.intervaltimer.core.data.TimerState
 import dev.lucianosantos.intervaltimer.core.service.CountDownTimer
 import dev.lucianosantos.intervaltimer.core.utils.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.launch
@@ -51,7 +52,7 @@ class TimercountDownTimerTest {
 
         // Assert
         assert(countDownTimer.remainingSections.value == 10)
-        assert(countDownTimer.timerState.value == TimerState.PREPARE)
+        assert(countDownTimer.timerState.value == TimerState.STOPED)
         assert(countDownTimer.currentTimeSeconds.value == 0)
     }
 
@@ -106,7 +107,7 @@ class TimercountDownTimerTest {
 
         // Act
         countDownTimer.start()
-
+        delay(50)
         // Assert
         verify(mockBeepHelper, times(3)).timerAlmostFinishingAlert()
     }

@@ -32,6 +32,6 @@
             android:name=".CountDownTimerServiceWear"
             android:enabled="true"
             android:exported="false"
-            android:foregroundServiceType="dataSync" />
+            android:foregroundServiceType="mediaPlayback" />
     </application>
 </manifest>
