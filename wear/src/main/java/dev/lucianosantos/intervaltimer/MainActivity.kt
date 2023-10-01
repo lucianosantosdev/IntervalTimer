@@ -29,6 +29,7 @@ import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
 import androidx.wear.compose.ui.tooling.preview.WearPreviewLargeRound
 import dev.lucianosantos.intervaltimer.core.BaseActivity
 import dev.lucianosantos.intervaltimer.core.service.CountDownTimerService
+import dev.lucianosantos.intervaltimer.core.service.ICountDownTimerService
 import dev.lucianosantos.intervaltimer.core.service.NotificationHelper
 
 class MainActivity : BaseActivity() {
@@ -68,7 +69,7 @@ class MainActivity : BaseActivity() {
 
 @Composable
 fun MainApp(
-    countDownTimerService: CountDownTimerService,
+    countDownTimerService: ICountDownTimerService,
     navHostController: NavHostController,
     startDestination: IntervalTimerDestination
 ) {

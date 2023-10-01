@@ -11,11 +11,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import dev.lucianosantos.intervaltimer.core.data.TimerSettingsRepository
 import dev.lucianosantos.intervaltimer.core.service.CountDownTimerService
+import dev.lucianosantos.intervaltimer.core.service.ICountDownTimerService
 import dev.lucianosantos.intervaltimer.core.viewmodels.SettingsViewModel
 
 @Composable
 fun MobileNavHost(
-    countDownTimerService: CountDownTimerService,
+    countDownTimerService: ICountDownTimerService,
     navController: NavHostController,
     startDestination: IntervalTimerDestination,
     modifier: Modifier = Modifier

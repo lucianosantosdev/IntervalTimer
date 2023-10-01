@@ -26,6 +26,7 @@ import androidx.navigation.compose.rememberNavController
 import dev.lucianosantos.intervaltimer.core.BaseActivity
 import dev.lucianosantos.intervaltimer.core.data.TimerState
 import dev.lucianosantos.intervaltimer.core.service.CountDownTimerService
+import dev.lucianosantos.intervaltimer.core.service.ICountDownTimerService
 import dev.lucianosantos.intervaltimer.theme.IntervalTimerTheme
 
 class MainActivity : BaseActivity() {
@@ -50,7 +51,7 @@ class MainActivity : BaseActivity() {
 
 @Composable
 fun MainApp(
-    countDownTimerService: CountDownTimerService,
+    countDownTimerService: ICountDownTimerService,
     startDestination: IntervalTimerDestination
 ) {
     val navController = rememberNavController()

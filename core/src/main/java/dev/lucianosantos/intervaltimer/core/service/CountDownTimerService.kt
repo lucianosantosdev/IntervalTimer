@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 
 abstract class CountDownTimerService(
     private val serviceName: Class<*>
-) : LifecycleService() {
+) : ICountDownTimerService, LifecycleService() {
     private var countDownTimer = CountDownTimer(
         DefaultTimerSettings.settings,
         CountDownTimerHelper(),
@@ -121,24 +121,25 @@ abstract class CountDownTimerService(
         configurationChange = false
     }
 
-    fun setTimerSettings(newTimerSettings: TimerSettings) {
+    override fun setTimerSettings(newTimerSettings: TimerSettings) {
         countDownTimer.setTimerSettings(newTimerSettings)
     }
-    fun start() {
+
+    override fun start() {
         CoroutineScope(Dispatchers.Default).launch {
             countDownTimer.start()
         }
     }
 
-    fun pause() {
+    override fun pause() {
         countDownTimer.pause()
     }
 
-    fun resume() {
+    override fun resume() {
         countDownTimer.resume()
     }
 
-    fun stop() {
+    override fun stop() {
         countDownTimer.stop()
     }
 

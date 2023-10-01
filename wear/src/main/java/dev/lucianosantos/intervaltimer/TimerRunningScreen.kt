@@ -44,12 +44,13 @@ import androidx.wear.compose.material.TimeText
 import androidx.wear.compose.material.TimeTextDefaults
 import dev.lucianosantos.intervaltimer.core.data.TimerState
 import dev.lucianosantos.intervaltimer.core.service.CountDownTimerService
+import dev.lucianosantos.intervaltimer.core.service.ICountDownTimerService
 import dev.lucianosantos.intervaltimer.core.utils.formatMinutesAndSeconds
 import java.util.Locale
 
 @Composable
 fun TimerRunningScreen(
-    countDownTimerService: CountDownTimerService,
+    countDownTimerService: ICountDownTimerService,
     onRefreshClicked: () -> Unit
 ) {
     val remainingSections by countDownTimerService.remainingSections.collectAsState()

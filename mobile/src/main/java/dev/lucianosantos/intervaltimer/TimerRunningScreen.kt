@@ -26,13 +26,14 @@ import dev.lucianosantos.intervaltimer.components.ActionButton
 import dev.lucianosantos.intervaltimer.core.data.TimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerState
 import dev.lucianosantos.intervaltimer.core.service.CountDownTimerService
+import dev.lucianosantos.intervaltimer.core.service.ICountDownTimerService
 import dev.lucianosantos.intervaltimer.core.utils.formatMinutesAndSeconds
 import dev.lucianosantos.intervaltimer.theme.IntervalTimerTheme
 
 @Composable
 fun TimerRunningScreen(
     timerSettings: TimerSettings,
-    countDownTimerService: CountDownTimerService,
+    countDownTimerService: ICountDownTimerService,
     onStopClicked: () -> Unit,
     onRestartClicked: () -> Unit
 ) {
