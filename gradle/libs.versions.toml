@@ -85,6 +85,7 @@ wear-compose-tooling-preview = { group = "androidx.wear.compose", name = "compos
 
 horologist-composables = { group = "com.google.android.horologist", name = "horologist-composables", version.ref = "horologist-composables-version" }
 androidx-compose-ui-tooling = { group = "androidx.wear.compose", name = "compose-ui-tooling", version.ref = "composeUiTooling" }
+androidx-lifecycle-service = { group = "androidx.lifecycle", name = "lifecycle-service", version = "2.6.2" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin-version" }

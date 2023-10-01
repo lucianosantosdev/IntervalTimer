@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisallowComposableCalls
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,17 +23,24 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.rememberNavController
+import dev.lucianosantos.intervaltimer.core.BaseActivity
+import dev.lucianosantos.intervaltimer.core.data.TimerState
 import dev.lucianosantos.intervaltimer.core.service.CountDownTimerService
 import dev.lucianosantos.intervaltimer.theme.IntervalTimerTheme
 
-class MainActivity : ComponentActivity() {
+class MainActivity : BaseActivity() {
+    override val serviceName: Class<*>
+        get() = CountDownTimerServiceMobile::class.java
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val countDownTimerService = rememberBoundLocalService<CountDownTimerService, CountDownTimerService.CountDownTimerBinder> { getService() }
-            if (countDownTimerService !== null) {
+            if (serviceBound) {
                 IntervalTimerTheme {
-                    MainApp(countDownTimerService)
+                    MainApp(
+                        countDownTimerService = countDownTimerService!!,
+                        startDestination = Settings
+                    )
                 }
             }
         }
@@ -41,33 +49,15 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MainApp(countDownTimerService: CountDownTimerService) {
+fun MainApp(
+    countDownTimerService: CountDownTimerService,
+    startDestination: IntervalTimerDestination
+) {
     val navController = rememberNavController()
     MobileNavHost(
         countDownTimerService = countDownTimerService,
         navController = navController,
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
+        startDestination = startDestination
     )
-}
-@Composable
-inline fun <reified BoundService : Service, reified BoundServiceBinder : Binder> rememberBoundLocalService(
-    crossinline getService: @DisallowComposableCalls BoundServiceBinder.() -> BoundService,
-): BoundService? {
-    val context: Context = LocalContext.current
-    var boundService: BoundService? by remember(context) { mutableStateOf(null) }
-    val serviceConnection: ServiceConnection = remember(context) {
-        object : ServiceConnection {
-            override fun onServiceConnected(className: ComponentName, service: IBinder) {
-                boundService = (service as BoundServiceBinder).getService()
-            }
-            override fun onServiceDisconnected(arg0: ComponentName) {
-                boundService = null
-            }
-        }
-    }
-    DisposableEffect(context, serviceConnection) {
-        context.bindService(Intent(context, BoundService::class.java), serviceConnection, Context.BIND_AUTO_CREATE)
-        onDispose { context.unbindService(serviceConnection) }
-    }
-    return boundService
 }

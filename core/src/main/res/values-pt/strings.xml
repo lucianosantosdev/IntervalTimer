@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Treino Intervalado</string>
+    <string name="state_prepare_text">PREPARAR</string>
+    <string name="state_train_text">TREINAR</string>
+    <string name="state_rest_text">DESCANSAR</string>
+    <string name="state_finished_text">FIM</string>
+</resources>

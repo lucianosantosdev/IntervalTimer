@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">core</string>
+    <string name="app_name">IntervalTimer</string>
+
+    <string name="state_prepare_text">PREPARE</string>
+    <string name="state_train_text">TRAIN</string>
+    <string name="state_rest_text">REST</string>
+    <string name="state_finished_text">DONE</string>
+
 </resources>

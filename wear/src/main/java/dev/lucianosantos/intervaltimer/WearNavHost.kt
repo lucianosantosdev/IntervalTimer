@@ -14,12 +14,13 @@ import androidx.navigation.NavHostController
 import androidx.wear.compose.navigation.SwipeDismissableNavHost
 import androidx.wear.compose.navigation.composable
 import dev.lucianosantos.intervaltimer.core.data.TimerSettingsRepository
+import dev.lucianosantos.intervaltimer.core.service.CountDownTimerService
 import dev.lucianosantos.intervaltimer.core.ui.PickerType
 import dev.lucianosantos.intervaltimer.core.viewmodels.SettingsViewModel
 
 @Composable
 fun WearNavHost(
-    countDownTimerService: CountDownTimerServiceWear,
+    countDownTimerService: CountDownTimerService,
     navController: NavHostController,
     startDestination: IntervalTimerDestination,
     modifier: Modifier = Modifier

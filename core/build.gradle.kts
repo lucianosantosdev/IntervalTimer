@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.bundles.lifecycle)
     implementation(libs.compose.activity)
+    implementation(libs.androidx.lifecycle.service)
 
     testImplementation(libs.bundles.tests)
     androidTestImplementation(libs.bundles.androidTests)

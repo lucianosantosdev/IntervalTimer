@@ -14,11 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Pause
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.rounded.Pause
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material.icons.rounded.Refresh
@@ -31,8 +27,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Outline
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
@@ -41,7 +35,6 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.wear.compose.material.Button
 import androidx.wear.compose.material.ButtonDefaults
 import androidx.wear.compose.material.Icon
@@ -49,18 +42,14 @@ import androidx.wear.compose.material.MaterialTheme
 import androidx.wear.compose.material.Text
 import androidx.wear.compose.material.TimeText
 import androidx.wear.compose.material.TimeTextDefaults
-import androidx.wear.compose.ui.tooling.preview.WearPreviewLargeRound
-import dev.lucianosantos.intervaltimer.core.data.TimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerState
 import dev.lucianosantos.intervaltimer.core.service.CountDownTimerService
-import dev.lucianosantos.intervaltimer.core.utils.AlertUserHelper
-import dev.lucianosantos.intervaltimer.core.utils.ICountDownTimerHelper
 import dev.lucianosantos.intervaltimer.core.utils.formatMinutesAndSeconds
 import java.util.Locale
 
 @Composable
 fun TimerRunningScreen(
-    countDownTimerService: CountDownTimerServiceWear,
+    countDownTimerService: CountDownTimerService,
     onRefreshClicked: () -> Unit
 ) {
     val remainingSections by countDownTimerService.remainingSections.collectAsState()
