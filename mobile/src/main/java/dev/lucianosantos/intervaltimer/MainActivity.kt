@@ -36,13 +36,11 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            if (serviceBound) {
-                IntervalTimerTheme {
-                    MainApp(
-                        countDownTimerService = countDownTimerService!!,
-                        startDestination = Settings
-                    )
-                }
+            IntervalTimerTheme {
+                MainApp(
+                    countDownTimerService = countDownTimerServiceProxy,
+                    startDestination = Settings
+                )
             }
         }
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)

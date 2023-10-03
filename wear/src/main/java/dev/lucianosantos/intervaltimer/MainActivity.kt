@@ -46,18 +46,15 @@ class MainActivity : BaseActivity() {
 
         setContent {
             val navController = rememberSwipeDismissableNavController()
-            if (serviceBound) {
-                Log.d(TAG, "countDownTimerService != null")
-                MainApp(
-                    countDownTimerService = countDownTimerService!!,
-                    navHostController = navController,
-                    startDestination = if (fromNotification) {
-                        TimerRunning
-                    } else {
-                        SetSections
-                    }
-                )
-            }
+            MainApp(
+                countDownTimerService = countDownTimerServiceProxy,
+                navHostController = navController,
+                startDestination = if (fromNotification) {
+                    TimerRunning
+                } else {
+                    SetSections
+                }
+            )
         }
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }

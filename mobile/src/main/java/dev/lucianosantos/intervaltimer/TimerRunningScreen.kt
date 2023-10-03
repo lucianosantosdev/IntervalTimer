@@ -37,10 +37,15 @@ fun TimerRunningScreen(
     onStopClicked: () -> Unit,
     onRestartClicked: () -> Unit
 ) {
-    val remainingSections by countDownTimerService.remainingSections.collectAsState()
-    val currentTime by countDownTimerService.currentTimeSeconds.collectAsState()
-    val timerState by countDownTimerService.timerState.collectAsState()
-    val isPaused by countDownTimerService.isPaused.collectAsState()
+    if (countDownTimerService.remainingSections == null) {
+        return
+    }
+
+    val remainingSections by countDownTimerService.remainingSections!!.collectAsState()
+    val currentTime by countDownTimerService.currentTimeSeconds!!.collectAsState()
+    val timerState by countDownTimerService.timerState!!.collectAsState()
+    val isPaused by countDownTimerService.isPaused!!.collectAsState()
+
     TimerRunningComponent(
         remainingSections = remainingSections,
         currentTime = currentTime,

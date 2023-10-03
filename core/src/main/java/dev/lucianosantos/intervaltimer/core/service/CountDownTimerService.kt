@@ -36,10 +36,10 @@ abstract class CountDownTimerService(
     private var serviceRunningInForeground = false
     private var walkingWorkoutActive = true
 
-    val timerState = countDownTimer.timerState
-    val remainingSections = countDownTimer.remainingSections
-    val currentTimeSeconds = countDownTimer.currentTimeSeconds
-    val isPaused = countDownTimer.isPaused
+    override val timerState = countDownTimer.timerState
+    override val remainingSections = countDownTimer.remainingSections
+    override val currentTimeSeconds = countDownTimer.currentTimeSeconds
+    override val isPaused = countDownTimer.isPaused
 
     abstract val ongoingActivityWrapper: OngoingActivityWrapper
 

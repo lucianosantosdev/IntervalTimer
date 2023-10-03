@@ -9,13 +9,13 @@ import kotlinx.coroutines.flow.emptyFlow
 class CountDownTimerServiceProxy(
     var countDownTimerService: CountDownTimerService? = null
 ) : ICountDownTimerService {
-    override val timerState: StateFlow<TimerState>
+    override val timerState: StateFlow<TimerState>?
         get() = countDownTimerService?.timerState
-    override val remainingSections: StateFlow<Int>
+    override val remainingSections: StateFlow<Int>?
         get() = countDownTimerService?.remainingSections
-    override val currentTimeSeconds: StateFlow<Int>
+    override val currentTimeSeconds: StateFlow<Int>?
         get() = countDownTimerService?.currentTimeSeconds
-    override val isPaused: StateFlow<Boolean>
+    override val isPaused: StateFlow<Boolean>?
         get() = countDownTimerService?.isPaused
 
     override fun setTimerSettings(newTimerSettings: TimerSettings) {

@@ -26,13 +26,13 @@ import kotlinx.coroutines.launch
 
 interface ICountDownTimerService {
 
-    val timerState : StateFlow<TimerState>
+    val timerState : StateFlow<TimerState>?
 
-    val remainingSections : StateFlow<Int>
+    val remainingSections : StateFlow<Int>?
 
-    val currentTimeSeconds : StateFlow<Int>
+    val currentTimeSeconds : StateFlow<Int>?
 
-    val isPaused : StateFlow<Boolean>
+    val isPaused : StateFlow<Boolean>?
 
     fun setTimerSettings(newTimerSettings: TimerSettings)
 
