@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.bundles.lifecycle)
     implementation(libs.compose.activity)
     implementation(libs.androidx.lifecycle.service)
+    implementation("androidx.media:media:1.1.0")
 
     testImplementation(libs.bundles.tests)
     androidTestImplementation(libs.bundles.androidTests)

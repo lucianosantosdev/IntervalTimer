@@ -2,16 +2,14 @@ package dev.lucianosantos.intervaltimer.core.utils
 
 import android.content.Context
 import android.media.AudioManager
+import android.media.RingtoneManager
 import android.media.ToneGenerator
-import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
-import android.util.Log
 import kotlinx.coroutines.delay
 
-class AlertUserHelper(val context: Context) : IAlertUserHelper {
 
-    private var toneGenerator: ToneGenerator? = null
+class AlertUserHelper(val context: Context) : IAlertUserHelper {
 
     private fun vibrate(duration: Long) {
         val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
@@ -19,19 +17,21 @@ class AlertUserHelper(val context: Context) : IAlertUserHelper {
     }
 
     private suspend fun safeBeepAndVibrate(tone: Int, duration: Long) {
+        var toneGenerator: ToneGenerator? = null
         try {
             toneGenerator = ToneGenerator(AudioManager.STREAM_ALARM, ToneGenerator.MAX_VOLUME)
         } catch (e: Exception) {
-            Log.d("AlertUserHelper", "Exception while creating ToneGenerator: $e")
             e.printStackTrace()
         }
 
-        if(toneGenerator != null) {
-            toneGenerator!!.startTone(ToneGenerator.TONE_CDMA_ABBR_ALERT, 100)
-            vibrate(duration)
-            delay(duration)
-            toneGenerator!!.release()
+        if(toneGenerator == null) {
+            return
         }
+        toneGenerator.startTone(ToneGenerator.TONE_CDMA_ABBR_ALERT, 100)
+        vibrate(duration)
+        delay(duration)
+        toneGenerator.stopTone()
+        toneGenerator.release()
     }
 
     private suspend fun shortBeep() {

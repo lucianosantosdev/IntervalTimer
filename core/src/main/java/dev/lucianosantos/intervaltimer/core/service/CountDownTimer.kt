@@ -70,6 +70,9 @@ class CountDownTimer(
     }
 
     suspend fun start() {
+        if(timerState.value != TimerState.STOPED) {
+            stop()
+        }
         _isPaused.value = false
         _remainingSections.value = timerSettings.sections
         eventChannel.send(Event.Prepare)

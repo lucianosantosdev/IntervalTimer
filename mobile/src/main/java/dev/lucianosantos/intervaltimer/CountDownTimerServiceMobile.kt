@@ -16,7 +16,6 @@ class CountDownTimerServiceMobile : CountDownTimerService(CountDownTimerServiceM
         ) {
             // Do nothing
         }
-
     }
 
     override val mainActivity: Class<*> = MainActivity::class.java
