@@ -1,9 +1,10 @@
 package dev.lucianosantos.intervaltimer.core.data
 
 enum class TimerState {
-    STOPED,
+    NONE,
     PREPARE,
     TRAIN,
     REST,
-    FINISHED
+    FINISHED,
+    STOPPED
 }

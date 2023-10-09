@@ -43,7 +43,6 @@ import androidx.wear.compose.material.Text
 import androidx.wear.compose.material.TimeText
 import androidx.wear.compose.material.TimeTextDefaults
 import dev.lucianosantos.intervaltimer.core.data.TimerState
-import dev.lucianosantos.intervaltimer.core.service.CountDownTimerService
 import dev.lucianosantos.intervaltimer.core.service.ICountDownTimerService
 import dev.lucianosantos.intervaltimer.core.utils.formatMinutesAndSeconds
 import java.util.Locale
@@ -51,7 +50,8 @@ import java.util.Locale
 @Composable
 fun TimerRunningScreen(
     countDownTimerService: ICountDownTimerService,
-    onRefreshClicked: () -> Unit
+    onRefreshClicked: () -> Unit,
+    onStopClicked: () -> Unit
 ) {
     if (countDownTimerService.remainingSections == null) {
         return
@@ -79,9 +79,13 @@ fun TimerRunningScreen(
     )
 
     LaunchedEffect(Unit){
-        if (countDownTimerService.timerState!!.value == TimerState.STOPED) {
+        if (countDownTimerService.timerState!!.value == TimerState.NONE) {
             countDownTimerService.start()
         }
+    }
+
+    if (timerState == TimerState.STOPPED) {
+        onStopClicked()
     }
 }
 
@@ -97,7 +101,8 @@ fun TimerRunningComponent(
 ) {
     val backgroundColor =
         when (timerState) {
-            TimerState.STOPED -> colorResource(id = R.color.prepare_color)
+            TimerState.NONE,
+            TimerState.STOPPED -> Color.Transparent
             TimerState.PREPARE -> colorResource(id = R.color.prepare_color)
             TimerState.REST -> colorResource(id = R.color.rest_color)
             TimerState.TRAIN -> colorResource(id = R.color.train_color)
@@ -163,7 +168,7 @@ fun TimerRunningComponent(
             if(timerState != TimerState.FINISHED) {
                 Text(
                     text = when(timerState) {
-                        TimerState.STOPED -> stringResource(id = R.string.state_prepare_text)
+                        TimerState.STOPPED -> stringResource(id = R.string.state_prepare_text)
                         TimerState.PREPARE -> stringResource(id = R.string.state_prepare_text)
                         TimerState.REST -> stringResource(id = R.string.state_rest_text)
                         TimerState.TRAIN -> stringResource(id = R.string.state_train_text)

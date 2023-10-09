@@ -43,4 +43,6 @@ interface ICountDownTimerService {
     fun resume()
 
     fun stop()
+
+    fun reset()
 }

@@ -1,17 +1,12 @@
 package dev.lucianosantos.intervaltimer.core.countDownTimers
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.asLiveData
 import dev.lucianosantos.intervaltimer.core.data.DefaultTimerSettings
-import dev.lucianosantos.intervaltimer.core.data.TimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerState
 import dev.lucianosantos.intervaltimer.core.service.CountDownTimer
 import dev.lucianosantos.intervaltimer.core.utils.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.single
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
@@ -52,7 +47,7 @@ class TimercountDownTimerTest {
 
         // Assert
         assert(countDownTimer.remainingSections.value == 10)
-        assert(countDownTimer.timerState.value == TimerState.STOPED)
+        assert(countDownTimer.timerState.value == TimerState.STOPPED)
         assert(countDownTimer.currentTimeSeconds.value == 0)
     }
 

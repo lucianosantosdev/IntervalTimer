@@ -1,6 +1,5 @@
 package dev.lucianosantos.intervaltimer.core.service
 
-import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -13,7 +12,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import dev.lucianosantos.intervaltimer.core.R
 import dev.lucianosantos.intervaltimer.core.data.DefaultTimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerState
@@ -47,17 +45,20 @@ abstract class CountDownTimerService(
 
     abstract val mainActivity: Class<*>
 
+    private var receiverRegistered = false
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             when(intent?.action) {
                 NotificationHelper.ACTION_STOP -> {
-                    countDownTimer.stop()
+                    stop()
                 }
                 NotificationHelper.ACTION_PAUSE -> {
-                    countDownTimer.pause()
+                    pause()
+                    updateNotification()
                 }
                 NotificationHelper.ACTION_RESUME -> {
-                    countDownTimer.resume()
+                    resume()
+                    updateNotification()
                 }
             }
         }
@@ -70,6 +71,12 @@ abstract class CountDownTimerService(
             addAction(NotificationHelper.ACTION_RESUME)
         }
         registerReceiver(receiver, intentFilter)
+        receiverRegistered = true
+    }
+
+    private fun unregisterReceiver() {
+        unregisterReceiver(receiver)
+        receiverRegistered = false
     }
 
     override fun onCreate() {
@@ -79,7 +86,6 @@ abstract class CountDownTimerService(
         Log.d(TAG, "On create!")
         notificationHelper = NotificationHelper(
             applicationContext = applicationContext,
-            serviceContext = this,
             ongoingActivityWrapper = ongoingActivityWrapper,
             mainActivity = mainActivity
         )
@@ -90,21 +96,25 @@ abstract class CountDownTimerService(
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 currentTimeSeconds.collect {
-                    if (timerState.value != TimerState.STOPED) {
-                        val notification = notificationHelper.generateNotification(
-                            timeSeconds = it,
-                            timerState = timerState.value,
-                            isPaused = isPaused.value
-                        )
-                        notificationHelper.notify(notification)
-                    }
+                    updateNotification()
                 }
             }
         }
     }
+
+    private fun updateNotification() {
+        if (timerState.value != TimerState.STOPPED) {
+            val notification = notificationHelper.generateNotification(
+                timeSeconds = currentTimeSeconds.value,
+                timerState = timerState.value,
+                isPaused = isPaused.value
+            )
+            notificationHelper.notify(notification)
+        }
+    }
+
     override fun onBind(intent: Intent): IBinder? {
         super.onBind(intent)
-        unregisterReceiver(receiver)
         Log.d(TAG, "On bind!")
         notForegroundService()
         return binder
@@ -115,12 +125,11 @@ abstract class CountDownTimerService(
         notForegroundService()
     }
     override fun onUnbind(intent: Intent): Boolean {
-        registerReceiver()
         Log.d(TAG, "onUnbind()")
         Log.d(TAG, "$configurationChange")
         Log.d(TAG, "$walkingWorkoutActive")
 
-        if (!configurationChange && timerState.value != TimerState.STOPED) {
+        if (!configurationChange && timerState.value != TimerState.STOPPED) {
             Log.d(TAG, "Start foreground service")
             val notification = notificationHelper.generateNotification(
                 timerState = timerState.value,
@@ -157,6 +166,7 @@ abstract class CountDownTimerService(
         CoroutineScope(Dispatchers.Default).launch {
             countDownTimer.start()
         }
+        registerReceiver()
     }
 
     override fun pause() {
@@ -170,6 +180,14 @@ abstract class CountDownTimerService(
     override fun stop() {
         countDownTimer.stop()
         notificationHelper.cancel()
+        if (receiverRegistered == true) {
+            unregisterReceiver()
+        }
+    }
+
+    override fun reset() {
+        countDownTimer.reset()
+
     }
 
     companion object {

@@ -38,4 +38,8 @@ class CountDownTimerServiceProxy(
         countDownTimerService?.stop()
     }
 
+    override fun reset() {
+        countDownTimerService?.reset()
+    }
+
 }

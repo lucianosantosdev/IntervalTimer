@@ -1,16 +1,9 @@
 package dev.lucianosantos.intervaltimer.core.service
 
-import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import dev.lucianosantos.intervaltimer.core.data.TimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerState
-import dev.lucianosantos.intervaltimer.core.utils.AlertUserHelper
-import dev.lucianosantos.intervaltimer.core.utils.CountDownTimerHelper
 import dev.lucianosantos.intervaltimer.core.utils.IAlertUserHelper
 import dev.lucianosantos.intervaltimer.core.utils.ICountDownTimerHelper
-import dev.lucianosantos.intervaltimer.core.viewmodels.SettingsUiState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -30,7 +23,7 @@ class CountDownTimer(
     fun setTimerSettings(newTimerSettings: TimerSettings) {
         timerSettings = newTimerSettings
     }
-    private val _timerState = MutableStateFlow(TimerState.STOPED)
+    private val _timerState = MutableStateFlow(TimerState.NONE)
     val timerState : StateFlow<TimerState> = _timerState.asStateFlow()
 
     private val _remainingSections = MutableStateFlow(timerSettings.sections)
@@ -70,10 +63,7 @@ class CountDownTimer(
     }
 
     suspend fun start() {
-        if(timerState.value != TimerState.STOPED) {
-            stop()
-        }
-        _isPaused.value = false
+        reset()
         _remainingSections.value = timerSettings.sections
         eventChannel.send(Event.Prepare)
     }
@@ -90,7 +80,13 @@ class CountDownTimer(
 
     fun stop() {
         _isPaused.value = false
-        _timerState.value = TimerState.STOPED
+        _timerState.value = TimerState.STOPPED
+        countDownTimer.stop()
+    }
+
+    fun reset() {
+        _isPaused.value = false
+        _timerState.value = TimerState.NONE
         countDownTimer.stop()
     }
 

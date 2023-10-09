@@ -1,7 +1,6 @@
 package dev.lucianosantos.intervaltimer.core.service
 
 import android.app.Notification
-import android.app.Notification.Builder
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -13,11 +12,9 @@ import androidx.media.app.NotificationCompat.MediaStyle
 import dev.lucianosantos.intervaltimer.core.R
 import dev.lucianosantos.intervaltimer.core.data.TimerState
 import dev.lucianosantos.intervaltimer.core.utils.formatMinutesAndSeconds
-import java.security.SecureRandom
 
 class NotificationHelper(
     private val applicationContext: Context,
-    private val serviceContext: Context,
     private val ongoingActivityWrapper: OngoingActivityWrapper,
     private val mainActivity: Class<*>
 ) {
@@ -38,7 +35,7 @@ class NotificationHelper(
     private fun activityLauncherIntent() : PendingIntent {
         val launchActivityIntent = Intent(applicationContext, mainActivity)
         launchActivityIntent.putExtra(EXTRA_LAUNCH_FROM_NOTIFICATION, true)
-        return PendingIntent.getActivity(
+        return PendingIntent.getService(
             applicationContext,
             1,
             launchActivityIntent,
@@ -47,35 +44,35 @@ class NotificationHelper(
     }
 
     private fun pauseIntent() : PendingIntent {
-        val pauseIntent = Intent(applicationContext, CountDownTimerService::class.java)
+        val pauseIntent = Intent()
         pauseIntent.action = ACTION_PAUSE
         return PendingIntent.getBroadcast(
             applicationContext,
-            2,
+            1,
             pauseIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            PendingIntent.FLAG_IMMUTABLE
         )
     }
 
     private fun resumeIntent() : PendingIntent {
-        val resumeIntent = Intent(applicationContext, CountDownTimerService::class.java)
+        val resumeIntent = Intent()
         resumeIntent.action = ACTION_RESUME
         return PendingIntent.getBroadcast(
             applicationContext,
-            3,
+            1,
             resumeIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            PendingIntent.FLAG_IMMUTABLE
         )
     }
 
     private fun stopIntent() : PendingIntent {
-        val stopIntent = Intent(applicationContext, CountDownTimerService::class.java)
+        val stopIntent = Intent()
         stopIntent.action = ACTION_STOP
         return PendingIntent.getBroadcast(
             applicationContext,
-            4,
+            1,
             stopIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            PendingIntent.FLAG_IMMUTABLE
         )
     }
 
@@ -141,7 +138,8 @@ class NotificationHelper(
 
     private fun getTitleText(timerState: TimerState) : String {
         return when(timerState) {
-            TimerState.STOPED -> ""
+            TimerState.NONE,
+            TimerState.STOPPED -> ""
             TimerState.PREPARE -> applicationContext.getString(R.string.state_prepare_text)
             TimerState.TRAIN -> applicationContext.getString(R.string.state_train_text)
             TimerState.REST -> applicationContext.getString(R.string.state_rest_text)

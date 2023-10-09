@@ -27,6 +27,7 @@ import dev.lucianosantos.intervaltimer.core.BaseActivity
 import dev.lucianosantos.intervaltimer.core.data.TimerState
 import dev.lucianosantos.intervaltimer.core.service.CountDownTimerService
 import dev.lucianosantos.intervaltimer.core.service.ICountDownTimerService
+import dev.lucianosantos.intervaltimer.core.service.NotificationHelper
 import dev.lucianosantos.intervaltimer.theme.IntervalTimerTheme
 
 class MainActivity : BaseActivity() {
@@ -35,11 +36,18 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val fromNotification = intent.getBooleanExtra(NotificationHelper.EXTRA_LAUNCH_FROM_NOTIFICATION, false)
+
         setContent {
             IntervalTimerTheme {
                 MainApp(
                     countDownTimerService = countDownTimerServiceProxy,
-                    startDestination = Settings
+                    startDestination = if (fromNotification) {
+                        TimerRunning
+                    } else {
+                        Settings
+                    }
                 )
             }
         }

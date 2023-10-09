@@ -15,6 +15,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
@@ -23,16 +24,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.lucianosantos.intervaltimer.components.ActionButton
-import dev.lucianosantos.intervaltimer.core.data.TimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerState
-import dev.lucianosantos.intervaltimer.core.service.CountDownTimerService
 import dev.lucianosantos.intervaltimer.core.service.ICountDownTimerService
 import dev.lucianosantos.intervaltimer.core.utils.formatMinutesAndSeconds
 import dev.lucianosantos.intervaltimer.theme.IntervalTimerTheme
 
 @Composable
 fun TimerRunningScreen(
-    timerSettings: TimerSettings,
     countDownTimerService: ICountDownTimerService,
     onStopClicked: () -> Unit,
     onRestartClicked: () -> Unit
@@ -66,9 +64,15 @@ fun TimerRunningScreen(
             onRestartClicked()
         }
     )
+
     LaunchedEffect(Unit){
-        countDownTimerService.setTimerSettings(timerSettings)
-        countDownTimerService.start()
+        if (countDownTimerService.timerState!!.value == TimerState.NONE) {
+            countDownTimerService.start()
+        }
+    }
+
+    if (timerState == TimerState.STOPPED) {
+        onStopClicked()
     }
 }
 
@@ -86,7 +90,8 @@ fun TimerRunningComponent(
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = when(timerState) {
-            TimerState.STOPED -> colorResource(id = R.color.prepare_color)
+            TimerState.NONE,
+            TimerState.STOPPED -> Color.Transparent
             TimerState.PREPARE -> colorResource(id = R.color.prepare_color)
             TimerState.REST -> colorResource(id = R.color.rest_color)
             TimerState.TRAIN -> colorResource(id = R.color.train_color)
@@ -113,7 +118,8 @@ fun TimerRunningComponent(
             )
             Text(
                 text = when(timerState) {
-                    TimerState.STOPED -> stringResource(id = R.string.state_prepare_text)
+                    TimerState.NONE,
+                    TimerState.STOPPED -> ""
                     TimerState.PREPARE -> stringResource(id = R.string.state_prepare_text)
                     TimerState.REST -> stringResource(id = R.string.state_rest_text)
                     TimerState.TRAIN -> stringResource(id = R.string.state_train_text)
