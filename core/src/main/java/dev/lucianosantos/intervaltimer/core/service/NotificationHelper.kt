@@ -35,7 +35,7 @@ class NotificationHelper(
     private fun activityLauncherIntent() : PendingIntent {
         val launchActivityIntent = Intent(applicationContext, mainActivity)
         launchActivityIntent.putExtra(EXTRA_LAUNCH_FROM_NOTIFICATION, true)
-        return PendingIntent.getService(
+        return PendingIntent.getActivity(
             applicationContext,
             1,
             launchActivityIntent,

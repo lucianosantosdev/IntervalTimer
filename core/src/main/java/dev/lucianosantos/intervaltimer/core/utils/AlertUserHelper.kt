@@ -2,7 +2,6 @@ package dev.lucianosantos.intervaltimer.core.utils
 
 import android.content.Context
 import android.media.AudioManager
-import android.media.RingtoneManager
 import android.media.ToneGenerator
 import android.os.VibrationEffect
 import android.os.Vibrator

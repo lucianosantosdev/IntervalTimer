@@ -1,10 +1,8 @@
 package dev.lucianosantos.intervaltimer.core.service
 
-import androidx.compose.runtime.mutableStateOf
 import dev.lucianosantos.intervaltimer.core.data.TimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerState
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.emptyFlow
 
 class CountDownTimerServiceProxy(
     var countDownTimerService: CountDownTimerService? = null

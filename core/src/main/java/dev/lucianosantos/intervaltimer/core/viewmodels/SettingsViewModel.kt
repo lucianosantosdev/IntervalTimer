@@ -2,7 +2,6 @@ package dev.lucianosantos.intervaltimer.core.viewmodels
 
 import androidx.lifecycle.*
 import dev.lucianosantos.intervaltimer.core.data.ITimerSettingsRepository
-import dev.lucianosantos.intervaltimer.core.data.TimerSettings
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
