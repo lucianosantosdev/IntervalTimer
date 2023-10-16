@@ -180,7 +180,7 @@ abstract class CountDownTimerService(
     override fun stop() {
         countDownTimer.stop()
         notificationHelper.cancel()
-        if (receiverRegistered == true) {
+        if (receiverRegistered) {
             unregisterReceiver()
         }
     }
