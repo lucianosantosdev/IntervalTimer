@@ -47,7 +47,7 @@ class TimercountDownTimerTest {
 
         // Assert
         assert(countDownTimer.remainingSections.value == 10)
-        assert(countDownTimer.timerState.value == TimerState.STOPPED)
+        assert(countDownTimer.timerState.value == TimerState.NONE)
         assert(countDownTimer.currentTimeSeconds.value == 0)
     }
 
