@@ -54,11 +54,12 @@ abstract class CountDownTimerService(
                 }
                 NotificationHelper.ACTION_PAUSE -> {
                     pause()
-                    updateNotification()
                 }
                 NotificationHelper.ACTION_RESUME -> {
                     resume()
-                    updateNotification()
+                }
+                NotificationHelper.ACTION_RESTART -> {
+                    restart()
                 }
             }
         }
@@ -69,6 +70,7 @@ abstract class CountDownTimerService(
             addAction(NotificationHelper.ACTION_STOP)
             addAction(NotificationHelper.ACTION_PAUSE)
             addAction(NotificationHelper.ACTION_RESUME)
+            addAction(NotificationHelper.ACTION_RESTART)
         }
         registerReceiver(receiver, intentFilter)
         receiverRegistered = true
@@ -103,6 +105,13 @@ abstract class CountDownTimerService(
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 isPaused.collect {
+                    updateNotification()
+                }
+            }
+        }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                timerState.collect {
                     updateNotification()
                 }
             }
@@ -190,6 +199,10 @@ abstract class CountDownTimerService(
         if (receiverRegistered) {
             unregisterReceiver()
         }
+    }
+
+    override fun restart() {
+        start()
     }
 
     override fun reset() {

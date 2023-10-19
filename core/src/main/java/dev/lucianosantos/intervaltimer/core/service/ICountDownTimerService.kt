@@ -24,5 +24,7 @@ interface ICountDownTimerService {
 
     fun stop()
 
+    fun restart()
+
     fun reset()
 }

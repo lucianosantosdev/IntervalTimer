@@ -77,35 +77,66 @@ class NotificationHelper(
         )
     }
 
-    private fun setNotificationActions(isPaused: Boolean,
-                                       notificationBuilder: NotificationCompat.Builder) {
+    private fun restartIntent() : PendingIntent {
+        val stopIntent = Intent()
+        stopIntent.action = ACTION_RESTART
+        return PendingIntent.getBroadcast(
+            applicationContext,
+            1,
+            stopIntent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
+    }
+
+    private fun setNotificationActions(
+        timerState: TimerState,
+        isPaused: Boolean,
+        notificationBuilder: NotificationCompat.Builder
+    ) {
         val style = MediaStyle().setMediaSession(null)
-        if (isPaused) {
-            style.setShowActionsInCompactView(0, 1)
-            notificationBuilder
-                .addAction(
-                    R.drawable.ic_baseline_play_arrow_24,
-                    "play",
-                    resumeIntent()
-                )
-                .addAction(
+        when {
+            isPaused -> {
+                style.setShowActionsInCompactView(0, 1)
+                notificationBuilder
+                    .addAction(
+                        R.drawable.ic_baseline_play_arrow_24,
+                        "play",
+                        resumeIntent()
+                    )
+                    .addAction(
+                        R.drawable.ic_baseline_stop_24,
+                        "stop",
+                        stopIntent()
+                    )
+            }
+            timerState.equals(TimerState.FINISHED) -> {
+                style.setShowActionsInCompactView(0, 1)
+                notificationBuilder
+                    .addAction(
+                        R.drawable.ic_baseline_refresh_24,
+                        "refresh",
+                        restartIntent()
+                    )
+                    .addAction(
+                        R.drawable.ic_baseline_stop_24,
+                        "stop",
+                        stopIntent()
+                    )
+            }
+            else -> {
+                style.setShowActionsInCompactView(0, 1)
+                notificationBuilder
+                    .addAction(
+                        R.drawable.ic_baseline_pause_24,
+                        "pause",
+                        pauseIntent()
+                    )
+                    .addAction(
                     R.drawable.ic_baseline_stop_24,
                     "stop",
                     stopIntent()
                 )
-        } else {
-            style.setShowActionsInCompactView(0, 1)
-            notificationBuilder
-                .addAction(
-                    R.drawable.ic_baseline_pause_24,
-                    "pause",
-                    pauseIntent()
-                )
-                .addAction(
-                R.drawable.ic_baseline_stop_24,
-                "stop",
-                stopIntent()
-            )
+            }
         }
         notificationBuilder.setStyle(style)
     }
@@ -115,7 +146,7 @@ class NotificationHelper(
                              isPaused: Boolean
     ) : Notification {
         val titleText = getTitleText(timerState)
-        val contentText = getContentText(timeSeconds)
+        val contentText = getContentText(timerState, timeSeconds)
 
         val notificationBuilder = NotificationCompat.Builder(applicationContext, NOTIFICATION_CHANNEL_ID)
             .setContentTitle(titleText)
@@ -126,7 +157,7 @@ class NotificationHelper(
             .setOngoing(true)
             .setCategory(NotificationCompat.CATEGORY_WORKOUT)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-        setNotificationActions(isPaused, notificationBuilder)
+        setNotificationActions(timerState, isPaused, notificationBuilder)
 
         when(timerState) {
             TimerState.PREPARE -> applicationContext.getColor(R.color.prepare_color)
@@ -157,9 +188,12 @@ class NotificationHelper(
         }
     }
 
-    private fun getContentText(seconds: Int) : String {
-        return formatMinutesAndSeconds(seconds)
-    }
+    private fun getContentText(timerState: TimerState, seconds: Int) : String =
+        if(timerState != TimerState.FINISHED) {
+            formatMinutesAndSeconds(seconds)
+        } else {
+            ""
+        }
 
     fun notify(notification: Notification) {
         notificationManager.notify(NOTIFICATION_ID, notification)
@@ -175,6 +209,7 @@ class NotificationHelper(
         const val ACTION_PAUSE = "INTERVAL_TIMER_ACTION_PAUSE"
         const val ACTION_RESUME = "INTERVAL_TIMER_ACTION_RESUME"
         const val ACTION_STOP = "INTERVAL_TIMER_ACTION_STOP"
+        const val ACTION_RESTART = "INTERVAL_TIMER_ACTION_RESTART"
         private const val NOTIFICATION_CHANNEL_ID = "interval_timer_workout_channel_01"
     }
 }

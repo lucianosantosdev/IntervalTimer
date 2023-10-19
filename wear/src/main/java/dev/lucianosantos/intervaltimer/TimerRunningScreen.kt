@@ -73,7 +73,7 @@ fun TimerRunningScreen(
             countDownTimerService.pause()
         },
         onRefreshClicked = {
-            countDownTimerService.stop()
+            countDownTimerService.restart()
             onRefreshClicked()
         }
     )
@@ -99,14 +99,16 @@ fun TimerRunningComponent(
     onPauseClicked : () -> Unit,
     onRefreshClicked: () -> Unit = {}
 ) {
+    if (timerState == TimerState.NONE || timerState == TimerState.STOPPED) {
+        return
+    }
     val backgroundColor =
         when (timerState) {
-            TimerState.NONE,
-            TimerState.STOPPED -> Color.Transparent
             TimerState.PREPARE -> colorResource(id = R.color.prepare_color)
             TimerState.REST -> colorResource(id = R.color.rest_color)
             TimerState.TRAIN -> colorResource(id = R.color.train_color)
             TimerState.FINISHED -> colorResource(id = R.color.finished_color)
+            else -> Color.Transparent
         }
     Box(
         modifier = Modifier.fillMaxSize()
@@ -168,7 +170,6 @@ fun TimerRunningComponent(
             if(timerState != TimerState.FINISHED) {
                 Text(
                     text = when(timerState) {
-                        TimerState.STOPPED -> stringResource(id = R.string.state_prepare_text)
                         TimerState.PREPARE -> stringResource(id = R.string.state_prepare_text)
                         TimerState.REST -> stringResource(id = R.string.state_rest_text)
                         TimerState.TRAIN -> stringResource(id = R.string.state_train_text)

@@ -36,6 +36,10 @@ class CountDownTimerServiceProxy(
         countDownTimerService?.stop()
     }
 
+    override fun restart() {
+        countDownTimerService?.restart()
+    }
+
     override fun reset() {
         countDownTimerService?.reset()
     }

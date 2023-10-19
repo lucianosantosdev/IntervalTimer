@@ -32,8 +32,7 @@ import dev.lucianosantos.intervaltimer.theme.IntervalTimerTheme
 @Composable
 fun TimerRunningScreen(
     countDownTimerService: ICountDownTimerService,
-    onStopClicked: () -> Unit,
-    onRestartClicked: () -> Unit
+    onStop: () -> Unit
 ) {
     if (countDownTimerService.remainingSections == null) {
         return
@@ -57,11 +56,9 @@ fun TimerRunningScreen(
         },
         onStopClicked = {
             countDownTimerService.stop()
-            onStopClicked()
         },
         onRestartClicked = {
-            countDownTimerService.stop()
-            onRestartClicked()
+            countDownTimerService.restart()
         }
     )
 
@@ -72,7 +69,7 @@ fun TimerRunningScreen(
     }
 
     if (timerState == TimerState.STOPPED) {
-        onStopClicked()
+        onStop()
     }
 }
 
@@ -87,6 +84,9 @@ fun TimerRunningComponent(
     onStopClicked : () -> Unit,
     onRestartClicked : () -> Unit
 ) {
+    if (timerState == TimerState.NONE || timerState == TimerState.STOPPED) {
+        return
+    }
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = when(timerState) {
@@ -108,7 +108,11 @@ fun TimerRunningComponent(
                 color = colorResource(id = R.color.white)
             )
             Text(
-                text = formatMinutesAndSeconds(currentTime),
+                text = if (timerState != TimerState.FINISHED) {
+                    formatMinutesAndSeconds(currentTime)
+                } else {
+                    stringResource(id = R.string.state_finished_text)
+                },
                 style = MaterialTheme.typography.headlineLarge.copy(
                     fontSize = 100.sp,
                     fontFamily = FontFamily(Typeface.MONOSPACE)
@@ -118,12 +122,10 @@ fun TimerRunningComponent(
             )
             Text(
                 text = when(timerState) {
-                    TimerState.NONE,
-                    TimerState.STOPPED -> ""
                     TimerState.PREPARE -> stringResource(id = R.string.state_prepare_text)
                     TimerState.REST -> stringResource(id = R.string.state_rest_text)
                     TimerState.TRAIN -> stringResource(id = R.string.state_train_text)
-                    TimerState.FINISHED -> stringResource(id = R.string.state_finished_text)
+                    else -> ""
                 },
                 style = MaterialTheme.typography.headlineLarge,
                 color = colorResource(id = R.color.white),
