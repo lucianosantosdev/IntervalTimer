@@ -122,13 +122,21 @@ class NotificationHelper(
             .setContentText(contentText)
             .setContentIntent(activityLauncherIntent())
             .setSmallIcon(R.drawable.ic_notification)
-            .setColor(applicationContext.getColor(R.color.green))
             .setDefaults(NotificationCompat.DEFAULT_ALL)
             .setOngoing(true)
             .setCategory(NotificationCompat.CATEGORY_WORKOUT)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
         setNotificationActions(isPaused, notificationBuilder)
 
+        when(timerState) {
+            TimerState.PREPARE -> applicationContext.getColor(R.color.prepare_color)
+            TimerState.REST -> applicationContext.getColor(R.color.rest_color)
+            TimerState.TRAIN -> applicationContext.getColor(R.color.train_color)
+            TimerState.FINISHED -> applicationContext.getColor(R.color.finished_color)
+            else -> null
+        }?.let {
+            notificationBuilder.setColor(it)
+        }
         ongoingActivityWrapper.setOngoingActivity(
             applicationContext = applicationContext,
             onTouchIntent = activityLauncherIntent(),

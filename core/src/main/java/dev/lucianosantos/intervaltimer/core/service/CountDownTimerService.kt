@@ -100,6 +100,13 @@ abstract class CountDownTimerService(
                 }
             }
         }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                isPaused.collect {
+                    updateNotification()
+                }
+            }
+        }
     }
 
     private fun updateNotification() {
