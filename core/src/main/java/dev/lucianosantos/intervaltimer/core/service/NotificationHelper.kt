@@ -35,6 +35,7 @@ class NotificationHelper(
     private fun activityLauncherIntent() : PendingIntent {
         val launchActivityIntent = Intent(applicationContext, mainActivity)
         launchActivityIntent.putExtra(EXTRA_LAUNCH_FROM_NOTIFICATION, true)
+        launchActivityIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         return PendingIntent.getActivity(
             applicationContext,
             1,
