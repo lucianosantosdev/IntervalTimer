@@ -18,7 +18,6 @@ import dev.lucianosantos.intervaltimer.core.viewmodels.SettingsViewModel
 fun MobileNavHost(
     countDownTimerService: ICountDownTimerService,
     navController: NavHostController,
-    startDestination: IntervalTimerDestination,
     modifier: Modifier = Modifier
 ) {
     val settingsViewModel: SettingsViewModel = viewModel(
@@ -28,7 +27,7 @@ fun MobileNavHost(
 
     NavHost(
         navController = navController,
-        startDestination = startDestination.route,
+        startDestination = Settings.route,
         modifier = modifier
     ) {
         composable(route = Settings.route) {

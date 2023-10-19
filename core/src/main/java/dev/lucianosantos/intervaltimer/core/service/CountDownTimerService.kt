@@ -103,7 +103,7 @@ abstract class CountDownTimerService(
     }
 
     private fun updateNotification() {
-        if (timerState.value != TimerState.STOPPED) {
+        if (timerState.value != TimerState.STOPPED && timerState.value != TimerState.NONE) {
             val notification = notificationHelper.generateNotification(
                 timeSeconds = currentTimeSeconds.value,
                 timerState = timerState.value,
@@ -186,8 +186,8 @@ abstract class CountDownTimerService(
     }
 
     override fun reset() {
+        stop()
         countDownTimer.reset()
-
     }
 
     companion object {

@@ -6,6 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dev.lucianosantos.intervaltimer.core.BaseActivity
 import dev.lucianosantos.intervaltimer.core.service.ICountDownTimerService
@@ -23,14 +25,14 @@ class MainActivity : BaseActivity() {
 
         setContent {
             IntervalTimerTheme {
+                val navController = rememberNavController()
                 MainApp(
                     countDownTimerService = countDownTimerServiceProxy,
-                    startDestination = if (fromNotification) {
-                        TimerRunning
-                    } else {
-                        Settings
-                    }
+                    navController = navController
                 )
+                if (fromNotification) {
+                    navController.navigate(TimerRunning.route)
+                }
             }
         }
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -39,14 +41,12 @@ class MainActivity : BaseActivity() {
 
 @Composable
 fun MainApp(
-    countDownTimerService: ICountDownTimerService,
-    startDestination: IntervalTimerDestination
+    navController: NavHostController,
+    countDownTimerService: ICountDownTimerService
 ) {
-    val navController = rememberNavController()
     MobileNavHost(
         countDownTimerService = countDownTimerService,
         navController = navController,
-        modifier = Modifier.fillMaxSize(),
-        startDestination = startDestination
+        modifier = Modifier.fillMaxSize()
     )
 }
