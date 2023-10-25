@@ -4,7 +4,11 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -24,14 +28,16 @@ class MainActivity : BaseActivity() {
         val fromNotification = intent.getBooleanExtra(NotificationHelper.EXTRA_LAUNCH_FROM_NOTIFICATION, false)
 
         setContent {
+            val navController = rememberNavController()
             IntervalTimerTheme {
-                val navController = rememberNavController()
                 MainApp(
                     countDownTimerService = countDownTimerServiceProxy,
                     navController = navController
                 )
-                if (fromNotification) {
-                    navController.navigate(TimerRunning.route)
+                LaunchedEffect(Unit) {
+                    if (fromNotification) {
+                        navController.navigate(TimerRunning.route)
+                    }
                 }
             }
         }
@@ -39,14 +45,21 @@ class MainActivity : BaseActivity() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainApp(
     navController: NavHostController,
     countDownTimerService: ICountDownTimerService
 ) {
-    MobileNavHost(
-        countDownTimerService = countDownTimerService,
-        navController = navController,
+    Scaffold(
         modifier = Modifier.fillMaxSize()
-    )
+    ) { innerPadding ->
+        MobileNavHost(
+            countDownTimerService = countDownTimerService,
+            navController = navController,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+        )
+    }
 }
