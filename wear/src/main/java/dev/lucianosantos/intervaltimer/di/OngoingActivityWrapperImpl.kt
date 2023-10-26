@@ -6,12 +6,14 @@ import androidx.core.app.NotificationCompat
 import androidx.wear.ongoing.OngoingActivity
 import androidx.wear.ongoing.Status
 import dev.lucianosantos.intervaltimer.R
+import dev.lucianosantos.intervaltimer.core.data.TimerState
 import dev.lucianosantos.intervaltimer.core.service.NotificationHelper
 import dev.lucianosantos.intervaltimer.core.service.OngoingActivityWrapper
 
 class OngoingActivityWrapperImpl : OngoingActivityWrapper {
 
     override fun setOngoingActivity(
+        timerState: TimerState,
         applicationContext: Context,
         onTouchIntent: PendingIntent,
         message: String,
@@ -24,12 +26,20 @@ class OngoingActivityWrapperImpl : OngoingActivityWrapper {
         val ongoingActivity =
             OngoingActivity.Builder(applicationContext,
                 NotificationHelper.NOTIFICATION_ID, notificationBuilder)
-                .setStaticIcon(R.mipmap.ic_launcher)
                 .setTouchIntent(onTouchIntent)
                 .setStatus(ongoingActivityStatus)
-                .build()
 
-        ongoingActivity.apply(applicationContext)
+        val icon = when(timerState) {
+            TimerState.PREPARE -> R.drawable.ic_ongoing_prepare
+            TimerState.TRAIN -> R.drawable.ic_ongoing_train
+            TimerState.REST -> R.drawable.ic_ongoing_rest
+            TimerState.FINISHED -> R.drawable.ic_ongoing_finished
+            else -> null
+        }
+        icon?.let {
+            ongoingActivity.setStaticIcon(it)
+        }
+        ongoingActivity.build().apply(applicationContext)
     }
 
 }

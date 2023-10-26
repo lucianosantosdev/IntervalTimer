@@ -169,6 +169,7 @@ class NotificationHelper(
             notificationBuilder.setColor(it)
         }
         ongoingActivityWrapper.setOngoingActivity(
+            timerState = timerState,
             applicationContext = applicationContext,
             onTouchIntent = activityLauncherIntent(),
             message = "$titleText · $contentText",
