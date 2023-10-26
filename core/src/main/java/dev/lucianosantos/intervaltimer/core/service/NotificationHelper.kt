@@ -46,7 +46,7 @@ class NotificationHelper(
 
     private fun pauseIntent() : PendingIntent {
         val pauseIntent = Intent()
-        pauseIntent.action = ACTION_PAUSE
+        pauseIntent.action = CountDownTimerService.ACTION_PAUSE
         return PendingIntent.getBroadcast(
             applicationContext,
             1,
@@ -57,7 +57,7 @@ class NotificationHelper(
 
     private fun resumeIntent() : PendingIntent {
         val resumeIntent = Intent()
-        resumeIntent.action = ACTION_RESUME
+        resumeIntent.action = CountDownTimerService.ACTION_RESUME
         return PendingIntent.getBroadcast(
             applicationContext,
             1,
@@ -68,7 +68,7 @@ class NotificationHelper(
 
     private fun stopIntent() : PendingIntent {
         val stopIntent = Intent()
-        stopIntent.action = ACTION_STOP
+        stopIntent.action = CountDownTimerService.ACTION_STOP
         return PendingIntent.getBroadcast(
             applicationContext,
             1,
@@ -79,7 +79,7 @@ class NotificationHelper(
 
     private fun restartIntent() : PendingIntent {
         val stopIntent = Intent()
-        stopIntent.action = ACTION_RESTART
+        stopIntent.action = CountDownTimerService.ACTION_RESTART
         return PendingIntent.getBroadcast(
             applicationContext,
             1,
@@ -206,10 +206,6 @@ class NotificationHelper(
     companion object {
         val NOTIFICATION_ID = 1
         const val EXTRA_LAUNCH_FROM_NOTIFICATION = "EXTRA_LAUNCH_FROM_NOTIFICATION"
-        const val ACTION_PAUSE = "INTERVAL_TIMER_ACTION_PAUSE"
-        const val ACTION_RESUME = "INTERVAL_TIMER_ACTION_RESUME"
-        const val ACTION_STOP = "INTERVAL_TIMER_ACTION_STOP"
-        const val ACTION_RESTART = "INTERVAL_TIMER_ACTION_RESTART"
         private const val NOTIFICATION_CHANNEL_ID = "interval_timer_workout_channel_01"
     }
 }

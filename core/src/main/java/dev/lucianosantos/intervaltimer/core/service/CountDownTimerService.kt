@@ -7,6 +7,7 @@ import android.content.IntentFilter
 import android.content.res.Configuration
 import android.os.Binder
 import android.os.IBinder
+import android.os.PowerManager
 import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleService
@@ -15,11 +16,14 @@ import androidx.lifecycle.repeatOnLifecycle
 import dev.lucianosantos.intervaltimer.core.data.DefaultTimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerState
+import dev.lucianosantos.intervaltimer.core.utils.AlarmManagerHelper
 import dev.lucianosantos.intervaltimer.core.utils.AlertUserHelper
 import dev.lucianosantos.intervaltimer.core.utils.CountDownTimerHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+
 
 abstract class CountDownTimerService(
     private val serviceName: Class<*>
@@ -45,32 +49,43 @@ abstract class CountDownTimerService(
 
     abstract val mainActivity: Class<*>
 
+    private var wakeLock: PowerManager.WakeLock? = null
+
     private var receiverRegistered = false
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             when(intent?.action) {
-                NotificationHelper.ACTION_STOP -> {
+                ACTION_STOP -> {
                     stop()
                 }
-                NotificationHelper.ACTION_PAUSE -> {
+                ACTION_PAUSE -> {
                     pause()
                 }
-                NotificationHelper.ACTION_RESUME -> {
+                ACTION_RESUME -> {
                     resume()
                 }
-                NotificationHelper.ACTION_RESTART -> {
+                ACTION_RESTART -> {
                     restart()
+                }
+                ACTION_WAKE -> {
+                    wakeLock = (getSystemService(Context.POWER_SERVICE) as PowerManager).run {
+                        newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "CountDownTimerSevice::MyWakelockTag").apply {
+                            acquire()
+                        }
+                    }
                 }
             }
         }
     }
 
+    private lateinit var alarmManagerHelper: AlarmManagerHelper
     private fun registerReceiver() {
         val intentFilter = IntentFilter().apply {
-            addAction(NotificationHelper.ACTION_STOP)
-            addAction(NotificationHelper.ACTION_PAUSE)
-            addAction(NotificationHelper.ACTION_RESUME)
-            addAction(NotificationHelper.ACTION_RESTART)
+            addAction(ACTION_STOP)
+            addAction(ACTION_PAUSE)
+            addAction(ACTION_RESUME)
+            addAction(ACTION_RESTART)
+            addAction(ACTION_WAKE)
         }
         registerReceiver(receiver, intentFilter)
         receiverRegistered = true
@@ -86,6 +101,7 @@ abstract class CountDownTimerService(
         registerReceiver()
 
         Log.d(TAG, "On create!")
+        alarmManagerHelper = AlarmManagerHelper(this)
         notificationHelper = NotificationHelper(
             applicationContext = applicationContext,
             ongoingActivityWrapper = ongoingActivityWrapper,
@@ -112,7 +128,14 @@ abstract class CountDownTimerService(
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 timerState.collect {
-                    updateNotification()
+                    if(timerState.value != TimerState.STOPPED && timerState.value != TimerState.NONE) {
+                        updateNotification()
+                        val remainingSeconds = currentTimeSeconds.value.toLong()
+                        val alarmTime = remainingSeconds - 5L
+                        wakeLock?.release()
+                        wakeLock = null
+                        alarmManagerHelper.setAlarm(LocalDateTime.now().plusSeconds(alarmTime))
+                    }
                 }
             }
         }
@@ -212,5 +235,12 @@ abstract class CountDownTimerService(
 
     companion object {
         private const val TAG = "CountDownTimerService"
+
+        const val EXTRA_LAUNCH_FROM_NOTIFICATION = "EXTRA_LAUNCH_FROM_NOTIFICATION"
+        const val ACTION_PAUSE = "INTERVAL_TIMER_ACTION_PAUSE"
+        const val ACTION_RESUME = "INTERVAL_TIMER_ACTION_RESUME"
+        const val ACTION_STOP = "INTERVAL_TIMER_ACTION_STOP"
+        const val ACTION_RESTART = "INTERVAL_TIMER_ACTION_RESTART"
+        const val ACTION_WAKE = "INTERVAL_TIMER_ACTION_WAKE"
     }
 }
