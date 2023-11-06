@@ -14,15 +14,18 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
 class CountDownTimer(
     private var timerSettings: TimerSettings,
-    val countDownTimer: ICountDownTimerHelper,
-    val alertUserHelper: IAlertUserHelper
+    private val countDownTimer: ICountDownTimerHelper,
+    private val alertUserHelper: IAlertUserHelper,
+    private val coroutineScope: CoroutineScope
 ) {
     fun setTimerSettings(newTimerSettings: TimerSettings) {
         timerSettings = newTimerSettings
     }
+
     private val _timerState = MutableStateFlow(TimerState.NONE)
     val timerState : StateFlow<TimerState> = _timerState.asStateFlow()
 
@@ -37,7 +40,6 @@ class CountDownTimer(
 
     private val eventChannel = Channel<Event>()
     private val eventsFlow = eventChannel.receiveAsFlow()
-    private val corroutineScope = CoroutineScope(Dispatchers.Main)
 
     init {
         eventsFlow.onEach {
@@ -59,7 +61,7 @@ class CountDownTimer(
                     setTimerStateAndAlert(TimerState.FINISHED)
                 }
             }
-        }.launchIn(corroutineScope)
+        }.launchIn(coroutineScope)
     }
 
     suspend fun start() {
@@ -109,7 +111,7 @@ class CountDownTimer(
     }
 
     private fun resolveNextEvent() {
-        corroutineScope.launch {
+        coroutineScope.launch {
             val currentRemainingSections = _remainingSections.value
             when (_timerState.value) {
                 TimerState.PREPARE -> {
@@ -146,7 +148,7 @@ class CountDownTimer(
     }
 
     private fun alertUser(state: TimerState?) {
-        corroutineScope.launch(Dispatchers.IO) {
+        coroutineScope.launch {
             when (state) {
                 TimerState.PREPARE -> alertUserHelper.startPrepareAlert()
                 TimerState.TRAIN -> alertUserHelper.startTrainAlert()

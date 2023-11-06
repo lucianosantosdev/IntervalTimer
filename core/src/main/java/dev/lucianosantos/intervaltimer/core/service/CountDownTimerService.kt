@@ -21,17 +21,23 @@ import dev.lucianosantos.intervaltimer.core.utils.AlertUserHelper
 import dev.lucianosantos.intervaltimer.core.utils.CountDownTimerHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
+import kotlin.coroutines.CoroutineContext
 
 
 abstract class CountDownTimerService(
     private val serviceName: Class<*>
 ) : ICountDownTimerService, LifecycleService() {
-    private var countDownTimer = CountDownTimer(
+    private val serviceJob = Job()
+    private val coroutineScope = CoroutineScope(serviceJob + Dispatchers.Main)
+
+    private val countDownTimer = CountDownTimer(
         DefaultTimerSettings.settings,
         CountDownTimerHelper(),
-        AlertUserHelper(this)
+        AlertUserHelper(this),
+        coroutineScope
     )
 
     private val binder = CountDownTimerBinder()
@@ -150,6 +156,11 @@ abstract class CountDownTimerService(
             )
             notificationHelper.notify(notification)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        serviceJob.cancel()
     }
 
     override fun onBind(intent: Intent): IBinder? {
