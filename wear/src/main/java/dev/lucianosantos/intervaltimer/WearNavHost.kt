@@ -70,7 +70,6 @@ fun WearNavHost(
                 value = settings.timerSettings.restTimeSeconds,
                 onValueChange = {
                     settingsViewModel.setRestTime(it)
-                    countDownTimerService.setTimerSettings(settings.timerSettings)
                     navController.navigate(TimerRunning.route)
                 },
                 type = PickerType.TIME,
