@@ -11,6 +11,9 @@ import dev.lucianosantos.intervaltimer.core.service.NotificationHelper
 import dev.lucianosantos.intervaltimer.core.service.OngoingActivityWrapper
 
 class OngoingActivityWrapperImpl : OngoingActivityWrapper {
+    override fun allowForegroundService(): Boolean {
+        return false
+    }
 
     override fun setOngoingActivity(
         timerState: TimerState,
@@ -19,6 +22,9 @@ class OngoingActivityWrapperImpl : OngoingActivityWrapper {
         message: String,
         notificationBuilder: NotificationCompat.Builder
     ) {
+        return
+        // TODO: Implement this. Not working yet.
+
         val ongoingActivityStatus = Status.Builder()
             .addTemplate(message)
             .build()
@@ -28,6 +34,7 @@ class OngoingActivityWrapperImpl : OngoingActivityWrapper {
                 NotificationHelper.NOTIFICATION_ID, notificationBuilder)
                 .setTouchIntent(onTouchIntent)
                 .setStatus(ongoingActivityStatus)
+                .setStaticIcon(R.drawable.ic_ongoing_prepare)
 
         val icon = when(timerState) {
             TimerState.PREPARE -> R.drawable.ic_ongoing_prepare

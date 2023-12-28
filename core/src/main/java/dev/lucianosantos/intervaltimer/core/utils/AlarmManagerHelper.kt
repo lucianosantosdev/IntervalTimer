@@ -14,28 +14,14 @@ class AlarmManagerHelper(
 ) {
     private val alarmManager: AlarmManager = context.getSystemService(AlarmManager::class.java)
 
-    private fun activityLauncherIntent() : PendingIntent {
-        val pauseIntent = Intent()
-        pauseIntent.action = CountDownTimerService.ACTION_WAKE
-        return PendingIntent.getBroadcast(
-            context,
-            1,
-            pauseIntent,
-            PendingIntent.FLAG_IMMUTABLE
-        )
-    }
-
     fun setAlarm (
-        time: LocalDateTime,
+        time: Long,
+        intent: PendingIntent
     ) {
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
-            time.atZone(ZoneId.systemDefault()).toEpochSecond() * 1000,
-            activityLauncherIntent()
+            time,
+            intent
         )
-    }
-
-    fun cancelAlarm(pendingIntent: PendingIntent) {
-        alarmManager.cancel(pendingIntent)
     }
 }

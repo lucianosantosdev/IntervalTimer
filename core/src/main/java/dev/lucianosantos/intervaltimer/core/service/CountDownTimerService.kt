@@ -1,5 +1,6 @@
 package dev.lucianosantos.intervaltimer.core.service
 
+import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -20,13 +21,13 @@ import dev.lucianosantos.intervaltimer.core.data.TimerState
 import dev.lucianosantos.intervaltimer.core.utils.AlarmManagerHelper
 import dev.lucianosantos.intervaltimer.core.utils.AlertUserHelper
 import dev.lucianosantos.intervaltimer.core.utils.CountDownTimerHelper
+import dev.lucianosantos.intervaltimer.core.utils.WakeReceiver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
-import kotlin.coroutines.CoroutineContext
-
+import java.time.ZoneId
 
 abstract class CountDownTimerService(
     private val serviceName: Class<*>
@@ -61,8 +62,6 @@ abstract class CountDownTimerService(
 
     abstract val mainActivity: Class<*>
 
-    private var wakeLock: PowerManager.WakeLock? = null
-
     private var receiverRegistered = false
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -79,13 +78,6 @@ abstract class CountDownTimerService(
                 ACTION_RESTART -> {
                     restart()
                 }
-                ACTION_WAKE -> {
-                    wakeLock = (getSystemService(Context.POWER_SERVICE) as PowerManager).run {
-                        newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "CountDownTimerSevice::MyWakelockTag").apply {
-                            acquire()
-                        }
-                    }
-                }
             }
         }
     }
@@ -97,7 +89,6 @@ abstract class CountDownTimerService(
             addAction(ACTION_PAUSE)
             addAction(ACTION_RESUME)
             addAction(ACTION_RESTART)
-            addAction(ACTION_WAKE)
         }
         registerReceiver(receiver, intentFilter)
         receiverRegistered = true
@@ -142,15 +133,36 @@ abstract class CountDownTimerService(
                 timerState.collect {
                     if(timerState.value != TimerState.STOPPED && timerState.value != TimerState.NONE) {
                         updateNotification()
-                        val remainingSeconds = currentTimeSeconds.value.toLong()
-                        val alarmTime = remainingSeconds - 5L
-                        wakeLock?.release()
-                        wakeLock = null
-                        alarmManagerHelper.setAlarm(LocalDateTime.now().plusSeconds(alarmTime))
+                        scheduleWakeAlarm()
                     }
                 }
             }
         }
+    }
+
+    private fun scheduleWakeAlarm() {
+        Log.d(TAG, "Schedule wake alarm")
+        val wakeIntent: PendingIntent = Intent(applicationContext, WakeReceiver::class.java).let { intent ->
+            PendingIntent.getBroadcast(applicationContext, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+        }
+        val launchActivityIntent = Intent(applicationContext, mainActivity)
+        launchActivityIntent.putExtra(NotificationHelper.EXTRA_LAUNCH_FROM_NOTIFICATION, true)
+
+        val activityIntent = PendingIntent.getActivity(
+            applicationContext,
+            1,
+            launchActivityIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val remainingSeconds = currentTimeSeconds.value.toLong()
+        val alarmTime = remainingSeconds - 3L
+        val time = LocalDateTime.now().plusSeconds(alarmTime).atZone(ZoneId.systemDefault()).toEpochSecond() * 1000
+        Log.d(TAG, "Alarm time: $time")
+
+        Log.d(TAG, "Schedule wake alarm - 2")
+        alarmManagerHelper.setAlarm(time, wakeIntent)
+        alarmManagerHelper.setAlarm(time, activityIntent)
     }
 
     private fun updateNotification() {
@@ -185,7 +197,10 @@ abstract class CountDownTimerService(
         Log.d(TAG, "$configurationChange")
         Log.d(TAG, "$walkingWorkoutActive")
 
-        if (!configurationChange && timerState.value != TimerState.STOPPED) {
+        if (ongoingActivityWrapper.allowForegroundService() &&
+            !configurationChange &&
+            timerState.value != TimerState.STOPPED
+        ) {
             Log.d(TAG, "Start foreground service")
             val notification = notificationHelper.generateNotification(
                 timerState = timerState.value,
@@ -194,6 +209,10 @@ abstract class CountDownTimerService(
             )
             startForeground(NotificationHelper.NOTIFICATION_ID, notification)
             serviceRunningInForeground = true
+        } else {
+            countDownTimer.stop()
+            Log.d(TAG, "Not foreground service")
+            notForegroundService()
         }
 
         return true
@@ -254,11 +273,9 @@ abstract class CountDownTimerService(
     companion object {
         private const val TAG = "CountDownTimerService"
 
-        const val EXTRA_LAUNCH_FROM_NOTIFICATION = "EXTRA_LAUNCH_FROM_NOTIFICATION"
         const val ACTION_PAUSE = "INTERVAL_TIMER_ACTION_PAUSE"
         const val ACTION_RESUME = "INTERVAL_TIMER_ACTION_RESUME"
         const val ACTION_STOP = "INTERVAL_TIMER_ACTION_STOP"
         const val ACTION_RESTART = "INTERVAL_TIMER_ACTION_RESTART"
-        const val ACTION_WAKE = "INTERVAL_TIMER_ACTION_WAKE"
     }
 }

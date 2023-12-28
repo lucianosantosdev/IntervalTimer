@@ -93,8 +93,6 @@ fun PickerScreenComponent(
         initiallySelectedOption = value
     )
 
-
-
     val touchExplorationStateProvider = remember { DefaultTouchExplorationStateProvider() }
     val touchExplorationServicesEnabled by touchExplorationStateProvider
         .touchExplorationState()

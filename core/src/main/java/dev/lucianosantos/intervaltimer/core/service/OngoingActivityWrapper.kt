@@ -6,6 +6,8 @@ import androidx.core.app.NotificationCompat
 import dev.lucianosantos.intervaltimer.core.data.TimerState
 
 interface OngoingActivityWrapper {
+    fun allowForegroundService(): Boolean
+
     fun setOngoingActivity(
         timerState: TimerState,
         applicationContext: Context,
