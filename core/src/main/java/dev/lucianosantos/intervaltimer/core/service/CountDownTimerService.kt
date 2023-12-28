@@ -145,24 +145,10 @@ abstract class CountDownTimerService(
         val wakeIntent: PendingIntent = Intent(applicationContext, WakeReceiver::class.java).let { intent ->
             PendingIntent.getBroadcast(applicationContext, 0, intent, PendingIntent.FLAG_IMMUTABLE)
         }
-        val launchActivityIntent = Intent(applicationContext, mainActivity)
-        launchActivityIntent.putExtra(NotificationHelper.EXTRA_LAUNCH_FROM_NOTIFICATION, true)
-
-        val activityIntent = PendingIntent.getActivity(
-            applicationContext,
-            1,
-            launchActivityIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
-
         val remainingSeconds = currentTimeSeconds.value.toLong()
-        val alarmTime = remainingSeconds - 3L
+        val alarmTime = remainingSeconds - 5L
         val time = LocalDateTime.now().plusSeconds(alarmTime).atZone(ZoneId.systemDefault()).toEpochSecond() * 1000
-        Log.d(TAG, "Alarm time: $time")
-
-        Log.d(TAG, "Schedule wake alarm - 2")
         alarmManagerHelper.setAlarm(time, wakeIntent)
-        alarmManagerHelper.setAlarm(time, activityIntent)
     }
 
     private fun updateNotification() {
