@@ -22,12 +22,7 @@ class WakeReceiver : BroadcastReceiver() {
     private fun wakeUp(context: Context?) {
         Log.d("WakeReceiver", "Wake up!")
         val powerManager = context!!.getSystemService(Context.POWER_SERVICE) as PowerManager?
-        wakeLock = powerManager!!.newWakeLock(
-            PowerManager.SCREEN_BRIGHT_WAKE_LOCK or
-                    PowerManager.ACQUIRE_CAUSES_WAKEUP or
-                    PowerManager.ON_AFTER_RELEASE,
-            "IntervalTimer:WakeReceiver"
-        )
+        wakeLock = powerManager!!.newWakeLock(PowerManager.ON_AFTER_RELEASE, "IntervalTimer:WakeReceiver")
         wakeLock!!.acquire(5 * 1000L /* 5 seconds */)
     }
 }
