@@ -20,7 +20,7 @@ class CountDownTimer(
     private var timerSettings: TimerSettings,
     private val countDownTimer: ICountDownTimerHelper,
     private val alertUserHelper: IAlertUserHelper,
-    private val coroutineScope: CoroutineScope
+    private val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Main)
 ) {
     fun setTimerSettings(newTimerSettings: TimerSettings) {
         timerSettings = newTimerSettings
