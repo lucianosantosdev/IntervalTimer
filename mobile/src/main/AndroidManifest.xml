@@ -14,7 +14,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.App"
-        tools:targetApi="33" >
+        tools:targetApi="34" >
+<!--        <meta-data-->
+<!--            android:name="com.google.android.gms.ads.APPLICATION_ID"-->
+<!--            android:value="ca-app-pub-xxxxxxxxxxxxxxxx~yyyyyyyyyy"/>-->
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

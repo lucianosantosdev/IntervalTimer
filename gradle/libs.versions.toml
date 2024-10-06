@@ -69,6 +69,7 @@ ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom-version" }
 compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose-version" }
 navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose-version" }
+google-services-ads = { group = "com.google.android.gms", name = "play-services-ads", version = "23.3.0" }
 
 google-services = { group = "com.google.gms", name = "google-services", version.ref= "google-services-version" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx", version.ref= "firebase-analytics-version" }

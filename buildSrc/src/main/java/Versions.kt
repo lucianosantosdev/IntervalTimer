@@ -17,7 +17,7 @@ import org.gradle.api.JavaVersion
  */
 
 object Versions {
-    const val COMPILE_SDK = 33
+    const val COMPILE_SDK = 34
     const val WEAR_COMPILE_SDK = 33
     const val MIN_SDK = 26
     const val JVM_TARGET = "1.8"
