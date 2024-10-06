@@ -89,7 +89,7 @@ abstract class CountDownTimerService(
             addAction(ACTION_RESUME)
             addAction(ACTION_RESTART)
         }
-        registerReceiver(receiver, intentFilter)
+        registerReceiver(receiver, intentFilter, RECEIVER_NOT_EXPORTED)
         receiverRegistered = true
     }
 
