@@ -37,7 +37,7 @@ class MainActivity : BaseActivity() {
 
         val fromNotification = intent.getBooleanExtra(NotificationHelper.EXTRA_LAUNCH_FROM_NOTIFICATION, false)
 
-//        MobileAds.initialize(this)
+        MobileAds.initialize(this)
         setContent {
             val navController = rememberNavController()
             IntervalTimerTheme {
@@ -64,12 +64,12 @@ fun MainApp(
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-//        topBar = {
-//            BannerAd(
-//                modifier = Modifier.fillMaxWidth(),
-//                adId = "ca-app-pub-3940256099942544/6300978111"
-//            )
-//        }
+        topBar = {
+            BannerAd(
+                modifier = Modifier.fillMaxWidth(),
+                adId = "ca-app-pub-1325449258005309/4736998612"
+            )
+        }
     ) { innerPadding ->
         MobileNavHost(
             countDownTimerService = countDownTimerService,
