@@ -62,6 +62,7 @@ abstract class CountDownTimerService(
     abstract val mainActivity: Class<*>
 
     private var receiverRegistered = false
+
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             when(intent?.action) {
@@ -89,7 +90,7 @@ abstract class CountDownTimerService(
             addAction(ACTION_RESUME)
             addAction(ACTION_RESTART)
         }
-        registerReceiver(receiver, intentFilter, RECEIVER_NOT_EXPORTED)
+        registerReceiver(receiver, intentFilter, RECEIVER_EXPORTED)
         receiverRegistered = true
     }
 

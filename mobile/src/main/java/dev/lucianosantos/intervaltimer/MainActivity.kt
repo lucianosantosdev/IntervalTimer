@@ -1,8 +1,12 @@
 package dev.lucianosantos.intervaltimer
 
 import android.os.Bundle
+import android.Manifest
+import android.content.pm.PackageManager
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -32,11 +37,37 @@ class MainActivity : BaseActivity() {
     override val serviceName: Class<*>
         get() = CountDownTimerServiceMobile::class.java
 
+    private val activityResultLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        )
+        { permissions ->
+            // Handle Permission granted/rejected
+            var permissionGranted = true
+            permissions.entries.forEach {
+                if (it.key in REQUIRED_PERMISSIONS && !it.value)
+                    permissionGranted = false
+            }
+            if (!permissionGranted) {
+                Toast.makeText(
+                    baseContext,
+                    "Permission request denied",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    private fun requestPermissions() {
+        activityResultLauncher.launch(REQUIRED_PERMISSIONS)
+    }
+    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all { it ->
+        ContextCompat.checkSelfPermission(baseContext, it) == PackageManager.PERMISSION_GRANTED
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        if (!allPermissionsGranted()) {
+            requestPermissions()
+        }
         val fromNotification = intent.getBooleanExtra(NotificationHelper.EXTRA_LAUNCH_FROM_NOTIFICATION, false)
-
         MobileAds.initialize(this)
         setContent {
             val navController = rememberNavController()
@@ -53,6 +84,12 @@ class MainActivity : BaseActivity() {
             }
         }
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+    }
+
+    companion object {
+        private val REQUIRED_PERMISSIONS = arrayOf(
+            Manifest.permission.POST_NOTIFICATIONS,
+        )
     }
 }
 
