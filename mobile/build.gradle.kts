@@ -85,6 +85,7 @@ dependencies {
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.material3)
     implementation(libs.google.services.ads)
+    implementation(libs.billing.ktx)
 
     debugImplementation(libs.bundles.composeDebug)
     testImplementation(libs.bundles.tests)

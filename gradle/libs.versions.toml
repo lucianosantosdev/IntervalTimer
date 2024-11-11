@@ -11,6 +11,7 @@ mockitoCore-version = "4.8.0"
 mockitoKotlin-version = "4.0.0"
 coroutinesTest-version = "1.6.4"
 espressoCore-version = "3.5.0"
+billing = "7.1.1"
 
 appcompat-version = "1.7.0-alpha01"
 androidx-lifecycle-version = "2.4.1"
@@ -56,6 +57,7 @@ androidx-lifecycle-livedata =  { group = "androidx.lifecycle", name = "lifecycle
 androidx-lifecycle-viewmodel =  { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle-version" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material-version" }
 numberPicker = { group = "io.github.ShawnLin013", name = "number-picker", version.ref = "numberPicker-version" }
+billing-ktx = { module = "com.android.billingclient:billing-ktx", version.ref = "billing" }
 
 #compose
 material3 = { group = "androidx.compose.material3", name = "material3" }
