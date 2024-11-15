@@ -9,7 +9,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import dev.lucianosantos.intervaltimer.core.data.TimerSettingsRepository
+import dev.lucianosantos.intervaltimer.core.data.TimerSettingsRepositoryImpl
 import dev.lucianosantos.intervaltimer.core.service.ICountDownTimerService
 import dev.lucianosantos.intervaltimer.core.viewmodels.SettingsViewModel
 
@@ -20,7 +20,7 @@ fun MobileNavHost(
     modifier: Modifier = Modifier
 ) {
     val settingsViewModel: SettingsViewModel = viewModel(
-        factory = SettingsViewModel.Factory(TimerSettingsRepository(LocalContext.current))
+        factory = SettingsViewModel.Factory(TimerSettingsRepositoryImpl(LocalContext.current))
     )
     val settings by settingsViewModel.uiState.collectAsState()
 
@@ -32,7 +32,6 @@ fun MobileNavHost(
         composable(route = Settings.route) {
             countDownTimerService.reset()
             SettingsScreen(
-                settingsViewModel = settingsViewModel,
                 onStartClicked = {
                     countDownTimerService.setTimerSettings(settings.timerSettings)
                     navController.navigate(TimerRunning.route)

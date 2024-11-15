@@ -1,7 +1,6 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("com.dicedmelon.gradle.jacoco-android")
 }
 
 android {
@@ -40,16 +39,11 @@ android {
     }
 }
 
-jacoco {
-    toolVersion = Versions.JACOCO_TOOL_VERSION
-}
-
 dependencies {
     implementation(libs.kotlin.stdlib)
     implementation(libs.androidx.core.ktx)
     implementation(libs.bundles.lifecycle)
     implementation(libs.compose.activity)
-    implementation(libs.androidx.lifecycle.service)
     implementation("androidx.media:media:1.1.0")
 
     testImplementation(libs.bundles.tests)

@@ -2,14 +2,31 @@ package dev.lucianosantos.intervaltimer.core.viewmodels
 
 import androidx.lifecycle.*
 import dev.lucianosantos.intervaltimer.core.data.ITimerSettingsRepository
+import dev.lucianosantos.intervaltimer.core.data.TimerSettings
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class SettingsViewModel(private val timerSettingsRepository: ITimerSettingsRepository) : ViewModel() {
+enum class SoundMode {
+    SOUND, MUTE, VIBRATE
+}
 
-    private val _uiState = MutableStateFlow(SettingsUiState(timerSettingsRepository.loadSettings()))
+class SettingsViewModel(
+    private val timerSettingsRepository: ITimerSettingsRepository
+) : ViewModel() {
+
+    private val _uiState = MutableStateFlow(SettingsUiState(
+        timerSettings = timerSettingsRepository.loadSettings(),
+        volume = 0,
+        soundMode = SoundMode.SOUND
+    ))
     val uiState : StateFlow<SettingsUiState> = _uiState.asStateFlow()
+
+    data class SettingsUiState(
+        val timerSettings: TimerSettings,
+        val volume: Int,
+        val soundMode: SoundMode
+    )
 
     fun incrementSections() {
         setSections( _uiState.value.timerSettings.sections + 1)
@@ -34,12 +51,21 @@ class SettingsViewModel(private val timerSettingsRepository: ITimerSettingsRepos
         persistSettings()
     }
 
-    fun incrementRestTime() {
-        setRestTime( _uiState.value.timerSettings.restTimeSeconds + 1)
+
+    fun setSoundMode(newMode: SoundMode) {
+        _uiState.value.let { currentUiState ->
+            _uiState.value = currentUiState.copy(
+                soundMode = newMode
+            )
+        }
     }
 
-    fun decrementRestTime() {
-        setRestTime( _uiState.value.timerSettings.restTimeSeconds - 1)
+    fun setVolume(newVolume: Float) {
+        _uiState.value.let { currentUiState ->
+            _uiState.value = currentUiState.copy(
+                volume = newVolume.toInt()
+            )
+        }
     }
 
     fun setRestTime(restTimeSeconds: Int) {
@@ -55,14 +81,6 @@ class SettingsViewModel(private val timerSettingsRepository: ITimerSettingsRepos
             )
         }
         persistSettings()
-    }
-
-    fun incrementTrainTime() {
-        setTrainTime( _uiState.value.timerSettings.trainTimeSeconds + 1)
-    }
-
-    fun decrementTrainTime() {
-        setTrainTime(_uiState.value.timerSettings.trainTimeSeconds - 1)
     }
 
     fun setTrainTime(trainTimeSeconds: Int) {

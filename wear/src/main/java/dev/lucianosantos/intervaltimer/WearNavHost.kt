@@ -13,7 +13,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.wear.compose.navigation.SwipeDismissableNavHost
 import androidx.wear.compose.navigation.composable
-import dev.lucianosantos.intervaltimer.core.data.TimerSettingsRepository
+import dev.lucianosantos.intervaltimer.core.data.TimerSettingsRepositoryImpl
 import dev.lucianosantos.intervaltimer.core.service.ICountDownTimerService
 import dev.lucianosantos.intervaltimer.core.ui.PickerType
 import dev.lucianosantos.intervaltimer.core.viewmodels.SettingsViewModel
@@ -28,7 +28,7 @@ fun WearNavHost(
     Log.d("WEAR NAV HOST",navController.currentBackStack.toString() )
 
     val settingsViewModel: SettingsViewModel = viewModel(
-        factory = SettingsViewModel.Factory(TimerSettingsRepository(LocalContext.current))
+        factory = SettingsViewModel.Factory(TimerSettingsRepositoryImpl(LocalContext.current))
     )
     val settings by settingsViewModel.uiState.collectAsState()
 

@@ -3,8 +3,10 @@ import java.util.Properties
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
+    alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 val keystoreProperties = Properties().apply {
@@ -57,18 +59,23 @@ android {
 
     buildFeatures {
         viewBinding = true
-        dataBinding = true
         compose = true
     }
 
     composeOptions {
         kotlinCompilerExtensionVersion = Versions.COMPOSE_COMPILER
     }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = "17"
+    }
 }
 
 dependencies {
     implementation(libs.kotlin.stdlib)
-    implementation(libs.bundles.firebase)
     implementation(libs.material)
 
     implementation(libs.compose.activity)
@@ -83,20 +90,25 @@ dependencies {
     implementation(libs.wear.compose.navigation)
     implementation(libs.navigation.ui.ktx)
 
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
+
     implementation(libs.bundles.lifecycle)
 
     debugImplementation(libs.compose.ui.tooling)
 
     implementation(project(":core"))
     implementation(libs.androidx.compose.ui.tooling)
-    implementation("androidx.wear:wear-ongoing:1.0.0")
-    // Includes LocusIdCompat and new Notification categories for Ongoing Activity.
-
-    val core_version = "1.6.0"
-    implementation("androidx.core:core:$core_version")
-    implementation("androidx.core:core-ktx:$core_version")
-
+    implementation(libs.wear.ongoing)
+//
+//    // Includes LocusIdCompat and new Notification categories for Ongoing Activity.
+//    val core_version = "1.6.0"
+//    implementation("androidx.core:core:$core_version")
+//    implementation("androidx.core:core-ktx:$core_version")
+//
     // To use RoleManagerCompat
-    implementation("androidx.core:core-role:1.0.0")
+//    implementation("androidx.core:core-role:1.0.0")
     implementation("androidx.core:core-splashscreen:1.0.1")
 }

@@ -2,7 +2,7 @@ package dev.lucianosantos.intervaltimer.core.data
 
 import android.content.Context
 
-class TimerSettingsRepository(private val context: Context) : ITimerSettingsRepository {
+class TimerSettingsRepositoryImpl(private val context: Context) : ITimerSettingsRepository {
     override fun loadSettings() : TimerSettings{
         val sharedPreference = context.getSharedPreferences("TimerSettings", Context.MODE_PRIVATE)
 
@@ -13,7 +13,6 @@ class TimerSettingsRepository(private val context: Context) : ITimerSettingsRepo
             restTimeSeconds = sharedPreference.getInt("restTimeSeconds", DefaultTimerSettings.settings.restTimeSeconds),
         )
     }
-
     override fun saveSettings(timerSettings: TimerSettings) {
         val sharedPreference = context.getSharedPreferences("TimerSettings", Context.MODE_PRIVATE)
         var editor = sharedPreference.edit()

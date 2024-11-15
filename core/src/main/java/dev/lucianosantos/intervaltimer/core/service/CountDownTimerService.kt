@@ -15,7 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import dev.lucianosantos.intervaltimer.core.data.DefaultTimerSettings
 import dev.lucianosantos.intervaltimer.core.data.TimerSettings
-import dev.lucianosantos.intervaltimer.core.data.TimerSettingsRepository
+import dev.lucianosantos.intervaltimer.core.data.TimerSettingsRepositoryImpl
 import dev.lucianosantos.intervaltimer.core.data.TimerState
 import dev.lucianosantos.intervaltimer.core.utils.AlarmManagerHelper
 import dev.lucianosantos.intervaltimer.core.utils.AlertUserHelper
@@ -35,7 +35,7 @@ abstract class CountDownTimerService(
     private val coroutineScope = CoroutineScope(serviceJob + Dispatchers.Main)
 
     private val settingsRepository by lazy {
-        TimerSettingsRepository(this)
+        TimerSettingsRepositoryImpl(this)
     }
     private val countDownTimer by lazy {
         CountDownTimer(

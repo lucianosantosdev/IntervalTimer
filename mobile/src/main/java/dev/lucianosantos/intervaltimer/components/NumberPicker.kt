@@ -93,7 +93,6 @@ fun TimerNumberPicker(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-
         NumberSlider(
             value = getMinutesFromSeconds(value),
             onValueChange = {

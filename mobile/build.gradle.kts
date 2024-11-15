@@ -3,8 +3,10 @@ import java.util.Properties
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
+    alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 val keystoreProperties = Properties().apply {
@@ -60,7 +62,6 @@ android {
 
     buildFeatures {
         viewBinding = true
-        dataBinding = true
         compose = true
     }
 
@@ -74,7 +75,6 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.material)
     implementation(libs.navigation.ui.ktx)
-    implementation(libs.bundles.firebase)
     implementation(libs.bundles.lifecycle)
 
     implementation(libs.compose.activity)
@@ -87,9 +87,22 @@ dependencies {
     implementation(libs.google.services.ads)
     implementation(libs.billing.ktx)
 
+    implementation(libs.compose.material.icons.extended)
     debugImplementation(libs.bundles.composeDebug)
     testImplementation(libs.bundles.tests)
     androidTestImplementation(libs.bundles.androidTests)
+
+    // DI
+    implementation(project.dependencies.platform(libs.koin.bom))
+    implementation(libs.koin.core)
+    implementation(libs.koin.core.coroutines)
+    implementation(libs.koin.compose.viewmodel)
+    implementation(libs.koin.android)
+
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
 
     implementation(project(":core"))
     wearApp(project(":wear"))
