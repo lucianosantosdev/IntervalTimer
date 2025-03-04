@@ -27,6 +27,9 @@ android {
         minSdk = Versions.MIN_SDK
         targetSdk = Versions.COMPILE_SDK
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "REVENUECAT_API", "\"goog_CuJPQCNRKOsoYstKVXcxVBgqkUJ\"")
+        buildConfigField("String", "GOOGLE_ADS_ID", "\"ca-app-pub-1325449258005309/4736998612\"")
+        manifestPlaceholders["admobApplicationId"] = "ca-app-pub-1325449258005309~1136664954"
     }
 
     signingConfigs {
@@ -51,6 +54,7 @@ android {
         }
     }
 
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -63,6 +67,7 @@ android {
     buildFeatures {
         viewBinding = true
         compose = true
+        buildConfig = true
     }
 
     composeOptions {
@@ -99,6 +104,10 @@ dependencies {
     implementation(libs.koin.compose.viewmodel)
     implementation(libs.koin.android)
 
+    // Subscriptions
+    implementation(libs.revenuecat)
+    implementation(libs.revenuecat.ui)
+
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
@@ -107,3 +116,4 @@ dependencies {
     implementation(project(":core"))
     wearApp(project(":wear"))
 }
+

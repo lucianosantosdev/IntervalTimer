@@ -8,4 +8,12 @@
     <string name="label_sections">SÉRIES</string>
     <string name="label_train_number_picker">TEMPO DE TREINO</string>
     <string name="label_rest_number_picker">TEMPO DE DESCANÇO</string>
+
+    <string name="button_start">START</string>
+    <string name="settings">CONFIGURAÇÕES</string>
+    <string name="stop_content_description">parar</string>
+    <string name="resume_content_description">continuar</string>
+    <string name="restart_content_description">reiniciar</string>
+    <string name="pause_content_description">pausar</string>
+    <string name="button_remove_ads">REMOVER ANÚNCIOS</string>
 </resources>

@@ -13,6 +13,7 @@ coroutinesTest-version = "1.6.4"
 espressoCore-version = "3.5.0"
 billing = "7.1.1"
 koin-bom = "4.0.0-RC1"
+revenuecat = "8.10.4"
 
 appcompat-version = "1.7.0-alpha01"
 androidx-lifecycle-version = "2.8.7"
@@ -95,6 +96,8 @@ wear-ongoing = { group = "androidx.wear", name = "wear-ongoing", version = "1.0.
 
 horologist-composables = { group = "com.google.android.horologist", name = "horologist-composables", version.ref = "horologist-composables-version" }
 androidx-compose-ui-tooling = { group = "androidx.wear.compose", name = "compose-ui-tooling", version.ref = "composeUiTooling" }
+revenuecat = { module = "com.revenuecat.purchases:purchases", version.ref = "revenuecat" }
+revenuecat-ui = { module = "com.revenuecat.purchases:purchases-ui", version.ref = "revenuecat" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin-version" }
