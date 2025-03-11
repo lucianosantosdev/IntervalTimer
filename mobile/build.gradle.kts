@@ -28,7 +28,8 @@ android {
         targetSdk = Versions.COMPILE_SDK
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "REVENUECAT_API", "\"goog_CuJPQCNRKOsoYstKVXcxVBgqkUJ\"")
-        buildConfigField("String", "GOOGLE_ADS_ID", "\"ca-app-pub-1325449258005309/4736998612\"")
+        buildConfigField("String", "GOOGLE_BANNER_ADS_ID", "\"ca-app-pub-1325449258005309/4736998612\"")
+        buildConfigField("String", "GOOGLE_BANNER_INTERESTIAL_ID", "\"ca-app-pub-1325449258005309/1615924871\"")
         manifestPlaceholders["admobApplicationId"] = "ca-app-pub-1325449258005309~1136664954"
     }
 

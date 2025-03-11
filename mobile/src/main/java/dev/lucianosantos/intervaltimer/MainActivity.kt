@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
@@ -70,6 +71,7 @@ import org.koin.compose.viewmodel.koinViewModel
 class MainActivity : BaseActivity() {
     override val serviceName: Class<*>
         get() = CountDownTimerServiceMobile::class.java
+    private lateinit var interstitialAdHelper: InterstitialAdHelper
 
     private val activityResultLauncher =
         registerForActivityResult(
@@ -102,7 +104,11 @@ class MainActivity : BaseActivity() {
             requestPermissions()
         }
         val fromNotification = intent.getBooleanExtra(NotificationHelper.EXTRA_LAUNCH_FROM_NOTIFICATION, false)
+
         MobileAds.initialize(this)
+        interstitialAdHelper = InterstitialAdHelper(this)
+        interstitialAdHelper.loadAd()
+
         setContent {
             val navController = rememberNavController()
             IntervalTimerTheme {
@@ -125,76 +131,84 @@ class MainActivity : BaseActivity() {
             Manifest.permission.POST_NOTIFICATIONS,
         )
     }
-}
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun MainApp(
-    navController: NavHostController,
-    countDownTimerService: ICountDownTimerService
-) {
-    val subscriptionService = getKoin().get<SubscriptionService>()
-    val isUserPremium by subscriptionService.isUserPremium.collectAsState()
-    val products by subscriptionService.offerings.collectAsState()
-    val context = LocalContext.current
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    fun MainApp(
+        navController: NavHostController,
+        countDownTimerService: ICountDownTimerService
+    ) {
+        val subscriptionService = getKoin().get<SubscriptionService>()
+        val isUserPremium by subscriptionService.isUserPremium.collectAsState()
+        val products by subscriptionService.offerings.collectAsState()
+        val context = LocalContext.current
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
 
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            if (!isUserPremium) {
-                Column {
-                    CenterAlignedTopAppBar(
-                        colors = TopAppBarDefaults.topAppBarColors(
-                            containerColor = MaterialTheme.colorScheme.primary
-                        ),
-                        title = { },
-                        actions = {
-                            Button(
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = Color.Yellow,
-                                    contentColor = Color.Black
-                                ),
-
-                                onClick = {
-                                    Purchases.sharedInstance.purchaseWith(
-                                        PurchaseParams.Builder(context as Activity, products[0]).build(),
-                                        onError = { error, userCancelled ->
-                                            // Handle error (log or show UI message)
-                                        },
-                                        onSuccess = { storeTransaction, customerInfo ->
-                                            // Handle successful purchase
-                                        }
-                                    )
-                                }
-                            ) {
-                                Row(
-                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                    verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Filled.Diamond,
-                                        contentDescription = stringResource(R.string.button_remove_ads)
-                                    )
-                                    Text(text = stringResource(R.string.button_remove_ads))
-                                }
-                            }
-                        }
-                    )
-                    BannerAd(
-                        modifier = Modifier.fillMaxWidth(),
-                        adId = "ca-app-pub-1325449258005309/4736998612"
-                    )
-                }
+        LaunchedEffect(navBackStackEntry) {
+            if (!isUserPremium && navBackStackEntry?.destination?.route == Settings.route) {
+                // Call your method when returning to "home"
+                interstitialAdHelper.showAd()
             }
         }
-    ) { innerPadding ->
-        MobileNavHost(
-            countDownTimerService = countDownTimerService,
-            navController = navController,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-        )
+
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            topBar = {
+                if (!isUserPremium) {
+                    Column {
+                        CenterAlignedTopAppBar(
+                            colors = TopAppBarDefaults.topAppBarColors(
+                                containerColor = MaterialTheme.colorScheme.primary
+                            ),
+                            title = { },
+                            actions = {
+                                Button(
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = Color.Yellow,
+                                        contentColor = Color.Black
+                                    ),
+
+                                    onClick = {
+                                        Purchases.sharedInstance.purchaseWith(
+                                            PurchaseParams.Builder(context as Activity, products[0]).build(),
+                                            onError = { error, userCancelled ->
+                                                // Handle error (log or show UI message)
+                                            },
+                                            onSuccess = { storeTransaction, customerInfo ->
+                                                // Handle successful purchase
+                                            }
+                                        )
+                                    }
+                                ) {
+                                    Row(
+                                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                        verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Filled.Diamond,
+                                            contentDescription = stringResource(R.string.button_remove_ads)
+                                        )
+                                        Text(text = stringResource(R.string.button_remove_ads))
+                                    }
+                                }
+                            }
+                        )
+                        BannerAd(
+                            modifier = Modifier.fillMaxWidth(),
+                            adId = "ca-app-pub-1325449258005309/4736998612"
+                        )
+                    }
+                }
+            }
+        ) { innerPadding ->
+            MobileNavHost(
+                countDownTimerService = countDownTimerService,
+                navController = navController,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+            )
+        }
     }
 }
 
@@ -220,5 +234,5 @@ fun BannerAd(modifier: Modifier, adId: String) {
 @Composable
 @Preview
 fun BannerAdPreview() {
-        BannerAd(modifier = Modifier.fillMaxSize(), adId = BuildConfig.GOOGLE_ADS_ID)
+    BannerAd(modifier = Modifier.fillMaxSize(), adId = BuildConfig.GOOGLE_BANNER_ADS_ID)
 }
