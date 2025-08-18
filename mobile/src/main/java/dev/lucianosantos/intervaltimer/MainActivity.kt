@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -109,6 +110,7 @@ class MainActivity : BaseActivity() {
         interstitialAdHelper = InterstitialAdHelper(this)
         interstitialAdHelper.loadAd()
 
+        enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
             IntervalTimerTheme {

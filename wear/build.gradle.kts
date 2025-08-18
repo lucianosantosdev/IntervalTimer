@@ -1,11 +1,12 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
 
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    alias(libs.plugins.jetbrainsCompose)
-    alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.google.services)
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.composeMultiplatform)
+    alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.googleServices)
     alias(libs.plugins.firebase.crashlytics)
 }
 
@@ -20,12 +21,11 @@ val keystoreProperties = Properties().apply {
 
 android {
     namespace = "dev.lucianosantos.intervaltimer"
-    compileSdk = Versions.WEAR_COMPILE_SDK
+    compileSdk = libs.versions.android.wear.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "dev.lucianosantos.intervaltimer"
-        minSdk = Versions.MIN_SDK
-        targetSdk = Versions.WEAR_COMPILE_SDK
+        minSdk = libs.versions.android.minSdk.get().toInt()
 
         configurations.all {
             resolutionStrategy {
@@ -61,23 +61,20 @@ android {
         viewBinding = true
         compose = true
     }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = Versions.COMPOSE_COMPILER
-    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "17"
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_17
     }
 }
 
 dependencies {
     implementation(libs.kotlin.stdlib)
-    implementation(libs.material)
-
     implementation(libs.compose.activity)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.foundation)
@@ -100,7 +97,7 @@ dependencies {
     debugImplementation(libs.compose.ui.tooling)
 
     implementation(project(":core"))
-    implementation(libs.androidx.compose.ui.tooling)
+    implementation(libs.compose.ui.tooling)
     implementation(libs.wear.ongoing)
 //
 //    // Includes LocusIdCompat and new Notification categories for Ongoing Activity.

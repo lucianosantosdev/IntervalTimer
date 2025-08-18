@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
@@ -5,10 +7,10 @@ plugins {
 
 android {
     namespace = "dev.lucianosantos.intervaltimer.core"
-    compileSdk = Versions.COMPILE_SDK
+    compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = Versions.MIN_SDK
+        minSdk = libs.versions.android.minSdk.get().toInt()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -24,12 +26,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = Versions.JAVA_VERSION
-        targetCompatibility = Versions.JAVA_VERSION
-    }
-
-    kotlinOptions {
-        jvmTarget = Versions.JVM_TARGET
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 
     testOptions {
@@ -39,12 +37,18 @@ android {
     }
 }
 
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_1_8
+    }
+}
+
 dependencies {
     implementation(libs.kotlin.stdlib)
     implementation(libs.androidx.core.ktx)
     implementation(libs.bundles.lifecycle)
     implementation(libs.compose.activity)
-    implementation("androidx.media:media:1.1.0")
+    implementation(libs.androidx.media)
 
     testImplementation(libs.bundles.tests)
     androidTestImplementation(libs.bundles.androidTests)

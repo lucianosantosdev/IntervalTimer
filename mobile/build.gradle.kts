@@ -1,11 +1,12 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
 
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    alias(libs.plugins.jetbrainsCompose)
-    alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.google.services)
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.composeMultiplatform)
+    alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.googleServices)
     alias(libs.plugins.firebase.crashlytics)
 }
 
@@ -20,12 +21,12 @@ val keystoreProperties = Properties().apply {
 
 android {
     namespace = "dev.lucianosantos.intervaltimer"
-    compileSdk = Versions.COMPILE_SDK
+    compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "dev.lucianosantos.intervaltimer"
-        minSdk = Versions.MIN_SDK
-        targetSdk = Versions.COMPILE_SDK
+        minSdk = libs.versions.android.minSdk.get().toInt()
+        targetSdk = libs.versions.android.compileSdk.get().toInt()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "REVENUECAT_API", "\"goog_CuJPQCNRKOsoYstKVXcxVBgqkUJ\"")
         buildConfigField("String", "GOOGLE_BANNER_ADS_ID", "\"ca-app-pub-1325449258005309/4736998612\"")
@@ -57,12 +58,8 @@ android {
 
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = Versions.JVM_TARGET
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     buildFeatures {
@@ -70,33 +67,36 @@ android {
         compose = true
         buildConfig = true
     }
+}
 
-    composeOptions {
-        kotlinCompilerExtensionVersion = Versions.COMPOSE_COMPILER
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_17
     }
 }
 
 dependencies {
     implementation(libs.kotlin.stdlib)
     implementation(libs.androidx.core.ktx)
-    implementation(libs.material)
+
     implementation(libs.navigation.ui.ktx)
     implementation(libs.bundles.lifecycle)
 
     implementation(libs.compose.activity)
-    implementation(libs.navigation.compose)
-    implementation(platform(libs.compose.bom))
-    implementation(libs.compose.ui)
-    implementation(libs.compose.ui.graphics)
+    implementation(libs.compose.navigation)
     implementation(libs.compose.ui.tooling.preview)
-    implementation(libs.material3)
-    implementation(libs.google.services.ads)
-    implementation(libs.billing.ktx)
-
-    implementation(libs.compose.material.icons.extended)
     debugImplementation(libs.bundles.composeDebug)
     testImplementation(libs.bundles.tests)
     androidTestImplementation(libs.bundles.androidTests)
+
+    // From compose plugin
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.ui)
+    implementation(libs.compose.ui.graphics)
+    implementation(libs.compose.material3)
+    implementation(libs.google.ads)
+    implementation(libs.billing.ktx)
+    implementation(libs.compose.material.icons.extended)
 
     // DI
     implementation(project.dependencies.platform(libs.koin.bom))
@@ -113,8 +113,6 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)
-
     implementation(project(":core"))
-    wearApp(project(":wear"))
 }
 
