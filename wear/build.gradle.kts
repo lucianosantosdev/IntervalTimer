@@ -21,11 +21,12 @@ val keystoreProperties = Properties().apply {
 
 android {
     namespace = "dev.lucianosantos.intervaltimer"
-    compileSdk = libs.versions.android.wear.compileSdk.get().toInt()
+    compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "dev.lucianosantos.intervaltimer"
         minSdk = libs.versions.android.minSdk.get().toInt()
+        targetSdk = libs.versions.android.compileSdk.get().toInt()
 
         configurations.all {
             resolutionStrategy {
