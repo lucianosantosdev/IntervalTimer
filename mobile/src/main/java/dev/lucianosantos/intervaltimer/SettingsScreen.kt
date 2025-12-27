@@ -43,44 +43,64 @@ fun SettingsScreen(
     val settingsViewModel: SettingsViewModel = koinViewModel()
     val uiState by settingsViewModel.uiState.collectAsState()
 
+    SettingsScreenContent(
+        sections = uiState.timerSettings.sections,
+        trainTimeSeconds = uiState.timerSettings.trainTimeSeconds,
+        restTimeSeconds = uiState.timerSettings.restTimeSeconds,
+        onSectionsChange = { settingsViewModel.setSections(it) },
+        onTrainTimeChange = { settingsViewModel.setTrainTime(it) },
+        onRestTimeChange = { settingsViewModel.setRestTime(it) },
+        onStartClicked = onStartClicked
+    )
+}
 
-        Surface(
-            color = MaterialTheme.colorScheme.background,
-            modifier = Modifier.fillMaxSize()
+@Composable
+fun SettingsScreenContent(
+    sections: Int,
+    trainTimeSeconds: Int,
+    restTimeSeconds: Int,
+    onSectionsChange: (Int) -> Unit,
+    onTrainTimeChange: (Int) -> Unit,
+    onRestTimeChange: (Int) -> Unit,
+    onStartClicked: () -> Unit
+) {
+    Surface(
+        color = MaterialTheme.colorScheme.background,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Box(
+            Modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp)
         ) {
-            Box(
-                Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 16.dp)
+            Column(
+                modifier = Modifier.align(Alignment.Center),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Column(
-                    modifier = Modifier.align(Alignment.Center),
-                    verticalArrangement = Arrangement.spacedBy(4.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    LabelText(text = stringResource(R.string.label_sections))
-                    NumberPicker(
-                        value = uiState.timerSettings.sections,
-                        onValueChange = {
-                            settingsViewModel.setSections(it)
-                        }
-                    )
-                    LabelText(text = stringResource(R.string.label_train_number_picker))
-                    NumberPicker(
-                        uiState.timerSettings.trainTimeSeconds,
-                        type = PickerType.TIME,
-                        onValueChange = {
-                            settingsViewModel.setTrainTime(it)
-                        }
-                    )
-                    LabelText(text = stringResource(R.string.label_rest_number_picker))
-                    NumberPicker(
-                        value = uiState.timerSettings.restTimeSeconds,
-                        type = PickerType.TIME,
-                        onValueChange = {
-                            settingsViewModel.setRestTime(it)
-                        }
-                    )
+                LabelText(text = stringResource(R.string.label_sections))
+                NumberPicker(
+                    value = sections,
+                    onValueChange = {
+                        onSectionsChange(it)
+                    }
+                )
+                LabelText(text = stringResource(R.string.label_train_number_picker))
+                NumberPicker(
+                    trainTimeSeconds,
+                    type = PickerType.TIME,
+                    onValueChange = {
+                        onTrainTimeChange(it)
+                    }
+                )
+                LabelText(text = stringResource(R.string.label_rest_number_picker))
+                NumberPicker(
+                    value = restTimeSeconds,
+                    type = PickerType.TIME,
+                    onValueChange = {
+                        onRestTimeChange(it)
+                    }
+                )
 //                    Row(
 //                        verticalAlignment = Alignment.CenterVertically,
 //                        horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -113,17 +133,17 @@ fun SettingsScreen(
 //                        Text(text = uiState.volume.toString())
 //                    }
 
-                    Button(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(12.dp),
-                        onClick = onStartClicked
-                    ) {
-                        Text(text = stringResource(R.string.button_start))
-                    }
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(12.dp),
+                    onClick = onStartClicked
+                ) {
+                    Text(text = stringResource(R.string.button_start))
                 }
             }
         }
+    }
 }
 
 @Composable
@@ -139,6 +159,14 @@ fun LabelText(text: String) {
 @Preview(widthDp = 320, heightDp = 640, locale = "pt")
 fun SettingsScreenPreview() {
     IntervalTimerTheme {
-        SettingsScreen()
+        SettingsScreenContent(
+            sections = 5,
+            trainTimeSeconds = 30,
+            restTimeSeconds = 15,
+            onSectionsChange = {},
+            onTrainTimeChange = {},
+            onRestTimeChange = {},
+            onStartClicked = {}
+        )
     }
 }
