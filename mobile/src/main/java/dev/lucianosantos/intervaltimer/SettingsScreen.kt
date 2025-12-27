@@ -3,7 +3,9 @@ package dev.lucianosantos.intervaltimer
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -32,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import dev.lucianosantos.intervaltimer.components.NumberPicker
 import dev.lucianosantos.intervaltimer.core.ui.PickerType
 import dev.lucianosantos.intervaltimer.core.viewmodels.SettingsViewModel
+import dev.lucianosantos.intervaltimer.core.viewmodels.SoundMode
 import dev.lucianosantos.intervaltimer.theme.IntervalTimerTheme
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -50,7 +53,11 @@ fun SettingsScreen(
         onSectionsChange = { settingsViewModel.setSections(it) },
         onTrainTimeChange = { settingsViewModel.setTrainTime(it) },
         onRestTimeChange = { settingsViewModel.setRestTime(it) },
-        onStartClicked = onStartClicked
+        onStartClicked = onStartClicked,
+        soundMode = uiState.soundMode,
+        onSoundModeChange = { settingsViewModel.setSoundMode(it) },
+        volume = uiState.volume,
+        onVolumeChange = { settingsViewModel.setVolume(it) }
     )
 }
 
@@ -62,7 +69,11 @@ fun SettingsScreenContent(
     onSectionsChange: (Int) -> Unit,
     onTrainTimeChange: (Int) -> Unit,
     onRestTimeChange: (Int) -> Unit,
-    onStartClicked: () -> Unit
+    onStartClicked: () -> Unit,
+    soundMode: SoundMode,
+    onSoundModeChange: (SoundMode) -> Unit,
+    volume: Int,
+    onVolumeChange: (Int) -> Unit
 ) {
     Surface(
         color = MaterialTheme.colorScheme.background,
@@ -73,71 +84,74 @@ fun SettingsScreenContent(
                 .fillMaxSize()
                 .padding(horizontal = 16.dp)
         ) {
+
             Column(
                 modifier = Modifier.align(Alignment.Center),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
+                verticalArrangement = Arrangement.SpaceEvenly,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                LabelText(text = stringResource(R.string.label_sections))
-                NumberPicker(
+                LabeledNumberPicker(
+                    label = stringResource(R.string.label_sections),
                     value = sections,
+                    type = PickerType.NUMBER,
                     onValueChange = {
                         onSectionsChange(it)
                     }
                 )
-                LabelText(text = stringResource(R.string.label_train_number_picker))
-                NumberPicker(
-                    trainTimeSeconds,
+                LabeledNumberPicker(
+                    label = stringResource(R.string.label_train_number_picker),
+                    value = trainTimeSeconds,
                     type = PickerType.TIME,
                     onValueChange = {
                         onTrainTimeChange(it)
                     }
                 )
-                LabelText(text = stringResource(R.string.label_rest_number_picker))
-                NumberPicker(
+                LabeledNumberPicker(
+                    label = stringResource(R.string.label_rest_number_picker),
                     value = restTimeSeconds,
                     type = PickerType.TIME,
                     onValueChange = {
                         onRestTimeChange(it)
                     }
                 )
-//                    Row(
-//                        verticalAlignment = Alignment.CenterVertically,
-//                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-//                    ) {
-//                        IconButton(onClick = {
-//                            val newMode = when (uiState.soundMode) {
-//                                SoundMode.SOUND -> SoundMode.MUTE
-//                                SoundMode.MUTE -> SoundMode.VIBRATE
-//                                SoundMode.VIBRATE -> SoundMode.SOUND
-//                            }
-//                            settingsViewModel.setSoundMode(newMode)
-//                        }) {
-//                            Icon(
-//                                imageVector = when (uiState.soundMode) {
-//                                    SoundMode.SOUND -> Icons.Default.VolumeUp
-//                                    SoundMode.MUTE -> Icons.Default.VolumeOff
-//                                    SoundMode.VIBRATE -> Icons.Default.Vibration
-//                                },
-//                                contentDescription = null
-//                            )
-//                        }
-//                        Slider(
-//                            value = uiState.volume.toFloat(),
-//                            valueRange = 0f..100f,
-//                            steps = 0,
-//                            onValueChange = { settingsViewModel.setVolume(it) },
-//                            enabled = uiState.soundMode == SoundMode.SOUND,
-//                            modifier = Modifier.weight(1f)
-//                        )
-//                        Text(text = uiState.volume.toString())
-//                    }
-
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    IconButton(onClick = {
+                        val newMode = when (soundMode) {
+                            SoundMode.SOUND -> SoundMode.MUTE
+                            SoundMode.MUTE -> SoundMode.VIBRATE
+                            SoundMode.VIBRATE -> SoundMode.SOUND
+                        }
+                        onSoundModeChange(newMode)
+                    }) {
+                        Icon(
+                            imageVector = when (soundMode) {
+                                SoundMode.SOUND -> Icons.Default.VolumeUp
+                                SoundMode.MUTE -> Icons.Default.VolumeOff
+                                SoundMode.VIBRATE -> Icons.Default.Vibration
+                            },
+                            contentDescription = null
+                        )
+                    }
+                    Slider(
+                        value = volume.toFloat(),
+                        valueRange = 0f..100f,
+                        steps = 0,
+                        onValueChange = { onVolumeChange(it.toInt()) },
+                        enabled = soundMode == SoundMode.SOUND,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Text(text = volume.toString())
+                }
+                Spacer(modifier = Modifier.weight(1f))
                 Button(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(12.dp),
-                    onClick = onStartClicked
+                    onClick = onStartClicked,
+                    contentPadding = PaddingValues(24.dp)
                 ) {
                     Text(text = stringResource(R.string.button_start))
                 }
@@ -146,6 +160,27 @@ fun SettingsScreenContent(
     }
 }
 
+@Composable
+fun LabeledNumberPicker(
+    label: String,
+    type: PickerType,
+    value: Int,
+    onValueChange: (Int) -> Unit
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        LabelText(text = label)
+        NumberPicker(
+            value = value,
+            type = type,
+            onValueChange = {
+                onValueChange(it)
+            }
+        )
+    }
+}
 @Composable
 fun LabelText(text: String) {
     Text(
@@ -156,7 +191,7 @@ fun LabelText(text: String) {
 
 
 @Composable
-@Preview(widthDp = 320, heightDp = 640, locale = "pt")
+@Preview(showSystemUi = true)
 fun SettingsScreenPreview() {
     IntervalTimerTheme {
         SettingsScreenContent(
@@ -166,7 +201,11 @@ fun SettingsScreenPreview() {
             onSectionsChange = {},
             onTrainTimeChange = {},
             onRestTimeChange = {},
-            onStartClicked = {}
+            onStartClicked = {},
+            soundMode = SoundMode.SOUND,
+            onSoundModeChange = {},
+            volume = 80,
+            onVolumeChange = {}
         )
     }
 }

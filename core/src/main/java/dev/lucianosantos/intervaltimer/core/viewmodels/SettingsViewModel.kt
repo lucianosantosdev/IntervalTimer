@@ -60,10 +60,10 @@ class SettingsViewModel(
         }
     }
 
-    fun setVolume(newVolume: Float) {
+    fun setVolume(newVolume: Int) {
         _uiState.value.let { currentUiState ->
             _uiState.value = currentUiState.copy(
-                volume = newVolume.toInt()
+                volume = newVolume
             )
         }
     }
