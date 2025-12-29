@@ -56,6 +56,7 @@ class SettingsViewModel(
                 )
             )
         }
+        persistSettings()
     }
 
     fun setVolume(newVolume: Int) {
@@ -66,6 +67,7 @@ class SettingsViewModel(
                 )
             )
         }
+        persistSettings()
     }
 
     fun setRestTime(restTimeSeconds: Int) {

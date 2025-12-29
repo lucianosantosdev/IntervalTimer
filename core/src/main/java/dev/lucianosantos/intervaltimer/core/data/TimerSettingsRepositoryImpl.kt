@@ -8,9 +8,13 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-class TimerSettingsRepositoryImpl(private val context: Context) : ITimerSettingsRepository {
-    private val sharedPreference =
+class TimerSettingsRepositoryImpl(
+    private val context: Context
+) : ITimerSettingsRepository {
+
+    private val sharedPreference by lazy {
         context.getSharedPreferences("TimerSettings", Context.MODE_PRIVATE)
+    }
 
     override fun observeSettings(): Flow<TimerSettings> = callbackFlow {
         val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, _ ->
@@ -40,7 +44,6 @@ class TimerSettingsRepositoryImpl(private val context: Context) : ITimerSettings
         )
     }
     override fun saveSettings(timerSettings: TimerSettings) {
-        val sharedPreference = context.getSharedPreferences("TimerSettings", Context.MODE_PRIVATE)
         sharedPreference.edit {
             putInt("sections", timerSettings.sections)
             putInt("prepareTimeSeconds", timerSettings.prepareTimeSeconds)

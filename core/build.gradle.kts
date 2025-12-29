@@ -50,6 +50,9 @@ dependencies {
     implementation(libs.compose.activity)
     implementation(libs.androidx.media)
 
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.android)
+
     testImplementation(libs.bundles.tests)
     androidTestImplementation(libs.bundles.androidTests)
 }

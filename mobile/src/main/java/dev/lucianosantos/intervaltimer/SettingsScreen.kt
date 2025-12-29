@@ -5,8 +5,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Vibration
@@ -79,12 +81,19 @@ fun SettingsScreenContent(
         Box(
             Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp)
+                .padding(16.dp)
         ) {
             Column(
-                modifier = Modifier.align(Alignment.Center).padding(16.dp),
+                modifier = Modifier.align(Alignment.Center),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                VolumeControl(
+                    volume = volume,
+                    onVolumeChange = onVolumeChange,
+                    soundMode = soundMode,
+                    onSoundModeChange = onSoundModeChange
+                )
+                Spacer(modifier = Modifier.height(32.dp))
                 Column(
                     modifier = Modifier.weight(1f),
                     verticalArrangement = Arrangement.SpaceEvenly,
@@ -113,12 +122,6 @@ fun SettingsScreenContent(
                         onValueChange = {
                             onRestTimeChange(it)
                         }
-                    )
-                    VolumeControl(
-                        volume = volume,
-                        onVolumeChange = onVolumeChange,
-                        soundMode = soundMode,
-                        onSoundModeChange = onSoundModeChange
                     )
                 }
                 Button(
@@ -185,6 +188,7 @@ fun LabeledNumberPicker(
     onValueChange: (Int) -> Unit
 ) {
     Column(
+        modifier = Modifier.padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
@@ -202,7 +206,7 @@ fun LabeledNumberPicker(
 fun LabelText(text: String) {
     Text(
         text = text,
-        style = MaterialTheme.typography.headlineMedium
+        style = MaterialTheme.typography.headlineSmall
     )
 }
 

@@ -126,15 +126,21 @@ fun TimerRunningComponent(
         Box(modifier = Modifier.fillMaxSize()) {
             AutoHideContent(
                 modifier = Modifier.fillMaxSize(),
-                hideDelayMillis = 10_000L,
+                hideDelayMillis = 5_000L,
                 alignment = Alignment.TopCenter
-            ) {
+            ) { onActivity ->
                 VolumeControl(
-                    modifier = Modifier.align(Alignment.TopCenter),
+                    modifier = Modifier.align(Alignment.TopCenter).padding(16.dp),
                     volume = volume,
-                    onVolumeChange = onVolumeChange,
+                    onVolumeChange = {
+                        onActivity()
+                        onVolumeChange(it)
+                    },
                     soundMode = soundMode,
-                    onSoundModeChange = onSoundModeChange
+                    onSoundModeChange = {
+                        onActivity()
+                        onSoundModeChange(it)
+                    }
                 )
             }
             Column(
@@ -256,7 +262,7 @@ fun AutoHideContent(
 }
 
 @Composable
-@Preview(widthDp = 320, heightDp = 640)
+@Preview
 fun TimerRunningScreenPreview() {
     IntervalTimerTheme {
         TimerRunningComponent(
