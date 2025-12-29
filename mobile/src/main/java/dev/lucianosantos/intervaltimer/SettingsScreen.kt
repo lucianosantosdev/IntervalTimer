@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,12 +13,10 @@ import androidx.compose.material.icons.filled.Vibration
 import androidx.compose.material.icons.filled.VolumeOff
 import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material3.Button
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -54,9 +51,9 @@ fun SettingsScreen(
         onTrainTimeChange = { settingsViewModel.setTrainTime(it) },
         onRestTimeChange = { settingsViewModel.setRestTime(it) },
         onStartClicked = onStartClicked,
-        soundMode = uiState.soundMode,
+        soundMode = uiState.timerSettings.soundMode,
         onSoundModeChange = { settingsViewModel.setSoundMode(it) },
-        volume = uiState.volume,
+        volume = uiState.timerSettings.volume,
         onVolumeChange = { settingsViewModel.setVolume(it) }
     )
 }
@@ -84,68 +81,46 @@ fun SettingsScreenContent(
                 .fillMaxSize()
                 .padding(horizontal = 16.dp)
         ) {
-
             Column(
-                modifier = Modifier.align(Alignment.Center),
-                verticalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier.align(Alignment.Center).padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                LabeledNumberPicker(
-                    label = stringResource(R.string.label_sections),
-                    value = sections,
-                    type = PickerType.NUMBER,
-                    onValueChange = {
-                        onSectionsChange(it)
-                    }
-                )
-                LabeledNumberPicker(
-                    label = stringResource(R.string.label_train_number_picker),
-                    value = trainTimeSeconds,
-                    type = PickerType.TIME,
-                    onValueChange = {
-                        onTrainTimeChange(it)
-                    }
-                )
-                LabeledNumberPicker(
-                    label = stringResource(R.string.label_rest_number_picker),
-                    value = restTimeSeconds,
-                    type = PickerType.TIME,
-                    onValueChange = {
-                        onRestTimeChange(it)
-                    }
-                )
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.SpaceEvenly,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    IconButton(onClick = {
-                        val newMode = when (soundMode) {
-                            SoundMode.SOUND -> SoundMode.MUTE
-                            SoundMode.MUTE -> SoundMode.VIBRATE
-                            SoundMode.VIBRATE -> SoundMode.SOUND
+                    LabeledNumberPicker(
+                        label = stringResource(R.string.label_sections),
+                        value = sections,
+                        type = PickerType.NUMBER,
+                        onValueChange = {
+                            onSectionsChange(it)
                         }
-                        onSoundModeChange(newMode)
-                    }) {
-                        Icon(
-                            imageVector = when (soundMode) {
-                                SoundMode.SOUND -> Icons.Default.VolumeUp
-                                SoundMode.MUTE -> Icons.Default.VolumeOff
-                                SoundMode.VIBRATE -> Icons.Default.Vibration
-                            },
-                            contentDescription = null
-                        )
-                    }
-                    Slider(
-                        value = volume.toFloat(),
-                        valueRange = 0f..100f,
-                        steps = 0,
-                        onValueChange = { onVolumeChange(it.toInt()) },
-                        enabled = soundMode == SoundMode.SOUND,
-                        modifier = Modifier.weight(1f)
                     )
-                    Text(text = volume.toString())
+                    LabeledNumberPicker(
+                        label = stringResource(R.string.label_train_number_picker),
+                        value = trainTimeSeconds,
+                        type = PickerType.TIME,
+                        onValueChange = {
+                            onTrainTimeChange(it)
+                        }
+                    )
+                    LabeledNumberPicker(
+                        label = stringResource(R.string.label_rest_number_picker),
+                        value = restTimeSeconds,
+                        type = PickerType.TIME,
+                        onValueChange = {
+                            onRestTimeChange(it)
+                        }
+                    )
+                    VolumeControl(
+                        volume = volume,
+                        onVolumeChange = onVolumeChange,
+                        soundMode = soundMode,
+                        onSoundModeChange = onSoundModeChange
+                    )
                 }
-                Spacer(modifier = Modifier.weight(1f))
                 Button(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -160,6 +135,48 @@ fun SettingsScreenContent(
     }
 }
 
+
+@Composable
+fun VolumeControl(
+    volume: Int,
+    onVolumeChange: (Int) -> Unit,
+    soundMode: SoundMode,
+    onSoundModeChange: (SoundMode) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        IconButton(onClick = {
+            val newMode = when (soundMode) {
+                SoundMode.SOUND_AND_VIBRATE -> SoundMode.MUTE
+                SoundMode.MUTE -> SoundMode.VIBRATE_ONLY
+                SoundMode.VIBRATE_ONLY -> SoundMode.SOUND_AND_VIBRATE
+            }
+            onSoundModeChange(newMode)
+        }) {
+            Icon(
+                imageVector = when (soundMode) {
+                    SoundMode.SOUND_AND_VIBRATE -> Icons.Default.VolumeUp
+                    SoundMode.MUTE -> Icons.Default.VolumeOff
+                    SoundMode.VIBRATE_ONLY -> Icons.Default.Vibration
+                },
+                contentDescription = null
+            )
+        }
+        Slider(
+            value = volume.toFloat(),
+            valueRange = 0f..100f,
+            steps = 0,
+            onValueChange = { onVolumeChange(it.toInt()) },
+            enabled = soundMode == SoundMode.SOUND_AND_VIBRATE,
+            modifier = Modifier.weight(1f)
+        )
+        Text(text = volume.toString())
+    }
+}
 @Composable
 fun LabeledNumberPicker(
     label: String,
@@ -202,7 +219,7 @@ fun SettingsScreenPreview() {
             onTrainTimeChange = {},
             onRestTimeChange = {},
             onStartClicked = {},
-            soundMode = SoundMode.SOUND,
+            soundMode = SoundMode.SOUND_AND_VIBRATE,
             onSoundModeChange = {},
             volume = 80,
             onVolumeChange = {}

@@ -41,7 +41,7 @@ abstract class CountDownTimerService(
         CountDownTimer(
             DefaultTimerSettings.settings,
             CountDownTimerHelper(),
-            AlertUserHelper(this),
+            AlertUserHelper(this, settingsRepository, coroutineScope),
             coroutineScope
         )
     }

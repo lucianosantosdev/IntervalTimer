@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 enum class SoundMode {
-    SOUND, MUTE, VIBRATE
+    SOUND_AND_VIBRATE, MUTE, VIBRATE_ONLY
 }
 
 class SettingsViewModel(
@@ -17,15 +17,11 @@ class SettingsViewModel(
 
     private val _uiState = MutableStateFlow(SettingsUiState(
         timerSettings = timerSettingsRepository.loadSettings(),
-        volume = 0,
-        soundMode = SoundMode.SOUND
     ))
     val uiState : StateFlow<SettingsUiState> = _uiState.asStateFlow()
 
     data class SettingsUiState(
         val timerSettings: TimerSettings,
-        val volume: Int,
-        val soundMode: SoundMode
     )
 
     fun incrementSections() {
@@ -55,7 +51,9 @@ class SettingsViewModel(
     fun setSoundMode(newMode: SoundMode) {
         _uiState.value.let { currentUiState ->
             _uiState.value = currentUiState.copy(
-                soundMode = newMode
+                timerSettings = currentUiState.timerSettings.copy(
+                    soundMode = newMode
+                )
             )
         }
     }
@@ -63,7 +61,9 @@ class SettingsViewModel(
     fun setVolume(newVolume: Int) {
         _uiState.value.let { currentUiState ->
             _uiState.value = currentUiState.copy(
-                volume = newVolume
+                timerSettings = currentUiState.timerSettings.copy(
+                    volume = newVolume
+                )
             )
         }
     }

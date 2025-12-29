@@ -5,28 +5,83 @@ import android.media.AudioManager
 import android.media.ToneGenerator
 import android.os.VibrationEffect
 import android.os.Vibrator
+import dev.lucianosantos.intervaltimer.core.data.ITimerSettingsRepository
+import dev.lucianosantos.intervaltimer.core.viewmodels.SoundMode
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
+class AlertUserHelper(
+    private val context: Context,
+    private val settingsRepository: ITimerSettingsRepository,
+    private val coroutineScope: CoroutineScope
+) : IAlertUserHelper {
 
-class AlertUserHelper(val context: Context) : IAlertUserHelper {
+    // Backing fields updated from Flow
+    @Volatile
+    private var volume: Int = 100
+    @Volatile
+    private var soundMode: SoundMode = SoundMode.SOUND_AND_VIBRATE
+
+    init {
+        // Observe settings and keep latest values in memory
+        settingsRepository.observeSettings()
+            .onEach { settings ->
+                volume = settings.volume
+                soundMode = settings.soundMode
+            }
+            .launchIn(coroutineScope)
+    }
 
     private fun vibrate(duration: Long) {
+        if (soundMode == SoundMode.MUTE) return  // no vibration in MUTE
+
         val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        vibrator.vibrate(VibrationEffect.createOneShot(duration, VibrationEffect.DEFAULT_AMPLITUDE))
+        vibrator.vibrate(
+            VibrationEffect.createOneShot(
+                duration,
+                VibrationEffect.DEFAULT_AMPLITUDE
+            )
+        )
     }
 
     private suspend fun safeBeepAndVibrate(tone: Int, duration: Long) {
+        when (soundMode) {
+            SoundMode.MUTE -> {
+                // Completely silent
+                delay(duration)
+                return
+            }
+
+            SoundMode.VIBRATE_ONLY -> {
+                vibrate(duration)
+                delay(duration)
+                return
+            }
+
+            SoundMode.SOUND_AND_VIBRATE -> {
+                // Fall through to play sound + vibration
+            }
+        }
+
         var toneGenerator: ToneGenerator? = null
         try {
-            toneGenerator = ToneGenerator(AudioManager.STREAM_ALARM, ToneGenerator.MAX_VOLUME)
+            // Map your [0..100?] volume to ToneGenerator range if needed; here we just clamp
+            val clampedVolume = volume.coerceIn(0, ToneGenerator.MAX_VOLUME)
+            toneGenerator = ToneGenerator(AudioManager.STREAM_ALARM, clampedVolume)
         } catch (e: Exception) {
             e.printStackTrace()
         }
 
-        if(toneGenerator == null) {
+        if (toneGenerator == null) {
+            // If we can't create sound, at least vibrate
+            vibrate(duration)
+            delay(duration)
             return
         }
-        toneGenerator.startTone(ToneGenerator.TONE_CDMA_ABBR_ALERT, 100)
+
+        toneGenerator.startTone(tone, duration.toInt())
         vibrate(duration)
         delay(duration)
         toneGenerator.stopTone()
@@ -56,7 +111,7 @@ class AlertUserHelper(val context: Context) : IAlertUserHelper {
     }
 
     override suspend fun finishedAlert() {
-        for (i in 1..5) {
+        repeat(5) {
             shortBeep()
             delay(100)
         }
