@@ -28,6 +28,7 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import java.time.LocalDateTime
 import java.time.ZoneId
+import kotlin.concurrent.timer
 
 abstract class CountDownTimerService(
     private val serviceName: Class<*>
@@ -130,8 +131,8 @@ abstract class CountDownTimerService(
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 timerState.collect {
+                    updateNotification()
                     if(timerState.value != TimerState.STOPPED && timerState.value != TimerState.NONE) {
-                        updateNotification()
                         scheduleWakeAlarm()
                     }
                 }
@@ -158,6 +159,8 @@ abstract class CountDownTimerService(
                 isPaused = isPaused.value
             )
             notificationHelper.notify(notification)
+        } else {
+            notificationHelper.cancel()
         }
     }
 
@@ -239,11 +242,17 @@ abstract class CountDownTimerService(
     }
 
     override fun stop() {
+        val timerState = countDownTimer.timerState.value
+        if (timerState == TimerState.STOPPED || timerState == TimerState.NONE) {
+            return
+        }
         countDownTimer.stop()
         notificationHelper.cancel()
         if (receiverRegistered) {
             unregisterReceiver()
         }
+        stopForeground(STOP_FOREGROUND_REMOVE)
+        stopSelf()
     }
 
     override fun restart() {
@@ -251,7 +260,6 @@ abstract class CountDownTimerService(
     }
 
     override fun reset() {
-        stop()
         countDownTimer.reset()
     }
 
