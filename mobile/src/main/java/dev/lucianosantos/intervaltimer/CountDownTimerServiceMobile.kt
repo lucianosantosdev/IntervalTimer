@@ -16,6 +16,8 @@ class CountDownTimerServiceMobile : CountDownTimerService(CountDownTimerServiceM
             applicationContext: Context,
             onTouchIntent: PendingIntent,
             message: String,
+            remainingSeconds: Int,
+            isPaused: Boolean,
             notificationBuilder: NotificationCompat.Builder
         ) {
             /* Do nothing */

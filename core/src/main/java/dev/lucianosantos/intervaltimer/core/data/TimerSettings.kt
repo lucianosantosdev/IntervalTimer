@@ -8,7 +8,8 @@ data class TimerSettings(
     val trainTimeSeconds: Int,
     val restTimeSeconds: Int,
     val volume: Int,
-    val soundMode: SoundMode
+    val soundMode: SoundMode,
+    val wakeScreenOnTransition: Boolean = true
 )
 
 object DefaultTimerSettings {
@@ -18,6 +19,7 @@ object DefaultTimerSettings {
         trainTimeSeconds = 60,
         restTimeSeconds = 60,
         volume = 100,
-        soundMode = SoundMode.SOUND_AND_VIBRATE
+        soundMode = SoundMode.SOUND_AND_VIBRATE,
+        wakeScreenOnTransition = true
     )
 }

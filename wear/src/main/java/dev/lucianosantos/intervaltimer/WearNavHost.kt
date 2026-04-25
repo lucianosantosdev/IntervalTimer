@@ -37,6 +37,8 @@ fun WearNavHost(
         startDestination = startDestination.route,
         modifier = modifier
     ) {
+        val openSettings: () -> Unit = { navController.navigate(Settings.route) }
+
         composable(route = SetSections.route) {
             PickerScreenComponent(
                 title = LocalContext.current.getString(R.string.label_sections),
@@ -46,7 +48,19 @@ fun WearNavHost(
                     navController.navigate(SetTrainTime.route)
                 },
                 type = PickerType.NUMBER,
-                icon = Icons.Rounded.ArrowForward
+                icon = Icons.Rounded.ArrowForward,
+                onSettingsClick = openSettings
+            )
+        }
+
+        composable(route = Settings.route) {
+            WearSettingsScreen(
+                volume = settings.timerSettings.volume,
+                soundMode = settings.timerSettings.soundMode,
+                wakeScreenOnTransition = settings.timerSettings.wakeScreenOnTransition,
+                onVolumeChange = { settingsViewModel.setVolume(it) },
+                onSoundModeChange = { settingsViewModel.setSoundMode(it) },
+                onWakeScreenChange = { settingsViewModel.setWakeScreenOnTransition(it) }
             )
         }
 
@@ -59,7 +73,8 @@ fun WearNavHost(
                     navController.navigate(SetRestTime.route)
                 },
                 type = PickerType.TIME,
-                icon = Icons.Rounded.ArrowForward
+                icon = Icons.Rounded.ArrowForward,
+                onSettingsClick = openSettings
             )
         }
 
@@ -73,10 +88,11 @@ fun WearNavHost(
                     navController.navigate(TimerRunning.route)
                 },
                 type = PickerType.TIME,
-                icon = Icons.Rounded.PlayArrow
+                icon = Icons.Rounded.PlayArrow,
+                onSettingsClick = openSettings
             )
         }
-        
+
         composable(route = TimerRunning.route) {
             TimerRunningScreen(
                 countDownTimerService = countDownTimerService,
@@ -89,7 +105,8 @@ fun WearNavHost(
                     navController.navigate(SetSections.route) {
                         popUpTo(SetSections.route) { inclusive = true }
                     }
-                }
+                },
+                onSettingsClick = openSettings
             )
         }
     }
@@ -112,4 +129,8 @@ object SetRestTime : IntervalTimerDestination {
 
 object TimerRunning : IntervalTimerDestination {
     override val route: String = "TimerRunning"
+}
+
+object Settings : IntervalTimerDestination {
+    override val route: String = "Settings"
 }

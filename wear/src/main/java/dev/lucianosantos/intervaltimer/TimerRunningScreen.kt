@@ -18,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Pause
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material.icons.rounded.Refresh
+import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -51,7 +52,8 @@ import java.util.Locale
 fun TimerRunningScreen(
     countDownTimerService: ICountDownTimerService,
     onRefreshClicked: () -> Unit,
-    onStopClicked: () -> Unit
+    onStopClicked: () -> Unit,
+    onSettingsClick: (() -> Unit)? = null
 ) {
     if (countDownTimerService.remainingSections == null) {
         return
@@ -75,7 +77,8 @@ fun TimerRunningScreen(
         onRefreshClicked = {
             countDownTimerService.restart()
             onRefreshClicked()
-        }
+        },
+        onSettingsClick = onSettingsClick
     )
 
     LaunchedEffect(Unit){
@@ -97,7 +100,8 @@ fun TimerRunningComponent(
     isPaused: Boolean,
     onPlayClicked : () -> Unit,
     onPauseClicked : () -> Unit,
-    onRefreshClicked: () -> Unit = {}
+    onRefreshClicked: () -> Unit = {},
+    onSettingsClick: (() -> Unit)? = null
 ) {
     if (timerState == TimerState.NONE || timerState == TimerState.STOPPED) {
         return
@@ -133,6 +137,23 @@ fun TimerRunningComponent(
                 DateFormat.getBestDateTimePattern(Locale.getDefault(), "hh:mm")
             )
         )
+
+        if (onSettingsClick != null) {
+            Button(
+                onClick = onSettingsClick,
+                colors = ButtonDefaults.secondaryButtonColors(),
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .padding(top = 26.dp)
+                    .size(28.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.Settings,
+                    contentDescription = stringResource(id = R.string.settings_icon_content_description),
+                    modifier = Modifier.size(16.dp)
+                )
+            }
+        }
 
         Column(
             modifier = Modifier.fillMaxSize().padding(

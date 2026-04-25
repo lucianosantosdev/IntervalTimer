@@ -15,6 +15,14 @@
     <string name="play_icon_content_description">Play</string>
     <string name="pause_icon_content_description">Pausar</string>
     <string name="refresh_icon_content_description">Reiniciar</string>
+    <string name="settings_icon_content_description">Configurações</string>
+    <string name="settings_title">Configurações</string>
+    <string name="settings_volume">Volume</string>
+    <string name="settings_sound_mode">Som</string>
+    <string name="settings_sound_mode_sound">Som e Vibração</string>
+    <string name="settings_sound_mode_vibrate">Apenas vibração</string>
+    <string name="settings_sound_mode_mute">Silencioso</string>
+    <string name="settings_wake_screen">Acordar tela na transição</string>
 
     <plurals name="time_picker_sections_content_description" >
         <item quantity="one">%d Série</item>

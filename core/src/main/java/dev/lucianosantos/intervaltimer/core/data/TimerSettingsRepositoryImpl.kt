@@ -40,7 +40,11 @@ class TimerSettingsRepositoryImpl(
             volume = sharedPreference.getInt("volume", DefaultTimerSettings.settings.volume),
             soundMode = sharedPreference.getInt("soundMode", DefaultTimerSettings.settings.soundMode.ordinal).let {
                 SoundMode.entries[it]
-            }
+            },
+            wakeScreenOnTransition = sharedPreference.getBoolean(
+                "wakeScreenOnTransition",
+                DefaultTimerSettings.settings.wakeScreenOnTransition
+            )
         )
     }
     override fun saveSettings(timerSettings: TimerSettings) {
@@ -51,6 +55,7 @@ class TimerSettingsRepositoryImpl(
             putInt("restTimeSeconds", timerSettings.restTimeSeconds)
             putInt("volume", timerSettings.volume)
             putInt("soundMode", timerSettings.soundMode.ordinal)
+            putBoolean("wakeScreenOnTransition", timerSettings.wakeScreenOnTransition)
         }
     }
 }

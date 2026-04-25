@@ -8,11 +8,15 @@ import dev.lucianosantos.intervaltimer.core.data.TimerState
 interface OngoingActivityWrapper {
     fun allowForegroundService(): Boolean
 
+    fun wakeScreenOnTransition(): Boolean = false
+
     fun setOngoingActivity(
         timerState: TimerState,
         applicationContext: Context,
         onTouchIntent: PendingIntent,
         message: String,
+        remainingSeconds: Int,
+        isPaused: Boolean,
         notificationBuilder: NotificationCompat.Builder
     )
 }

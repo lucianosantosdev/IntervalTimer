@@ -7,6 +7,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.PowerManager
 import androidx.core.app.NotificationCompat
 import androidx.media.app.NotificationCompat.MediaStyle
 import dev.lucianosantos.intervaltimer.core.R
@@ -30,6 +31,43 @@ class NotificationHelper(
         )
         channel.description = "Used to display ongoing timer"
         notificationManager.createNotificationChannel(channel)
+
+        val transitionChannel = NotificationChannel(
+            TRANSITION_CHANNEL_ID,
+            "Phase transitions",
+            NotificationManager.IMPORTANCE_HIGH
+        ).apply {
+            description = "Wakes the screen on each phase transition"
+            setSound(null, null)
+            enableVibration(false)
+        }
+        notificationManager.createNotificationChannel(transitionChannel)
+    }
+
+    fun triggerScreenWake() {
+        val powerManager = applicationContext.getSystemService(PowerManager::class.java) ?: return
+        if (powerManager.isInteractive) return
+
+        @Suppress("DEPRECATION")
+        val screenWakeLock = powerManager.newWakeLock(
+            PowerManager.SCREEN_BRIGHT_WAKE_LOCK or
+                PowerManager.ACQUIRE_CAUSES_WAKEUP or
+                PowerManager.ON_AFTER_RELEASE,
+            "IntervalTimer:Transition"
+        )
+        screenWakeLock.acquire(3_000L)
+
+        val notification = NotificationCompat.Builder(applicationContext, TRANSITION_CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setCategory(NotificationCompat.CATEGORY_ALARM)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setFullScreenIntent(activityLauncherIntent(), true)
+            .setAutoCancel(true)
+            .setSilent(true)
+            .setTimeoutAfter(2_000L)
+            .build()
+        notificationManager.notify(TRANSITION_NOTIFICATION_ID, notification)
     }
 
     private fun activityLauncherIntent() : PendingIntent {
@@ -173,6 +211,8 @@ class NotificationHelper(
             applicationContext = applicationContext,
             onTouchIntent = activityLauncherIntent(),
             message = "$titleText · $contentText",
+            remainingSeconds = timeSeconds,
+            isPaused = isPaused,
             notificationBuilder = notificationBuilder
         )
         return notificationBuilder.build()
@@ -206,7 +246,9 @@ class NotificationHelper(
 
     companion object {
         val NOTIFICATION_ID = 1
+        const val TRANSITION_NOTIFICATION_ID = 2
         const val EXTRA_LAUNCH_FROM_NOTIFICATION = "EXTRA_LAUNCH_FROM_NOTIFICATION"
         private const val NOTIFICATION_CHANNEL_ID = "interval_timer_workout_channel_01"
+        private const val TRANSITION_CHANNEL_ID = "interval_timer_transition_channel_01"
     }
 }

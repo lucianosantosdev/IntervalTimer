@@ -21,6 +21,7 @@ import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Stop
+import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -71,6 +72,7 @@ fun PickerScreenComponent(
     value: Int,
     type: PickerType = PickerType.TIME,
     onValueChange: (Int) -> Unit,
+    onSettingsClick: (() -> Unit)? = null,
 ) {
     val fullyDrawn = remember { Animatable(0f) }
 
@@ -160,7 +162,23 @@ fun PickerScreenComponent(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Spacer(Modifier.height(12.dp))
+                if (onSettingsClick != null) {
+                    Spacer(Modifier.height(2.dp))
+                    Button(
+                        onClick = onSettingsClick,
+                        colors = ButtonDefaults.secondaryButtonColors(),
+                        modifier = Modifier.size(28.dp),
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.Settings,
+                            contentDescription = stringResource(R.string.settings_icon_content_description),
+                            modifier = Modifier.size(16.dp)
+                        )
+                    }
+                    Spacer(Modifier.height(4.dp))
+                } else {
+                    Spacer(Modifier.height(12.dp))
+                }
                 Text(
                     text = title,
                     style = MaterialTheme.typography.button,

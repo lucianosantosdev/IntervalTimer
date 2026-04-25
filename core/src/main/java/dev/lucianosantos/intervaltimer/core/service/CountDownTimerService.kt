@@ -8,6 +8,7 @@ import android.content.IntentFilter
 import android.content.res.Configuration
 import android.os.Binder
 import android.os.IBinder
+import android.os.PowerManager
 import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleService
@@ -83,6 +84,29 @@ abstract class CountDownTimerService(
     }
 
     private lateinit var alarmManagerHelper: AlarmManagerHelper
+    private var wakeLock: PowerManager.WakeLock? = null
+
+    private fun acquireRunningWakeLock() {
+        if (wakeLock?.isHeld == true) return
+        val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
+        wakeLock = powerManager.newWakeLock(
+            PowerManager.PARTIAL_WAKE_LOCK,
+            "IntervalTimer:Running"
+        ).apply {
+            setReferenceCounted(false)
+            acquire()
+        }
+        Log.d(TAG, "Wake lock acquired")
+    }
+
+    private fun releaseRunningWakeLock() {
+        wakeLock?.let {
+            if (it.isHeld) it.release()
+            Log.d(TAG, "Wake lock released")
+        }
+        wakeLock = null
+    }
+
     private fun registerReceiver() {
         val intentFilter = IntentFilter().apply {
             addAction(ACTION_STOP)
@@ -132,8 +156,27 @@ abstract class CountDownTimerService(
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 timerState.collect {
                     updateNotification()
-                    if(timerState.value != TimerState.STOPPED && timerState.value != TimerState.NONE) {
+                    val state = timerState.value
+                    if (state != TimerState.STOPPED && state != TimerState.NONE) {
                         scheduleWakeAlarm()
+                    }
+                    if (ongoingActivityWrapper.allowForegroundService() &&
+                        (state == TimerState.PREPARE ||
+                            state == TimerState.TRAIN ||
+                            state == TimerState.REST)
+                    ) {
+                        acquireRunningWakeLock()
+                    } else {
+                        releaseRunningWakeLock()
+                    }
+                    if (ongoingActivityWrapper.wakeScreenOnTransition() &&
+                        settingsRepository.loadSettings().wakeScreenOnTransition &&
+                        (state == TimerState.PREPARE ||
+                            state == TimerState.TRAIN ||
+                            state == TimerState.REST ||
+                            state == TimerState.FINISHED)
+                    ) {
+                        notificationHelper.triggerScreenWake()
                     }
                 }
             }
@@ -166,6 +209,7 @@ abstract class CountDownTimerService(
 
     override fun onDestroy() {
         super.onDestroy()
+        releaseRunningWakeLock()
         serviceJob.cancel()
     }
 

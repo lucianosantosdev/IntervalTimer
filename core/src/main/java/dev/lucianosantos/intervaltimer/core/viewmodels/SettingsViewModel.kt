@@ -70,6 +70,17 @@ class SettingsViewModel(
         persistSettings()
     }
 
+    fun setWakeScreenOnTransition(enabled: Boolean) {
+        _uiState.value.let { currentUiState ->
+            _uiState.value = currentUiState.copy(
+                timerSettings = currentUiState.timerSettings.copy(
+                    wakeScreenOnTransition = enabled
+                )
+            )
+        }
+        persistSettings()
+    }
+
     fun setRestTime(restTimeSeconds: Int) {
         if(restTimeSeconds < 0) {
             return

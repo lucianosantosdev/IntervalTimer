@@ -100,6 +100,11 @@ dependencies {
     implementation(project(":core"))
     implementation(libs.compose.ui.tooling)
     implementation(libs.wear.ongoing)
+
+    // DI
+    implementation(project.dependencies.platform(libs.koin.bom))
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
 //
 //    // Includes LocusIdCompat and new Notification categories for Ongoing Activity.
 //    val core_version = "1.6.0"
