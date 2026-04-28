@@ -40,7 +40,8 @@ import org.koin.compose.viewmodel.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
-    onStartClicked: () -> Unit = {}
+    onStartClicked: () -> Unit = {},
+    onAdvancedSettingsClicked: () -> Unit = {}
 ) {
     val settingsViewModel: SettingsViewModel = koinViewModel()
     val uiState by settingsViewModel.uiState.collectAsState()
@@ -53,6 +54,7 @@ fun SettingsScreen(
         onTrainTimeChange = { settingsViewModel.setTrainTime(it) },
         onRestTimeChange = { settingsViewModel.setRestTime(it) },
         onStartClicked = onStartClicked,
+        onAdvancedSettingsClicked = onAdvancedSettingsClicked,
         soundMode = uiState.timerSettings.soundMode,
         onSoundModeChange = { settingsViewModel.setSoundMode(it) },
         volume = uiState.timerSettings.volume,
@@ -72,7 +74,8 @@ fun SettingsScreenContent(
     soundMode: SoundMode,
     onSoundModeChange: (SoundMode) -> Unit,
     volume: Int,
-    onVolumeChange: (Int) -> Unit
+    onVolumeChange: (Int) -> Unit,
+    onAdvancedSettingsClicked: () -> Unit = {}
 ) {
     Surface(
         color = MaterialTheme.colorScheme.background,
@@ -81,7 +84,7 @@ fun SettingsScreenContent(
         Box(
             Modifier
                 .fillMaxSize()
-                .padding(16.dp)
+                .padding(start = 16.dp, end = 16.dp, top = 32.dp, bottom = 16.dp)
         ) {
             Column(
                 modifier = Modifier.align(Alignment.Center),

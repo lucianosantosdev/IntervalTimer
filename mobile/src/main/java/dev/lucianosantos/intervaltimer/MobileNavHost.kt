@@ -35,8 +35,14 @@ fun MobileNavHost(
                 onStartClicked = {
                     countDownTimerService.setTimerSettings(settings.timerSettings)
                     navController.navigate(TimerRunning.route)
+                },
+                onAdvancedSettingsClicked = {
+                    navController.navigate(AdvancedSettings.route)
                 }
             )
+        }
+        composable(route = AdvancedSettings.route) {
+            AdvancedSettingsScreen(onBack = { navController.popBackStack() })
         }
         composable(route = TimerRunning.route) {
             TimerRunningScreen(
@@ -45,6 +51,9 @@ fun MobileNavHost(
                     navController.navigate(Settings.route) {
                         popUpTo(Settings.route) { inclusive = true }
                     }
+                },
+                onAdvancedSettingsClicked = {
+                    navController.navigate(AdvancedSettings.route)
                 }
             )
         }
@@ -61,4 +70,8 @@ object Settings : IntervalTimerDestination {
 
 object TimerRunning : IntervalTimerDestination {
     override val route: String = "TimerRunning"
+}
+
+object AdvancedSettings : IntervalTimerDestination {
+    override val route: String = "AdvancedSettings"
 }

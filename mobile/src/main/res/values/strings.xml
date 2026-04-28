@@ -15,4 +15,12 @@
     <string name="restart_content_description">restart</string>
     <string name="pause_content_description">Pause</string>
     <string name="button_remove_ads">REMOVE ADS</string>
+    <string name="button_advanced_settings">ADVANCED SETTINGS</string>
+    <string name="advanced_settings_title">Advanced Settings</string>
+    <string name="settings_sound_mode">Sound</string>
+    <string name="settings_sound_mode_sound">Sound &amp; Vibrate</string>
+    <string name="settings_sound_mode_vibrate">Vibrate only</string>
+    <string name="settings_sound_mode_mute">Mute</string>
+    <string name="settings_volume">Volume</string>
+    <string name="settings_wake_screen">Wake screen on transition</string>
 </resources>

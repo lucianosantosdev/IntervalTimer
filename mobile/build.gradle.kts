@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.googleServices)
     alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.roborazzi)
 }
 
 val keystoreProperties = Properties().apply {
@@ -67,6 +68,13 @@ android {
         compose = true
         buildConfig = true
     }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+            isReturnDefaultValues = true
+        }
+    }
 }
 
 kotlin {
@@ -88,6 +96,12 @@ dependencies {
     debugImplementation(libs.bundles.composeDebug)
     testImplementation(libs.bundles.tests)
     androidTestImplementation(libs.bundles.androidTests)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.roborazzi)
+    testImplementation(libs.roborazzi.compose)
+    testImplementation(libs.roborazzi.junit.rule)
+    testImplementation(libs.compose.ui.test.junit4)
+    debugImplementation(libs.compose.ui.test.manifest)
 
     // From compose plugin
     implementation(platform(libs.compose.bom))
@@ -97,6 +111,7 @@ dependencies {
     implementation(libs.google.ads)
     implementation(libs.billing.ktx)
     implementation(libs.compose.material.icons.extended)
+    implementation(libs.google.play.app.update.ktx)
 
     // DI
     implementation(project.dependencies.platform(libs.koin.bom))

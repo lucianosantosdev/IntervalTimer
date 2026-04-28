@@ -16,4 +16,12 @@
     <string name="restart_content_description">reiniciar</string>
     <string name="pause_content_description">pausar</string>
     <string name="button_remove_ads">REMOVER ANÚNCIOS</string>
+    <string name="button_advanced_settings">CONFIGURAÇÕES AVANÇADAS</string>
+    <string name="advanced_settings_title">Configurações avançadas</string>
+    <string name="settings_sound_mode">Som</string>
+    <string name="settings_sound_mode_sound">Som e vibração</string>
+    <string name="settings_sound_mode_vibrate">Apenas vibração</string>
+    <string name="settings_sound_mode_mute">Mudo</string>
+    <string name="settings_volume">Volume</string>
+    <string name="settings_wake_screen">Acordar tela na transição</string>
 </resources>

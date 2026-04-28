@@ -47,7 +47,8 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun TimerRunningScreen(
     countDownTimerService: ICountDownTimerService,
-    onStop: () -> Unit
+    onStop: () -> Unit,
+    onAdvancedSettingsClicked: () -> Unit = {}
 ) {
     if (countDownTimerService.remainingSections == null) {
         return
@@ -80,7 +81,8 @@ fun TimerRunningScreen(
         soundMode = settingsUiState.timerSettings.soundMode,
         onSoundModeChange = { settingsViewModel.setSoundMode(it) },
         volume = settingsUiState.timerSettings.volume,
-        onVolumeChange = { settingsViewModel.setVolume(it) }
+        onVolumeChange = { settingsViewModel.setVolume(it) },
+        onAdvancedSettingsClicked = onAdvancedSettingsClicked
     )
 
     LaunchedEffect(Unit){
@@ -107,7 +109,8 @@ fun TimerRunningComponent(
     soundMode: SoundMode,
     onSoundModeChange: (SoundMode) -> Unit,
     volume: Int,
-    onVolumeChange: (Int) -> Unit
+    onVolumeChange: (Int) -> Unit,
+    onAdvancedSettingsClicked: () -> Unit = {}
 ) {
     if (timerState == TimerState.NONE || timerState == TimerState.STOPPED) {
         return
@@ -130,7 +133,9 @@ fun TimerRunningComponent(
                 alignment = Alignment.TopCenter
             ) { onActivity ->
                 VolumeControl(
-                    modifier = Modifier.align(Alignment.TopCenter).padding(16.dp),
+                    modifier = Modifier
+                        .align(Alignment.TopCenter)
+                        .padding(start = 16.dp, end = 16.dp, top = 32.dp, bottom = 16.dp),
                     volume = volume,
                     onVolumeChange = {
                         onActivity()
