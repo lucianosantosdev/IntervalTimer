@@ -62,6 +62,35 @@ jobs:
           base64 -d -i keystore.jks.b64 > mobile/keystore.jks
           base64 -d -i keystore.jks.b64 > wear/keystore.jks
 
+      - name: Generate Play Store screenshots
+        run: |
+          ./gradlew :${{inputs.target}}:recordRoborazziDebug
+
+      - name: Stage screenshots into fastlane folder
+        run: |
+          set -euo pipefail
+          if [ "${{ inputs.target }}" = "mobile" ]; then
+            SRC="mobile/build/outputs/playstore-screenshots/mobile"
+            DEST="fastlane/metadata/android/en-US/images/phoneScreenshots"
+          else
+            SRC="wear/build/outputs/playstore-screenshots/wear"
+            DEST="fastlane/metadata/android/en-US/images/wearScreenshots"
+          fi
+          rm -rf "$DEST"
+          mkdir -p "$DEST"
+          i=1
+          for png in $(ls "$SRC"/*.png | sort); do
+            cp "$png" "$DEST/${i}_en-US.png"
+            i=$((i + 1))
+          done
+          ls -la "$DEST"
+
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.target }}-screenshots
+          path: fastlane/metadata/android/en-US/images/
+
       - name: Build
         run: |
           ./gradlew :${{inputs.target}}:bundleRelease

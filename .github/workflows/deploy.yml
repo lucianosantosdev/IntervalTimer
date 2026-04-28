@@ -20,10 +20,44 @@ jobs:
           bundler-cache: true
 
       - uses: actions/download-artifact@v4
-        with: 
+        with:
           name: ${{ inputs.target }}
           path: 'artifacts'
-        
+
+      - name: Replace stale screenshots with freshly generated ones
+        run: |
+          if [ "${{ inputs.target }}" = "mobile" ]; then
+            rm -rf fastlane/metadata/android/en-US/images/phoneScreenshots
+          else
+            rm -rf fastlane/metadata/android/en-US/images/wearScreenshots
+          fi
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.target }}-screenshots
+          path: fastlane/metadata/android/en-US/images/
+
+      - name: Materialize release notes for this versionCode
+        run: |
+          set -euo pipefail
+          NEXT="fastlane/metadata/android/en-US/changelogs/next.txt"
+          if [ ! -f "$NEXT" ]; then
+            echo "No next.txt release notes found; skipping changelog file."
+            exit 0
+          fi
+          TAG=$(git describe --tags --abbrev=0)
+          RUN=$(printf "%04d" "$GITHUB_RUN_NUMBER")
+          if [ "${{ inputs.target }}" = "mobile" ]; then
+            SUFFIX=10
+          else
+            SUFFIX=30
+          fi
+          VERSION_CODE="${TAG}${RUN}${SUFFIX}"
+          DEST="fastlane/metadata/android/en-US/changelogs/${VERSION_CODE}.txt"
+          cp "$NEXT" "$DEST"
+          echo "Wrote changelog to $DEST:"
+          cat "$DEST"
+
       - name: Create Google Play Config file
         env:
           PLAY_CONFIG_JSON: ${{ secrets.PLAY_CONFIG_JSON }}
