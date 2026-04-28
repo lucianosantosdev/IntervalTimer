@@ -17,6 +17,8 @@
     <string name="label_minute">minute</string>
     <string name="label_second">second</string>
     <string name="refresh_icon_content_description">Restart</string>
+    <string name="skip_next_icon_content_description">Next phase</string>
+    <string name="skip_previous_icon_content_description">Previous phase</string>
     <string name="settings_icon_content_description">Settings</string>
     <string name="settings_title">Settings</string>
     <string name="settings_volume">Volume</string>
@@ -25,6 +27,11 @@
     <string name="settings_sound_mode_vibrate">Vibrate only</string>
     <string name="settings_sound_mode_mute">Mute</string>
     <string name="settings_wake_screen">Wake screen on transition</string>
+    <string name="heart_rate_unavailable">--</string>
+    <string name="heart_rate_icon_content_description">Heart rate</string>
+    <string name="heart_rate_bpm_content_description">%1$d beats per minute</string>
+    <string name="calories_icon_content_description">Calories</string>
+    <string name="calories_kcal_content_description">%1$d kilocalories</string>
 
     <plurals name="time_picker_sections_content_description" >
         <item quantity="one">%d Section</item>

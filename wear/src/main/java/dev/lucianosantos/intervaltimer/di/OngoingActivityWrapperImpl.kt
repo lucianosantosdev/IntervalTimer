@@ -30,7 +30,7 @@ class OngoingActivityWrapperImpl : OngoingActivityWrapper {
         notificationBuilder: NotificationCompat.Builder
     ) {
         val status = buildStatus(timerState, message, remainingSeconds, isPaused)
-        val icon = iconFor(timerState) ?: R.drawable.ic_ongoing_prepare
+        val icon = iconFor(timerState) ?: R.drawable.ic_ongoing_idle
 
         OngoingActivity.Builder(
             applicationContext,

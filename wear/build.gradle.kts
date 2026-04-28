@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.googleServices)
     alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.roborazzi)
 }
 
 val keystoreProperties = Properties().apply {
@@ -25,7 +26,7 @@ android {
 
     defaultConfig {
         applicationId = "dev.lucianosantos.intervaltimer"
-        minSdk = libs.versions.android.minSdk.get().toInt()
+        minSdk = 30
         targetSdk = libs.versions.android.compileSdk.get().toInt()
 
         configurations.all {
@@ -66,6 +67,13 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+            isReturnDefaultValues = true
+        }
+    }
 }
 
 kotlin {
@@ -97,9 +105,20 @@ dependencies {
 
     debugImplementation(libs.compose.ui.tooling)
 
+    testImplementation(libs.bundles.tests)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.roborazzi)
+    testImplementation(libs.roborazzi.compose)
+    testImplementation(libs.roborazzi.junit.rule)
+    testImplementation(libs.compose.ui.test.junit4)
+    debugImplementation(libs.compose.ui.test.manifest)
+
     implementation(project(":core"))
     implementation(libs.compose.ui.tooling)
     implementation(libs.wear.ongoing)
+    implementation(libs.wear)
+    implementation(libs.health.services.client)
+    implementation(libs.google.play.app.update.ktx)
 
     // DI
     implementation(project.dependencies.platform(libs.koin.bom))
