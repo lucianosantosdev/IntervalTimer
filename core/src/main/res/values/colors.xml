@@ -20,4 +20,5 @@
     <color name="train_color">@color/green</color>
     <color name="rest_color">@color/red</color>
     <color name="finished_color">@color/blue</color>
+    <color name="idle_color">#808080</color>
 </resources>

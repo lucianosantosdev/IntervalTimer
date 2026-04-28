@@ -85,6 +85,7 @@ abstract class CountDownTimerService(
 
     private lateinit var alarmManagerHelper: AlarmManagerHelper
     private var wakeLock: PowerManager.WakeLock? = null
+    private var transitionWakeArmed = false
 
     private fun acquireRunningWakeLock() {
         if (wakeLock?.isHeld == true) return
@@ -140,8 +141,21 @@ abstract class CountDownTimerService(
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                currentTimeSeconds.collect {
+                currentTimeSeconds.collect { seconds ->
                     updateNotification()
+                    val state = timerState.value
+                    if (transitionWakeArmed && seconds <= 3 &&
+                        (state == TimerState.PREPARE ||
+                            state == TimerState.TRAIN ||
+                            state == TimerState.REST)
+                    ) {
+                        transitionWakeArmed = false
+                        if (ongoingActivityWrapper.wakeScreenOnTransition() &&
+                            settingsRepository.loadSettings().wakeScreenOnTransition
+                        ) {
+                            notificationHelper.triggerScreenWake()
+                        }
+                    }
                 }
             }
         }
@@ -169,15 +183,9 @@ abstract class CountDownTimerService(
                     } else {
                         releaseRunningWakeLock()
                     }
-                    if (ongoingActivityWrapper.wakeScreenOnTransition() &&
-                        settingsRepository.loadSettings().wakeScreenOnTransition &&
-                        (state == TimerState.PREPARE ||
-                            state == TimerState.TRAIN ||
-                            state == TimerState.REST ||
-                            state == TimerState.FINISHED)
-                    ) {
-                        notificationHelper.triggerScreenWake()
-                    }
+                    transitionWakeArmed = state == TimerState.PREPARE ||
+                        state == TimerState.TRAIN ||
+                        state == TimerState.REST
                 }
             }
         }
@@ -305,6 +313,14 @@ abstract class CountDownTimerService(
 
     override fun reset() {
         countDownTimer.reset()
+    }
+
+    override fun skipNext() {
+        countDownTimer.skipNext()
+    }
+
+    override fun skipPrevious() {
+        countDownTimer.skipPrevious()
     }
 
     companion object {

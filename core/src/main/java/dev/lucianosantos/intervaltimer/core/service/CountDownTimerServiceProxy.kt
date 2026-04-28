@@ -44,4 +44,12 @@ class CountDownTimerServiceProxy(
         countDownTimerService?.reset()
     }
 
+    override fun skipNext() {
+        countDownTimerService?.skipNext()
+    }
+
+    override fun skipPrevious() {
+        countDownTimerService?.skipPrevious()
+    }
+
 }

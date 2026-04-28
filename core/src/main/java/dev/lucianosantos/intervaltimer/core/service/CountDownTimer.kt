@@ -92,6 +92,56 @@ class CountDownTimer(
         countDownTimer.stop()
     }
 
+    fun skipNext() {
+        coroutineScope.launch {
+            countDownTimer.stop()
+            _isPaused.value = false
+            when (_timerState.value) {
+                TimerState.PREPARE -> eventChannel.send(Event.Train)
+                TimerState.TRAIN -> {
+                    if (_remainingSections.value > 1) {
+                        eventChannel.send(Event.Rest)
+                    } else {
+                        eventChannel.send(Event.Finished)
+                    }
+                }
+                TimerState.REST -> {
+                    _remainingSections.value = _remainingSections.value - 1
+                    eventChannel.send(Event.Train)
+                }
+                else -> Unit
+            }
+        }
+    }
+
+    fun skipPrevious() {
+        coroutineScope.launch {
+            countDownTimer.stop()
+            _isPaused.value = false
+            when (_timerState.value) {
+                TimerState.PREPARE -> {
+                    eventChannel.send(Event.Prepare)
+                }
+                TimerState.TRAIN -> {
+                    if (_remainingSections.value >= timerSettings.sections) {
+                        eventChannel.send(Event.Prepare)
+                    } else {
+                        _remainingSections.value = _remainingSections.value + 1
+                        eventChannel.send(Event.Rest)
+                    }
+                }
+                TimerState.REST -> {
+                    eventChannel.send(Event.Train)
+                }
+                TimerState.FINISHED -> {
+                    _remainingSections.value = 1
+                    eventChannel.send(Event.Train)
+                }
+                else -> Unit
+            }
+        }
+    }
+
     private fun setTimerStateAndAlert(state: TimerState) {
         _timerState.value = state
         alertUser(state)

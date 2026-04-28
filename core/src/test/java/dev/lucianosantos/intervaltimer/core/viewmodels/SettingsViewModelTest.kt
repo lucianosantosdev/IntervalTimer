@@ -29,7 +29,14 @@ class SettingsViewModelTest {
     fun `Verify uiState is initialized with settings provided in constructor`() {
 
         // Arrange
-        val settings = TimerSettings(1,2,3, 4)
+        val settings = TimerSettings(
+            sections = 1,
+            prepareTimeSeconds = 2,
+            trainTimeSeconds = 3,
+            restTimeSeconds = 4,
+            volume = 100,
+            soundMode = SoundMode.SOUND_AND_VIBRATE
+        )
         Mockito.`when`(mockTimerSettingsRepository.loadSettings()).thenReturn(settings)
 
         // Act
