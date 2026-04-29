@@ -10,7 +10,7 @@ Android interval timer app (sections × train time × rest time) published to Go
 
 Uses Gradle wrapper. JDK 17 is expected locally; CI uses JDK 17 for build/deploy and JDK 19 for the unit-test job.
 
-- Unit tests + coverage (matches CI): `./gradlew testDebugUnitTest jacocoTestReport`
+- Unit tests + coverage (matches CI): `./gradlew :core:testDebugUnitTest :core:createDebugUnitTestCoverageReport`
 - Single test class: `./gradlew :core:testDebugUnitTest --tests "dev.lucianosantos.intervaltimer.core.viewmodels.SettingsViewModelTest"`
 - Single test method: append `.methodName` to `--tests`.
 - Release bundle for a target: `./gradlew :mobile:bundleRelease` or `./gradlew :wear:bundleRelease` (requires `keystore.properties` at repo root and `mobile/keystore.jks` / `wear/keystore.jks`; without these, release signing is silently skipped).
@@ -44,4 +44,4 @@ Both apps share `applicationId = "dev.lucianosantos.intervaltimer"` with the nam
 
 - `scripts/set_app_version.py <target>` reads the latest git tag as `versionName` and synthesizes `versionCode = {tag}{GITHUB_RUN_NUMBER:04d}{10|30}` (mobile=10, wear=30). It rewrites `mobile/build.gradle.kts` or `wear/build.gradle.kts` in place by inserting lines immediately after `defaultConfig {` — don't hand-edit `versionName`/`versionCode` there, and be aware that local runs of this script will modify the file.
 - Release flow is `.github/workflows/build_n_deploy_all.yml` triggered by pushing a numeric tag (`[0-9]+`). Builds mobile then wear sequentially via a strategy matrix with `max-parallel: 1`, uploads each `.aab` to Play Store Internal Testing via Fastlane (`fastlane/Fastfile` lanes `internal_mobile`, `internal_wear`, `production`). Secrets required: `PLAY_CONFIG_JSON`, `ANDROID_KEYSTORE_FILE` (base64), `KEYSTORE_KEY_ALIAS`, `KEYSTORE_KEY_PASSWORD`, `KEYSTORE_STORE_PASSWORD`, `GH_SSH_KEY` (for the submodule).
-- `core/build.gradle.kts` enables `enableUnitTestCoverage = true` on debug — that's how `jacocoTestReport` exists without explicit plugin wiring. Coverage is uploaded to Codecov from CI.
+- `core/build.gradle.kts` enables `enableUnitTestCoverage = true` on debug — that's how `createDebugUnitTestCoverageReport` exists without explicit plugin wiring (the legacy `jacocoTestReport` task name was removed by AGP 8.13). Coverage is uploaded to Codecov from CI.
