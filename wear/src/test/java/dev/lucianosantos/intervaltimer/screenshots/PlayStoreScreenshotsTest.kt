@@ -50,7 +50,8 @@ class PlayStoreScreenshotsTest {
             onPlayClicked = {},
             onPauseClicked = {},
             heartRate = 132,
-            calories = 18
+            calories = 18,
+            onSettingsClick = {}
         )
     }
 
@@ -64,7 +65,8 @@ class PlayStoreScreenshotsTest {
             onPlayClicked = {},
             onPauseClicked = {},
             heartRate = 108,
-            calories = 47
+            calories = 47,
+            onSettingsClick = {}
         )
     }
 
@@ -78,7 +80,8 @@ class PlayStoreScreenshotsTest {
             onPlayClicked = {},
             onPauseClicked = {},
             heartRate = 82,
-            calories = 0
+            calories = 0,
+            onSettingsClick = {}
         )
     }
 
@@ -92,7 +95,8 @@ class PlayStoreScreenshotsTest {
             onPlayClicked = {},
             onPauseClicked = {},
             heartRate = 95,
-            calories = 152
+            calories = 152,
+            onSettingsClick = {}
         )
     }
 
