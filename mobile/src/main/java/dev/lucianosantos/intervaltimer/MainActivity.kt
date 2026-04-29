@@ -196,7 +196,8 @@ class MainActivity : BaseActivity() {
                             ),
                             title = { },
                             actions = {
-                                Button(
+                                val product = products.firstOrNull()
+                                if (product != null) Button(
                                     colors = ButtonDefaults.buttonColors(
                                         containerColor = Color.Yellow,
                                         contentColor = Color.Black
@@ -204,7 +205,7 @@ class MainActivity : BaseActivity() {
 
                                     onClick = {
                                         Purchases.sharedInstance.purchaseWith(
-                                            PurchaseParams.Builder(context as Activity, products[0]).build(),
+                                            PurchaseParams.Builder(context as Activity, product).build(),
                                             onError = { error, userCancelled ->
                                                 // Handle error (log or show UI message)
                                             },
