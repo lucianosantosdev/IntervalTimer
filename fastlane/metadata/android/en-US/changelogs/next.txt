@@ -1,10 +1,10 @@
 Wear OS:
-- More reliable background countdown – the timer keeps running even when the screen turns off.
-- The screen wakes up automatically at every phase change (Prepare → Train → Rest).
-- New settings screen with sound mode, volume slider and a wake-screen-on-transition toggle.
-- Heart rate and calorie indicators while you train.
-- The back button exits the workout with a "Keep going / Exit" confirmation. Pause is still one tap away from the on-screen pause button.
+- Reliable background timer (no pause when screen off).
+- Screen wakes at every phase change.
+- New settings: sound mode, volume, wake-screen toggle.
+- Heart rate and calorie indicators while training.
+- Back button exits the workout with a confirmation.
 
 Mobile:
-- In-app update prompt on launch so you always run the latest version.
-- Edge-to-edge layout polish on the timer and settings screens.
+- In-app update prompt on launch.
+- Edge-to-edge polish on timer and settings screens.
