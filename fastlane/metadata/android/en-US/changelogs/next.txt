@@ -3,6 +3,7 @@ Wear OS:
 - The screen wakes up automatically at every phase change (Prepare → Train → Rest).
 - New settings screen with sound mode, volume slider and a wake-screen-on-transition toggle.
 - Heart rate and calorie indicators while you train.
+- The back button exits the workout with a "Keep going / Exit" confirmation. Pause is still one tap away from the on-screen pause button.
 
 Mobile:
 - In-app update prompt on launch so you always run the latest version.
