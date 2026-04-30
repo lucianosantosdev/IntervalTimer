@@ -30,6 +30,10 @@
     <string name="heart_rate_bpm_content_description">%1$d batimentos por minuto</string>
     <string name="calories_icon_content_description">Calorias</string>
     <string name="calories_kcal_content_description">%1$d quilocalorias</string>
+    <string name="exit_workout_title">Sair do treino?</string>
+    <string name="exit_workout_message">Você perderá seu progresso.</string>
+    <string name="exit_workout_cancel">Continuar</string>
+    <string name="exit_workout_confirm">Sair</string>
 
     <plurals name="time_picker_sections_content_description" >
         <item quantity="one">%d Série</item>

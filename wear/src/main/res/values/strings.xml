@@ -32,6 +32,10 @@
     <string name="heart_rate_bpm_content_description">%1$d beats per minute</string>
     <string name="calories_icon_content_description">Calories</string>
     <string name="calories_kcal_content_description">%1$d kilocalories</string>
+    <string name="exit_workout_title">Exit workout?</string>
+    <string name="exit_workout_message">Your progress will be lost.</string>
+    <string name="exit_workout_cancel">Keep going</string>
+    <string name="exit_workout_confirm">Exit</string>
 
     <plurals name="time_picker_sections_content_description" >
         <item quantity="one">%d Section</item>

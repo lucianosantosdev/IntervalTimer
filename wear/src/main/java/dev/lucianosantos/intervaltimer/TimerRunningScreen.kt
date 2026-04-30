@@ -25,6 +25,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.LocalFireDepartment
+import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Pause
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material.icons.rounded.Refresh
@@ -65,6 +67,7 @@ import androidx.wear.compose.material.MaterialTheme
 import androidx.wear.compose.material.Text
 import androidx.wear.compose.material.TimeText
 import androidx.wear.compose.material.TimeTextDefaults
+import androidx.wear.compose.material.dialog.Dialog
 import dev.lucianosantos.intervaltimer.core.data.TimerState
 import dev.lucianosantos.intervaltimer.core.service.ICountDownTimerService
 import dev.lucianosantos.intervaltimer.core.utils.formatMinutesAndSeconds
@@ -90,11 +93,12 @@ fun TimerRunningScreen(
     val timerState by countDownTimerService.timerState!!.collectAsState()
     val isPaused by countDownTimerService.isPaused!!.collectAsState()
 
-    val canTogglePause = timerState == TimerState.PREPARE ||
+    var showExitDialog by remember { mutableStateOf(false) }
+    val canExit = timerState == TimerState.PREPARE ||
         timerState == TimerState.TRAIN ||
         timerState == TimerState.REST
-    BackHandler(enabled = canTogglePause) {
-        if (isPaused) countDownTimerService.resume() else countDownTimerService.pause()
+    BackHandler(enabled = canExit) {
+        showExitDialog = true
     }
 
     val context = LocalContext.current
@@ -135,6 +139,60 @@ fun TimerRunningScreen(
         onSkipPreviousClicked = { countDownTimerService.skipPrevious() },
         onSettingsClick = onSettingsClick
     )
+
+    Dialog(
+        showDialog = showExitDialog,
+        onDismissRequest = { showExitDialog = false }
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Black)
+                .padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = stringResource(id = R.string.exit_workout_title),
+                style = MaterialTheme.typography.title3,
+                color = MaterialTheme.colors.onBackground
+            )
+            Spacer(Modifier.height(6.dp))
+            Text(
+                text = stringResource(id = R.string.exit_workout_message),
+                style = MaterialTheme.typography.body2,
+                color = MaterialTheme.colors.onBackground.copy(alpha = 0.8f)
+            )
+            Spacer(Modifier.height(16.dp))
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Button(
+                    onClick = { showExitDialog = false },
+                    colors = ButtonDefaults.secondaryButtonColors(),
+                    modifier = Modifier.size(ButtonDefaults.SmallButtonSize)
+                ) {
+                    Icon(
+                        imageVector = Icons.Rounded.Close,
+                        contentDescription = stringResource(id = R.string.exit_workout_cancel)
+                    )
+                }
+                Button(
+                    onClick = {
+                        showExitDialog = false
+                        countDownTimerService.stop()
+                    },
+                    modifier = Modifier.size(ButtonDefaults.SmallButtonSize)
+                ) {
+                    Icon(
+                        imageVector = Icons.Rounded.Check,
+                        contentDescription = stringResource(id = R.string.exit_workout_confirm)
+                    )
+                }
+            }
+        }
+    }
 
     LaunchedEffect(Unit){
         if (countDownTimerService.timerState!!.value == TimerState.NONE) {
