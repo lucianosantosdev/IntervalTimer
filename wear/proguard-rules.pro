@@ -19,3 +19,9 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# protobuf-lite finds generated message fields (e.g. `name_`) by reflection
+# at runtime, so renaming them breaks the schema lookup. androidx.health.services
+# DataType.<clinit> hits this path on first access. Keep every
+# GeneratedMessageLite subclass's fields intact.
+-keep class * extends com.google.protobuf.GeneratedMessageLite { *; }
