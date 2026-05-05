@@ -11,6 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlin.math.sqrt
 
 class AlertUserHelper(
     private val context: Context,
@@ -67,9 +68,7 @@ class AlertUserHelper(
 
         var toneGenerator: ToneGenerator? = null
         try {
-            // Map your [0..100?] volume to ToneGenerator range if needed; here we just clamp
-            val clampedVolume = volume.coerceIn(0, ToneGenerator.MAX_VOLUME)
-            toneGenerator = ToneGenerator(AudioManager.STREAM_ALARM, clampedVolume)
+            toneGenerator = ToneGenerator(AudioManager.STREAM_ALARM, perceptualVolume(volume))
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -122,5 +121,17 @@ class AlertUserHelper(
 
     override suspend fun timerAlmostFinishingAlert() {
         shortBeep()
+    }
+
+    // ToneGenerator turns this 0..100 into -∞..0 dB via 20*log10(v/100), so
+    // a linear slider feels almost silent in its lower half. Apply a sqrt
+    // curve so the slider's perceived loudness rises more evenly: 25→50,
+    // 50→71, 75→87, 100→100.
+    private fun perceptualVolume(slider: Int): Int {
+        val clamped = slider.coerceIn(0, 100)
+        if (clamped == 0) return 0
+        return (sqrt(clamped / 100.0) * ToneGenerator.MAX_VOLUME)
+            .toInt()
+            .coerceIn(1, ToneGenerator.MAX_VOLUME)
     }
 }
