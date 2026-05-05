@@ -1,10 +1,8 @@
-Wear OS:
-- Reliable background timer (no pause when screen off).
-- Screen wakes at every phase change.
-- New settings: sound mode, volume, wake-screen toggle.
-- Heart rate and calorie indicators while training.
-- Back button exits the workout with a confirmation.
+Bug fixes:
 
 Mobile:
-- In-app update prompt on launch.
-- Edge-to-edge polish on timer and settings screens.
+- Beeps stay audible at low volume settings.
+- Fixed a rare crash when reopening the app after a purchase.
+
+Wear OS:
+- Fixed a crash that prevented heart rate and calories from loading during a workout.
