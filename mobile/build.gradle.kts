@@ -54,6 +54,9 @@ android {
             if (!keystoreProperties.isEmpty) {
                 signingConfig = signingConfigs.getByName("release")
             }
+            ndk {
+                debugSymbolLevel = "FULL"
+            }
         }
     }
 
