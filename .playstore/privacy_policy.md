@@ -18,6 +18,19 @@ Link to the privacy policy of third-party service providers used by the app
 
 *   [Google Play Services](https://www.google.com/policies/privacy/)
 
+**Health and Fitness Data (Wear OS)**
+
+On the Wear OS version of the app, when you start a workout I request and access the following health and fitness data from your watch through Android's Health Services and standard system permissions (BODY_SENSORS, android.permission.health.READ_HEART_RATE, and ACTIVITY_RECOGNITION):
+
+*   **Heart rate (beats per minute)** — read live from the watch's heart-rate sensor while a workout is running.
+*   **Active calories burned (kilocalories)** — estimated by Health Services for the current workout session.
+
+**How this data is used:** Heart rate and calories are displayed in real time on the timer screen so you can monitor your workout. They are used only to render those on-screen indicators.
+
+**Retention and sharing:** Heart rate and calorie readings are processed only in memory while a workout is active and are discarded as soon as the workout ends or the app is closed. I do **not** store, log, transmit, or share your health or fitness data, and it is **never** sent to any server, third party, or other device. These readings are not included in crash reports.
+
+**Permission and consent:** The heart-rate permission is only requested the first time you start a workout that needs it, and you can revoke it at any time from your watch's system settings. Revoking the permission simply hides the heart-rate and calories indicators; the timer itself continues to work normally.
+
 **Log Data**
 
 I want to inform you that whenever you use my Service, in a case of an error in the app I collect data and information (through third-party products) on your phone called Log Data. This Log Data may include information such as your device Internet Protocol (“IP”) address, device name, operating system version, the configuration of the app when utilizing my Service, the time and date of your use of the Service, and other statistics.
@@ -55,7 +68,7 @@ These Services do not address anyone under the age of 13. I do not knowingly col
 
 I may update our Privacy Policy from time to time. Thus, you are advised to review this page periodically for any changes. I will notify you of any changes by posting the new Privacy Policy on this page.
 
-This policy is effective as of 2023-01-30
+This policy is effective as of 2026-05-11
 
 **Contact Us**
 
