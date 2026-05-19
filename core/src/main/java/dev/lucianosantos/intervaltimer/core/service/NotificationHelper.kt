@@ -192,7 +192,7 @@ class NotificationHelper(
             .setContentIntent(activityLauncherIntent())
             .setSmallIcon(R.drawable.ic_notification)
             .setDefaults(NotificationCompat.DEFAULT_ALL)
-            .setOngoing(true)
+            .setOngoing(timerState != TimerState.FINISHED)
             .setCategory(NotificationCompat.CATEGORY_WORKOUT)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
         setNotificationActions(timerState, isPaused, notificationBuilder)
@@ -215,6 +215,9 @@ class NotificationHelper(
             isPaused = isPaused,
             notificationBuilder = notificationBuilder
         )
+        // Wear's OngoingActivity.apply() can set the ongoing flag — re-assert
+        // dismissibility for FINISHED so users can swipe the notification away.
+        notificationBuilder.setOngoing(timerState != TimerState.FINISHED)
         return notificationBuilder.build()
     }
 

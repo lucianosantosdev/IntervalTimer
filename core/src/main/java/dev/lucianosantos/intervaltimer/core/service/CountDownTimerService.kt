@@ -169,8 +169,15 @@ abstract class CountDownTimerService(
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 timerState.collect {
-                    updateNotification()
                     val state = timerState.value
+                    // When the workout finishes while running as a foreground service,
+                    // detach so the notification (now non-ongoing for FINISHED) can be
+                    // dismissed by the user and the Now-bar Live Update chip clears.
+                    if (state == TimerState.FINISHED && serviceRunningInForeground) {
+                        stopForeground(STOP_FOREGROUND_DETACH)
+                        serviceRunningInForeground = false
+                    }
+                    updateNotification()
                     if (state != TimerState.STOPPED && state != TimerState.NONE) {
                         scheduleWakeAlarm()
                     }
@@ -239,7 +246,8 @@ abstract class CountDownTimerService(
 
         if (ongoingActivityWrapper.allowForegroundService() &&
             !configurationChange &&
-            timerState.value != TimerState.STOPPED
+            timerState.value != TimerState.STOPPED &&
+            timerState.value != TimerState.FINISHED
         ) {
             Log.d(TAG, "Start foreground service")
             val notification = notificationHelper.generateNotification(
