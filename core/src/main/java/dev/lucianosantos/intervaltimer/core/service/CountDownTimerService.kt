@@ -247,8 +247,17 @@ abstract class CountDownTimerService(
                 timeSeconds = currentTimeSeconds.value,
                 isPaused = isPaused.value
             )
-            startForeground(NotificationHelper.NOTIFICATION_ID, notification)
-            serviceRunningInForeground = true
+            try {
+                startForeground(NotificationHelper.NOTIFICATION_ID, notification)
+                serviceRunningInForeground = true
+            } catch (e: IllegalStateException) {
+                // ForegroundServiceStartNotAllowedException (API 31+) — the BFSL window
+                // has lapsed by the time onUnbind fires (common on Wear when the wrist is
+                // lowered). Can't keep running without foreground, so stop cleanly.
+                Log.w(TAG, "startForeground refused, stopping timer", e)
+                countDownTimer.stop()
+                notForegroundService()
+            }
         } else {
             countDownTimer.stop()
             Log.d(TAG, "Not foreground service")
