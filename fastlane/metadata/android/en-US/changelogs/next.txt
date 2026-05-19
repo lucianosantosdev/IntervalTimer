@@ -1,8 +1,9 @@
 Bug fixes:
 
 Mobile:
-- Beeps stay audible at low volume settings.
-- Fixed a rare crash when reopening the app after a purchase.
+- Fixed a rare crash when resuming a paused workout.
+- The workout notification now clears after the timer finishes, so the Now bar no longer gets stuck showing 0:00.
 
 Wear OS:
-- Fixed a crash that prevented heart rate and calories from loading during a workout.
+- Fixed a crash that could happen when closing the app or lowering your wrist with a workout running.
+- The workout notification now clears after the timer finishes.
