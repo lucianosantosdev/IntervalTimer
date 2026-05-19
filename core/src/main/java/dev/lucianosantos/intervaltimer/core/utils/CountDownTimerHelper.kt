@@ -39,6 +39,8 @@ class CountDownTimerHelper : ICountDownTimerHelper {
     }
 
     override fun resume() {
+        if (!::_onTickCallback.isInitialized || !::_onFinishCallback.isInitialized) return
+        if (remainingSeconds <= 0) return
         startCountDown(remainingSeconds, _onTickCallback, _onFinishCallback)
     }
 
