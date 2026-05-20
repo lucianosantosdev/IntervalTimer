@@ -23,6 +23,8 @@ import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.InlineSlider
 import androidx.wear.compose.material.InlineSliderDefaults
 import androidx.wear.compose.material.MaterialTheme
+import androidx.wear.compose.material.PositionIndicator
+import androidx.wear.compose.material.Scaffold
 import androidx.wear.compose.material.Text
 import androidx.wear.compose.material.ToggleChip
 import androidx.wear.compose.material.ToggleChipDefaults
@@ -38,6 +40,11 @@ fun WearSettingsScreen(
     onWakeScreenChange: (Boolean) -> Unit,
 ) {
     val listState = rememberScalingLazyListState()
+    Scaffold(
+        positionIndicator = {
+            PositionIndicator(scalingLazyListState = listState)
+        }
+    ) {
     ScalingLazyColumn(
         state = listState,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -99,6 +106,7 @@ fun WearSettingsScreen(
             )
         }
         item { Spacer(Modifier.height(4.dp)) }
+    }
     }
 }
 
