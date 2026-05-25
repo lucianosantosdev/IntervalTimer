@@ -8,7 +8,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.googleServices)
     alias(libs.plugins.firebase.crashlytics)
-    alias(libs.plugins.roborazzi)
+    id("dev.lucianosantos.storescreenshots")
 }
 
 val keystoreProperties = Properties().apply {
@@ -109,11 +109,6 @@ dependencies {
     debugImplementation(libs.compose.ui.tooling)
 
     testImplementation(libs.bundles.tests)
-    testImplementation(libs.robolectric)
-    testImplementation(libs.roborazzi)
-    testImplementation(libs.roborazzi.compose)
-    testImplementation(libs.roborazzi.junit.rule)
-    testImplementation(libs.compose.ui.test.junit4)
     debugImplementation(libs.compose.ui.test.manifest)
 
     implementation(project(":core"))

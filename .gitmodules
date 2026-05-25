@@ -1,3 +1,6 @@
 [submodule "build-logic"]
 	path = build-logic
 	url = git@github.com:lucianosantosdev/build-logic.git
+[submodule "store-screenshots"]
+	path = store-screenshots
+	url = git@github.com:lucianosantosdev/store-screenshots.git

@@ -39,6 +39,7 @@ Both apps share `applicationId = "dev.lucianosantos.intervaltimer"` with the nam
 - `build-logic/` is a **git submodule** (see `.gitmodules`) and is included as a composite build. `./gradlew` will fail to resolve plugins/versions without it — run `git submodule update --init --recursive` after a fresh clone.
 - Version catalog lives at `build-logic/libs.versions.toml` (not the usual `gradle/libs.versions.toml`) — `settings.gradle.kts` wires it explicitly. Add dependencies and plugin aliases there, not in module `build.gradle.kts` files.
 - `build-logic/convention/` contains Now-in-Android-style convention plugins (`nowinandroid.android.application`, etc.). **They are not currently applied** by any module — all three modules apply plugins directly via `libs.plugins.*`. Treat the convention plugins as unused scaffolding unless you're intentionally migrating.
+- **Always use the version catalog.** Never hardcode dependency coordinates as strings in `build.gradle.kts` files (e.g. `implementation("androidx.compose.ui:ui-test-manifest")`). If a dep is missing from `libs.versions.toml`, add it there first, then reference it via `libs.…`. This applies to every Gradle build in the workspace — `:core`, `:mobile`, `:wear`, the included `store-screenshots` submodule, etc.
 
 ## Versioning & release
 
