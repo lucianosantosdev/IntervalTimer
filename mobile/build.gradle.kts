@@ -86,6 +86,10 @@ kotlin {
     }
 }
 
+storeScreenshots {
+    destDir = rootProject.layout.projectDirectory.dir("fastlane/metadata/android")
+}
+
 dependencies {
     implementation(libs.kotlin.stdlib)
     implementation(libs.androidx.core.ktx)
